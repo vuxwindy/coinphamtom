@@ -1,0 +1,568 @@
+/* Responsive Text System - Tự động điều chỉnh kích thước chữ cho mobile */
+
+/* Base responsive text utilities */
+.responsive-text {
+    /* Base sizes for desktop */
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Heading responsive sizes */
+.responsive-h1 {
+    font-size: 2.5rem;
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+.responsive-h2 {
+    font-size: 2rem;
+    line-height: 1.3;
+    font-weight: 600;
+}
+
+.responsive-h3 {
+    font-size: 1.75rem;
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.responsive-h4 {
+    font-size: 1.5rem;
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+.responsive-h5 {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+.responsive-h6 {
+    font-size: 1rem;
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+/* Text size utilities */
+.responsive-text-xs {
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
+.responsive-text-sm {
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+.responsive-text-base {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.responsive-text-lg {
+    font-size: 1.125rem;
+    line-height: 1.5;
+}
+
+.responsive-text-xl {
+    font-size: 1.25rem;
+    line-height: 1.4;
+}
+
+.responsive-text-2xl {
+    font-size: 1.5rem;
+    line-height: 1.3;
+}
+
+.responsive-text-3xl {
+    font-size: 1.875rem;
+    line-height: 1.2;
+}
+
+.responsive-text-4xl {
+    font-size: 2.25rem;
+    line-height: 1.1;
+}
+
+/* Button text sizes */
+.responsive-btn-sm {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+}
+
+.responsive-btn-base {
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+}
+
+.responsive-btn-lg {
+    font-size: 1.125rem;
+    padding: 1rem 2rem;
+}
+
+.responsive-btn-xl {
+    font-size: 1.25rem;
+    padding: 1.25rem 2.5rem;
+}
+
+/* Menu text sizes */
+.responsive-menu-item {
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.responsive-menu-dropdown {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Card and component text */
+.responsive-card-title {
+    font-size: 1.25rem;
+    line-height: 1.3;
+    font-weight: 600;
+}
+
+.responsive-card-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.responsive-stat-number {
+    font-size: 2rem;
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+.responsive-stat-label {
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+/* Form elements */
+.responsive-input {
+    font-size: 1rem;
+    line-height: 1.5;
+    padding: 0.75rem 1rem;
+}
+
+.responsive-label {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+.responsive-placeholder {
+    font-size: 0.9rem;
+}
+
+/* Navigation elements */
+.responsive-nav-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.responsive-nav-link {
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+/* Modal and overlay text */
+.responsive-modal-title {
+    font-size: 1.5rem;
+    line-height: 1.3;
+    font-weight: 600;
+}
+
+.responsive-modal-body {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Alert and notification text */
+.responsive-alert {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.responsive-notification {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Table text */
+.responsive-table-header {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.responsive-table-cell {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Badge and tag text */
+.responsive-badge {
+    font-size: 0.75rem;
+    line-height: 1.2;
+    padding: 0.25rem 0.5rem;
+}
+
+.responsive-badge-lg {
+    font-size: 0.875rem;
+    line-height: 1.2;
+    padding: 0.375rem 0.75rem;
+}
+
+/* Price and amount text */
+.responsive-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.responsive-price-lg {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.responsive-price-sm {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+/* Large tablets and small desktops (992px and up) */
+@media (max-width: 1199px) {
+    .responsive-h1 { font-size: 2.25rem; }
+    .responsive-h2 { font-size: 1.875rem; }
+    .responsive-h3 { font-size: 1.625rem; }
+    .responsive-h4 { font-size: 1.375rem; }
+    .responsive-h5 { font-size: 1.125rem; }
+    
+    .responsive-text-4xl { font-size: 2rem; }
+    .responsive-text-3xl { font-size: 1.75rem; }
+    .responsive-text-2xl { font-size: 1.375rem; }
+    
+    .responsive-stat-number { font-size: 1.75rem; }
+    .responsive-price-lg { font-size: 1.75rem; }
+    .responsive-price { font-size: 1.375rem; }
+}
+
+/* Tablets (768px and up) */
+@media (max-width: 991px) {
+    .responsive-h1 { font-size: 2rem; }
+    .responsive-h2 { font-size: 1.75rem; }
+    .responsive-h3 { font-size: 1.5rem; }
+    .responsive-h4 { font-size: 1.25rem; }
+    .responsive-h5 { font-size: 1.125rem; }
+    .responsive-h6 { font-size: 1rem; }
+    
+    .responsive-text-4xl { font-size: 1.875rem; }
+    .responsive-text-3xl { font-size: 1.625rem; }
+    .responsive-text-2xl { font-size: 1.25rem; }
+    .responsive-text-xl { font-size: 1.125rem; }
+    .responsive-text-lg { font-size: 1rem; }
+    
+    .responsive-btn-xl { 
+        font-size: 1.125rem; 
+        padding: 1rem 2rem; 
+    }
+    .responsive-btn-lg { 
+        font-size: 1rem; 
+        padding: 0.875rem 1.75rem; 
+    }
+    
+    .responsive-stat-number { font-size: 1.5rem; }
+    .responsive-price-lg { font-size: 1.625rem; }
+    .responsive-price { font-size: 1.25rem; }
+    .responsive-price-sm { font-size: 1.125rem; }
+    
+    .responsive-nav-brand { font-size: 1.375rem; }
+    .responsive-modal-title { font-size: 1.375rem; }
+    .responsive-card-title { font-size: 1.125rem; }
+}
+
+/* Mobile landscape (576px and up) */
+@media (max-width: 767px) {
+    .responsive-h1 { font-size: 1.75rem; }
+    .responsive-h2 { font-size: 1.5rem; }
+    .responsive-h3 { font-size: 1.375rem; }
+    .responsive-h4 { font-size: 1.25rem; }
+    .responsive-h5 { font-size: 1.125rem; }
+    .responsive-h6 { font-size: 1rem; }
+    
+    .responsive-text-4xl { font-size: 1.625rem; }
+    .responsive-text-3xl { font-size: 1.5rem; }
+    .responsive-text-2xl { font-size: 1.25rem; }
+    .responsive-text-xl { font-size: 1.125rem; }
+    .responsive-text-lg { font-size: 1rem; }
+    .responsive-text-base { font-size: 0.95rem; }
+    
+    .responsive-btn-xl { 
+        font-size: 1rem; 
+        padding: 0.875rem 1.75rem; 
+    }
+    .responsive-btn-lg { 
+        font-size: 0.95rem; 
+        padding: 0.75rem 1.5rem; 
+    }
+    .responsive-btn-base { 
+        font-size: 0.9rem; 
+        padding: 0.625rem 1.25rem; 
+    }
+    
+    .responsive-menu-item { font-size: 0.95rem; }
+    .responsive-menu-dropdown { font-size: 0.875rem; }
+    
+    .responsive-stat-number { font-size: 1.375rem; }
+    .responsive-stat-label { font-size: 0.8rem; }
+    .responsive-price-lg { font-size: 1.5rem; }
+    .responsive-price { font-size: 1.125rem; }
+    .responsive-price-sm { font-size: 1rem; }
+    
+    .responsive-nav-brand { font-size: 1.25rem; }
+    .responsive-nav-link { font-size: 0.95rem; }
+    .responsive-modal-title { font-size: 1.25rem; }
+    .responsive-modal-body { font-size: 0.95rem; }
+    .responsive-card-title { font-size: 1.125rem; }
+    .responsive-card-text { font-size: 0.9rem; }
+    
+    .responsive-input { 
+        font-size: 0.95rem; 
+        padding: 0.625rem 0.875rem; 
+    }
+    .responsive-label { font-size: 0.9rem; }
+    .responsive-placeholder { font-size: 0.85rem; }
+    
+    .responsive-alert { font-size: 0.9rem; }
+    .responsive-notification { font-size: 0.85rem; }
+    .responsive-table-header { font-size: 0.9rem; }
+    .responsive-table-cell { font-size: 0.85rem; }
+}
+
+/* Mobile portrait (up to 575px) */
+@media (max-width: 575px) {
+    .responsive-h1 { font-size: 1.5rem; }
+    .responsive-h2 { font-size: 1.375rem; }
+    .responsive-h3 { font-size: 1.25rem; }
+    .responsive-h4 { font-size: 1.125rem; }
+    .responsive-h5 { font-size: 1rem; }
+    .responsive-h6 { font-size: 0.95rem; }
+    
+    .responsive-text-4xl { font-size: 1.5rem; }
+    .responsive-text-3xl { font-size: 1.375rem; }
+    .responsive-text-2xl { font-size: 1.25rem; }
+    .responsive-text-xl { font-size: 1.125rem; }
+    .responsive-text-lg { font-size: 1rem; }
+    .responsive-text-base { font-size: 0.9rem; }
+    .responsive-text-sm { font-size: 0.85rem; }
+    
+    .responsive-btn-xl { 
+        font-size: 0.95rem; 
+        padding: 0.75rem 1.5rem; 
+    }
+    .responsive-btn-lg { 
+        font-size: 0.9rem; 
+        padding: 0.625rem 1.25rem; 
+    }
+    .responsive-btn-base { 
+        font-size: 0.875rem; 
+        padding: 0.5rem 1rem; 
+    }
+    .responsive-btn-sm { 
+        font-size: 0.8rem; 
+        padding: 0.375rem 0.75rem; 
+    }
+    
+    .responsive-menu-item { font-size: 0.9rem; }
+    .responsive-menu-dropdown { font-size: 0.8rem; }
+    
+    .responsive-stat-number { font-size: 1.25rem; }
+    .responsive-stat-label { font-size: 0.75rem; }
+    .responsive-price-lg { font-size: 1.375rem; }
+    .responsive-price { font-size: 1rem; }
+    .responsive-price-sm { font-size: 0.9rem; }
+    
+    .responsive-nav-brand { font-size: 1.125rem; }
+    .responsive-nav-link { font-size: 0.9rem; }
+    .responsive-modal-title { font-size: 1.125rem; }
+    .responsive-modal-body { font-size: 0.9rem; }
+    .responsive-card-title { font-size: 1rem; }
+    .responsive-card-text { font-size: 0.85rem; }
+    
+    .responsive-input { 
+        font-size: 0.9rem; 
+        padding: 0.5rem 0.75rem; 
+    }
+    .responsive-label { font-size: 0.85rem; }
+    .responsive-placeholder { font-size: 0.8rem; }
+    
+    .responsive-alert { font-size: 0.85rem; }
+    .responsive-notification { font-size: 0.8rem; }
+    .responsive-table-header { font-size: 0.85rem; }
+    .responsive-table-cell { font-size: 0.8rem; }
+    
+    .responsive-badge { 
+        font-size: 0.7rem; 
+        padding: 0.2rem 0.4rem; 
+    }
+    .responsive-badge-lg { 
+        font-size: 0.8rem; 
+        padding: 0.3rem 0.6rem; 
+    }
+}
+
+/* Extra small mobile (up to 375px) */
+@media (max-width: 375px) {
+    .responsive-h1 { font-size: 1.375rem; }
+    .responsive-h2 { font-size: 1.25rem; }
+    .responsive-h3 { font-size: 1.125rem; }
+    .responsive-h4 { font-size: 1rem; }
+    .responsive-h5 { font-size: 0.95rem; }
+    .responsive-h6 { font-size: 0.9rem; }
+    
+    .responsive-text-4xl { font-size: 1.375rem; }
+    .responsive-text-3xl { font-size: 1.25rem; }
+    .responsive-text-2xl { font-size: 1.125rem; }
+    .responsive-text-xl { font-size: 1rem; }
+    .responsive-text-lg { font-size: 0.95rem; }
+    .responsive-text-base { font-size: 0.85rem; }
+    .responsive-text-sm { font-size: 0.8rem; }
+    .responsive-text-xs { font-size: 0.7rem; }
+    
+    .responsive-btn-xl { 
+        font-size: 0.9rem; 
+        padding: 0.625rem 1.25rem; 
+    }
+    .responsive-btn-lg { 
+        font-size: 0.85rem; 
+        padding: 0.5rem 1rem; 
+    }
+    .responsive-btn-base { 
+        font-size: 0.8rem; 
+        padding: 0.375rem 0.75rem; 
+    }
+    .responsive-btn-sm { 
+        font-size: 0.75rem; 
+        padding: 0.25rem 0.5rem; 
+    }
+    
+    .responsive-menu-item { font-size: 0.85rem; }
+    .responsive-menu-dropdown { font-size: 0.75rem; }
+    
+    .responsive-stat-number { font-size: 1.125rem; }
+    .responsive-stat-label { font-size: 0.7rem; }
+    .responsive-price-lg { font-size: 1.25rem; }
+    .responsive-price { font-size: 0.95rem; }
+    .responsive-price-sm { font-size: 0.85rem; }
+    
+    .responsive-nav-brand { font-size: 1rem; }
+    .responsive-nav-link { font-size: 0.85rem; }
+    .responsive-modal-title { font-size: 1rem; }
+    .responsive-modal-body { font-size: 0.85rem; }
+    .responsive-card-title { font-size: 0.95rem; }
+    .responsive-card-text { font-size: 0.8rem; }
+    
+    .responsive-input { 
+        font-size: 0.85rem; 
+        padding: 0.375rem 0.625rem; 
+    }
+    .responsive-label { font-size: 0.8rem; }
+    .responsive-placeholder { font-size: 0.75rem; }
+    
+    .responsive-alert { font-size: 0.8rem; }
+    .responsive-notification { font-size: 0.75rem; }
+    .responsive-table-header { font-size: 0.8rem; }
+    .responsive-table-cell { font-size: 0.75rem; }
+    
+    .responsive-badge { 
+        font-size: 0.65rem; 
+        padding: 0.15rem 0.3rem; 
+    }
+    .responsive-badge-lg { 
+        font-size: 0.75rem; 
+        padding: 0.25rem 0.5rem; 
+    }
+}
+
+/* ===== AUTO-APPLY RESPONSIVE CLASSES ===== */
+
+/* Automatically apply responsive classes to common elements */
+h1, .h1 { @extend .responsive-h1; }
+h2, .h2 { @extend .responsive-h2; }
+h3, .h3 { @extend .responsive-h3; }
+h4, .h4 { @extend .responsive-h4; }
+h5, .h5 { @extend .responsive-h5; }
+h6, .h6 { @extend .responsive-h6; }
+
+p, .p { @extend .responsive-text-base; }
+small, .small { @extend .responsive-text-sm; }
+
+.btn { @extend .responsive-btn-base; }
+.btn-sm { @extend .responsive-btn-sm; }
+.btn-lg { @extend .responsive-btn-lg; }
+
+.navbar-brand { @extend .responsive-nav-brand; }
+.nav-link { @extend .responsive-nav-link; }
+
+.card-title { @extend .responsive-card-title; }
+.card-text { @extend .responsive-card-text; }
+
+.modal-title { @extend .responsive-modal-title; }
+.modal-body { @extend .responsive-modal-body; }
+
+.form-control, .form-select { @extend .responsive-input; }
+.form-label { @extend .responsive-label; }
+
+.alert { @extend .responsive-alert; }
+.badge { @extend .responsive-badge; }
+
+.table th { @extend .responsive-table-header; }
+.table td { @extend .responsive-table-cell; }
+
+/* ===== UTILITY CLASSES ===== */
+
+/* Text alignment utilities */
+.text-responsive-center { text-align: center; }
+.text-responsive-left { text-align: left; }
+.text-responsive-right { text-align: right; }
+
+/* Font weight utilities */
+.font-responsive-light { font-weight: 300; }
+.font-responsive-normal { font-weight: 400; }
+.font-responsive-medium { font-weight: 500; }
+.font-responsive-semibold { font-weight: 600; }
+.font-responsive-bold { font-weight: 700; }
+
+/* Line height utilities */
+.leading-responsive-tight { line-height: 1.2; }
+.leading-responsive-normal { line-height: 1.5; }
+.leading-responsive-relaxed { line-height: 1.7; }
+
+/* Letter spacing utilities */
+.tracking-responsive-tight { letter-spacing: -0.025em; }
+.tracking-responsive-normal { letter-spacing: 0; }
+.tracking-responsive-wide { letter-spacing: 0.025em; }
+
+/* ===== PRINT STYLES ===== */
+@media print {
+    .responsive-text,
+    .responsive-h1, .responsive-h2, .responsive-h3,
+    .responsive-h4, .responsive-h5, .responsive-h6 {
+        font-size: 12pt !important;
+        line-height: 1.4 !important;
+    }
+    
+    .responsive-h1 { font-size: 18pt !important; }
+    .responsive-h2 { font-size: 16pt !important; }
+    .responsive-h3 { font-size: 14pt !important; }
+    .responsive-h4 { font-size: 13pt !important; }
+    .responsive-h5 { font-size: 12pt !important; }
+    .responsive-h6 { font-size: 11pt !important; }
+}

@@ -1,0 +1,613 @@
+/* NFT Investment Styles - COINPAYOT NFT */
+
+/* ========================================
+   TIER CARDS
+   ======================================== */
+
+.tier-card {
+  border-radius: var(--ppo-radius-lg);
+  padding: var(--ppo-spacing-md);
+  margin-bottom: var(--ppo-spacing-md);
+  transition: var(--ppo-transition);
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--ppo-shadow-md);
+}
+
+.tier-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.tier-card.bronze {
+  background: linear-gradient(135deg, #cd7f32, #daa520);
+  color: white;
+  box-shadow: 0 8px 25px rgba(205, 127, 50, 0.3);
+}
+
+.tier-card.silver {
+  background: linear-gradient(135deg, #c0c0c0, #e5e4e2);
+  color: #333;
+  box-shadow: 0 8px 25px rgba(192, 192, 192, 0.3);
+}
+
+.tier-card.gold {
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  color: #333;
+  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+}
+
+.tier-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--ppo-shadow-xl);
+}
+
+.tier-header {
+  text-align: center;
+  margin-bottom: var(--ppo-spacing-md);
+}
+
+.tier-header h5 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.tier-range {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin: 0;
+}
+
+.tier-details p {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+/* ========================================
+   USER TIER DISPLAY
+   ======================================== */
+
+.tier-badge {
+  text-align: center;
+  padding: var(--ppo-spacing-md);
+  border-radius: var(--ppo-radius-lg);
+  margin: var(--ppo-spacing-sm) 0;
+  transition: var(--ppo-transition);
+  background: var(--ppo-dark-light);
+  border: 1px solid var(--ppo-dark-border);
+}
+
+.tier-badge h4 {
+  margin-bottom: var(--ppo-spacing-sm);
+  font-weight: bold;
+  color: var(--ppo-primary);
+}
+
+.tier-badge p {
+  margin-bottom: 5px;
+  font-size: 0.95rem;
+  color: #f2f2f2;
+}
+
+/* ========================================
+   REWARD DISPLAY
+   ======================================== */
+
+.reward-info {
+  text-align: center;
+  padding: var(--ppo-spacing-md);
+}
+
+.reward-info h5 {
+  color: var(--ppo-accent);
+  margin-bottom: var(--ppo-spacing-md);
+  font-weight: bold;
+}
+
+.reward-amount {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--ppo-secondary);
+  margin-bottom: var(--ppo-spacing-sm);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.reward-info small {
+  color: #6c757d;
+  font-size: 0.85rem;
+}
+
+#reward-countdown {
+  font-weight: bold;
+  color: var(--ppo-danger);
+  font-family: 'Courier New', monospace;
+}
+
+/* ========================================
+   NFT INVESTMENT CARDS
+   ======================================== */
+
+.nft-investment-card {
+  border-radius: var(--ppo-radius-lg);
+  overflow: hidden;
+  transition: var(--ppo-transition);
+  margin-bottom: var(--ppo-spacing-md);
+  box-shadow: var(--ppo-shadow-md);
+  background: var(--ppo-dark-light);
+  border: 1px solid var(--ppo-dark-border);
+}
+
+.nft-investment-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ppo-shadow-lg);
+  border-color: var(--ppo-primary);
+}
+
+.nft-investment-card .card-header {
+  padding: var(--ppo-spacing-sm) var(--ppo-spacing-md);
+  border-bottom: 1px solid var(--ppo-dark-border);
+  background: var(--ppo-gradient-dark);
+}
+
+.nft-investment-card .card-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #f2f2f2;
+}
+
+.nft-investment-card .card-body {
+  padding: var(--ppo-spacing-md);
+}
+
+.nft-investment-card .card-body p {
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #f2f2f2;
+}
+
+.nft-investment-card .card-body strong {
+  color: var(--ppo-primary);
+}
+
+.nft-investment-card .card-footer {
+  background: transparent;
+  border-top: 1px solid var(--ppo-dark-border);
+  padding: var(--ppo-spacing-sm) var(--ppo-spacing-md);
+}
+
+/* ========================================
+   FORM STYLES
+   ======================================== */
+
+#nftPurchaseForm {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+#nftPurchaseForm .form-control {
+  border-radius: var(--ppo-radius);
+  border: 2px solid var(--ppo-dark-border);
+  padding: var(--ppo-spacing-sm) var(--ppo-spacing-md);
+  transition: var(--ppo-transition);
+  background: var(--ppo-dark-light);
+  color: #f2f2f2;
+}
+
+#nftPurchaseForm .form-control:focus {
+  border-color: var(--ppo-primary);
+  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+  background: var(--ppo-dark-light);
+  color: #f2f2f2;
+}
+
+#nftPurchaseForm .form-control[readonly] {
+  background-color: var(--ppo-dark-lighter);
+  color: #6c757d;
+}
+
+#nftPurchaseForm .form-text {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-top: 5px;
+}
+
+#nftPurchaseForm .btn {
+  border-radius: var(--ppo-radius);
+  padding: var(--ppo-spacing-sm) var(--ppo-spacing-md);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: var(--ppo-transition);
+}
+
+#nftPurchaseForm .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--ppo-shadow-lg);
+}
+
+/* ========================================
+   STATISTICS CARDS
+   ======================================== */
+
+.statistics-card {
+  text-align: center;
+  padding: var(--ppo-spacing-md);
+  border-radius: var(--ppo-radius-lg);
+  background: var(--ppo-gradient-primary);
+  color: white;
+  margin-bottom: var(--ppo-spacing-md);
+  transition: var(--ppo-transition);
+}
+
+.statistics-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ppo-shadow-lg);
+}
+
+.statistics-card h5 {
+  font-size: 2rem;
+  margin-bottom: var(--ppo-spacing-sm);
+  color: var(--ppo-accent);
+}
+
+.statistics-card h4 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.statistics-card p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 0.9rem;
+}
+
+/* ========================================
+   TRANSACTION TABLE
+   ======================================== */
+
+.table {
+  border-radius: var(--ppo-radius);
+  overflow: hidden;
+  box-shadow: var(--ppo-shadow-md);
+}
+
+.table thead th {
+  background: var(--ppo-gradient-dark);
+  color: white;
+  border: none;
+  padding: var(--ppo-spacing-sm) var(--ppo-spacing-md);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+.table tbody td {
+  padding: var(--ppo-spacing-sm) var(--ppo-spacing-md);
+  vertical-align: middle;
+  border-bottom: 1px solid var(--ppo-dark-border);
+  color: #f2f2f2;
+}
+
+.table tbody tr:hover {
+  background-color: var(--ppo-dark-lighter);
+}
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ========================================
+   NOTIFICATIONS
+   ======================================== */
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: var(--ppo-spacing-sm) var(--ppo-spacing-md);
+  border-radius: var(--ppo-radius);
+  color: white;
+  font-weight: bold;
+  z-index: 10000;
+  animation: slideIn 0.3s ease;
+  max-width: 300px;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.notification-success {
+  background: var(--ppo-gradient-secondary);
+}
+
+.notification-error {
+  background: linear-gradient(135deg, var(--ppo-danger), #fd7e14);
+}
+
+.notification-warning {
+  background: var(--ppo-gradient-accent);
+}
+
+.notification-info {
+  background: linear-gradient(135deg, var(--ppo-info), #6f42c1);
+}
+
+/* ========================================
+   LOADING STATES
+   ======================================== */
+
+.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+  .tier-card {
+    margin-bottom: var(--ppo-spacing-sm);
+    padding: var(--ppo-spacing-sm);
+  }
+  
+  .tier-header h5 {
+    font-size: 1.2rem;
+  }
+  
+  .reward-amount {
+    font-size: 1.5rem;
+  }
+  
+  #nftPurchaseForm .btn {
+    width: 100%;
+    margin-top: var(--ppo-spacing-sm);
+  }
+  
+  .statistics-card {
+    margin-bottom: var(--ppo-spacing-sm);
+  }
+  
+  .statistics-card h4 {
+    font-size: 1.5rem;
+  }
+  
+  .table-responsive {
+    font-size: 0.85rem;
+  }
+  
+  .notification {
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 0 10px;
+  }
+  
+  .tier-card {
+    padding: 10px;
+  }
+  
+  .tier-header h5 {
+    font-size: 1rem;
+  }
+  
+  .reward-amount {
+    font-size: 1.3rem;
+  }
+  
+  .nft-investment-card .card-body {
+    padding: var(--ppo-spacing-sm);
+  }
+  
+  .nft-investment-card .card-body p {
+    font-size: 0.85rem;
+  }
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+.fade-in {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* ========================================
+   CUSTOM SCROLLBAR
+   ======================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ppo-dark-light);
+  border-radius: var(--ppo-radius);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ppo-gradient-primary);
+  border-radius: var(--ppo-radius);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ppo-gradient-secondary);
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+.text-gradient {
+  background: var(--ppo-gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-gradient-primary {
+  background: var(--ppo-gradient-primary);
+}
+
+.bg-gradient-success {
+  background: var(--ppo-gradient-secondary);
+}
+
+.bg-gradient-warning {
+  background: var(--ppo-gradient-accent);
+}
+
+.bg-gradient-danger {
+  background: linear-gradient(135deg, var(--ppo-danger), #c82333);
+}
+
+.shadow-custom {
+  box-shadow: var(--ppo-shadow-lg);
+}
+
+.border-radius-custom {
+  border-radius: var(--ppo-radius-lg);
+}
+
+/* ========================================
+   DARK MODE SUPPORT
+   ======================================== */
+
+@media (prefers-color-scheme: dark) {
+  .tier-card.silver {
+    background: linear-gradient(135deg, #4a4a4a, #6a6a6a);
+    color: white;
+  }
+  
+  .tier-card.gold {
+    background: linear-gradient(135deg, #b8860b, #daa520);
+    color: white;
+  }
+  
+  .table tbody tr:hover {
+    background-color: var(--ppo-dark-lighter);
+  }
+  
+  #nftPurchaseForm .form-control[readonly] {
+    background-color: var(--ppo-dark-lighter);
+    color: #a0aec0;
+  }
+}
+
+/* ========================================
+   PPO THEME INTEGRATION
+   ======================================== */
+
+/* Ensure compatibility with PPO theme */
+.card-ppo .tier-card {
+  margin: var(--ppo-spacing-sm);
+}
+
+.card-ppo .reward-info {
+  background: var(--ppo-dark-light);
+  border-radius: var(--ppo-radius);
+  border: 1px solid var(--ppo-dark-border);
+}
+
+.card-ppo .nft-investment-card {
+  background: var(--ppo-dark-light);
+  border: 1px solid var(--ppo-dark-border);
+}
+
+/* Form labels in PPO theme */
+.form-label.text-white {
+  color: #f2f2f2 !important;
+  font-weight: 600;
+}
+
+/* Table dark theme */
+.table-dark {
+  background-color: var(--ppo-dark-light);
+  color: #f2f2f2;
+}
+
+.table-dark thead th {
+  background: var(--ppo-gradient-dark);
+  border-color: var(--ppo-dark-border);
+}
+
+.table-dark tbody td {
+  border-color: var(--ppo-dark-border);
+}
+
+.table-dark tbody tr:hover {
+  background-color: var(--ppo-dark-lighter);
+}

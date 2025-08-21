@@ -1,0 +1,395 @@
+/* Global CSS for CoinPayot Vue App */
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  color: #ffffff;
+  background: linear-gradient(135deg, #1a0033 0%, #330066 50%, #6600cc 100%);
+  min-height: 100vh;
+}
+
+/* Utility classes */
+.padding-large {
+  padding: 80px 0;
+}
+
+.bg-dark {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.bg-dark-top {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.text-white-50 {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+/* Button styles */
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-linear {
+  background: linear-gradient(45deg, #cc00ff, #d739ff);
+  color: white;
+  border: none;
+}
+
+.btn-outline-linear {
+  background: transparent;
+  color: #cc00ff;
+  border: 2px solid #cc00ff;
+}
+
+.btn-outline-linear:hover {
+  background: #cc00ff;
+  color: white;
+}
+
+.btn-medium {
+  padding: 12px 25px;
+  font-size: 1rem;
+}
+
+.btn-large {
+  padding: 15px 30px;
+  font-size: 1.1rem;
+}
+
+.btn-rounded {
+  border-radius: 25px;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* Card styles */
+.card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.card-header {
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* Progress bar */
+.progress {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background: linear-gradient(45deg, #cc00ff, #d739ff);
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+/* Badge styles */
+.badge {
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.bg-primary {
+  background: #007bff;
+  color: white;
+}
+
+.bg-secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.bg-success {
+  background: #28a745;
+  color: white;
+}
+
+.bg-warning {
+  background: #ffc107;
+  color: black;
+}
+
+.bg-info {
+  background: #17a2b8;
+  color: white;
+}
+
+/* Form styles */
+.form-control {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 12px 15px;
+  width: 100%;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #cc00ff;
+  box-shadow: 0 0 0 0.2rem rgba(204, 0, 255, 0.25);
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.form-select {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 12px 15px;
+  width: 100%;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: #cc00ff;
+  box-shadow: 0 0 0 0.2rem rgba(204, 0, 255, 0.25);
+}
+
+/* Input group */
+.input-group {
+  display: flex;
+  gap: 10px;
+}
+
+.input-group .form-control {
+  flex: 1;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .padding-large {
+    padding: 40px 0;
+  }
+  
+  .btn-medium {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+  
+  .btn-large {
+    padding: 12px 25px;
+    font-size: 1rem;
+  }
+}
+
+/* Swiper styles */
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-pagination {
+  position: relative;
+  margin-top: 20px;
+}
+
+.swiper-pagination-bullet {
+  background: #cc00ff;
+  opacity: 0.5;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
+}
+
+/* Animation classes */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hover effects */
+.hover-lift {
+  transition: transform 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+}
+
+/* Text utilities */
+.text-primary {
+  color: #cc00ff !important;
+}
+
+.text-success {
+  color: #28a745 !important;
+}
+
+.text-warning {
+  color: #ffc107 !important;
+}
+
+.text-info {
+  color: #17a2b8 !important;
+}
+
+.text-muted {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Spacing utilities */
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.mt-4 {
+  margin-top: 1.5rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem;
+}
+
+.me-2 {
+  margin-right: 0.5rem;
+}
+
+.me-4 {
+  margin-right: 1.5rem;
+}
+
+.ms-2 {
+  margin-left: 0.5rem;
+}
+
+/* Flex utilities */
+.d-flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+/* Grid utilities */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -15px;
+}
+
+.col-md-3, .col-md-6, .col-md-7, .col-md-5, .col-12 {
+  padding: 0 15px;
+}
+
+.col-md-3 {
+  flex: 0 0 25%;
+  max-width: 25%;
+}
+
+.col-md-5 {
+  flex: 0 0 41.666667%;
+  max-width: 41.666667%;
+}
+
+.col-md-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.col-md-7 {
+  flex: 0 0 58.333333%;
+  max-width: 58.333333%;
+}
+
+.col-12 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .col-md-3, .col-md-5, .col-md-6, .col-md-7 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+

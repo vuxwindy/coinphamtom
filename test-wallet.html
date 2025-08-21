@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet Connection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .connected { background: #d4edda; color: #155724; }
+        .disconnected { background: #f8d7da; color: #721c24; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        .event-log {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Wallet Connection Test</h1>
+    
+    <div class="test-section">
+        <h3>Connection Status</h3>
+        <div id="status" class="status disconnected">Disconnected</div>
+        <div id="address"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>Test Buttons</h3>
+        <button onclick="testConnect()">Test Connect</button>
+        <button onclick="testDisconnect()">Test Disconnect</button>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+
+    <div class="test-section">
+        <h3>Event Log</h3>
+        <div id="eventLog" class="event-log"></div>
+    </div>
+
+    <script>
+        let isConnected = false;
+        let walletAddress = null;
+
+        function logEvent(message) {
+            const log = document.getElementById('eventLog');
+            const timestamp = new Date().toLocaleTimeString();
+            log.innerHTML += `[${timestamp}] ${message}\n`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function updateStatus() {
+            const status = document.getElementById('status');
+            const address = document.getElementById('address');
+            
+            if (isConnected) {
+                status.className = 'status connected';
+                status.textContent = 'Connected';
+                address.textContent = `Address: ${walletAddress}`;
+            } else {
+                status.className = 'status disconnected';
+                status.textContent = 'Disconnected';
+                address.textContent = '';
+            }
+        }
+
+        function testConnect() {
+            logEvent('Simulating wallet connection...');
+            
+            // Simulate connection
+            isConnected = true;
+            walletAddress = '0x1234567890abcdef1234567890abcdef12345678';
+            
+            // Dispatch event
+            window.dispatchEvent(new CustomEvent('wallet-connected', {
+                detail: {
+                    address: walletAddress,
+                    wallet: 'io.metamask',
+                    connection: { address: walletAddress }
+                }
+            }));
+            
+            updateStatus();
+        }
+
+        function testDisconnect() {
+            logEvent('Simulating wallet disconnection...');
+            
+            // Simulate disconnection
+            isConnected = false;
+            walletAddress = null;
+            
+            // Dispatch event
+            window.dispatchEvent(new CustomEvent('wallet-disconnected'));
+            
+            updateStatus();
+        }
+
+        function clearLog() {
+            document.getElementById('eventLog').innerHTML = '';
+        }
+
+        // Listen for wallet events
+        window.addEventListener('wallet-connected', (event) => {
+            logEvent(`Wallet connected: ${event.detail.address}`);
+            isConnected = true;
+            walletAddress = event.detail.address;
+            updateStatus();
+        });
+
+        window.addEventListener('wallet-disconnected', () => {
+            logEvent('Wallet disconnected');
+            isConnected = false;
+            walletAddress = null;
+            updateStatus();
+        });
+
+        // Initialize
+        updateStatus();
+        logEvent('Test page loaded. Ready to test wallet connection events.');
+    </script>
+</body>
+</html>
