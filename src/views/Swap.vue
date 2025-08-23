@@ -23,7 +23,7 @@
           <div class="col-lg-6 col-md-8">
             <div class="swap-card">
               <!-- Wallet Connection Status -->
-              <div v-if="!isConnected" class="wallet-notice">
+              <div v-if="!isWalletConnected" class="wallet-notice">
                 <div class="notice-content">
                   <i class="fas fa-wallet"></i>
                   <h4>Connect Your Wallet</h4>
@@ -224,7 +224,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, reactive } from 'vue'
 import { useWeb3 } from '@/composables/useWeb3.js'
 import { useFirebase } from '@/composables/useFirebase.js'
 import Header from '@/components/Header.vue'
@@ -279,32 +279,39 @@ const swapForm = reactive({
 
 // Available tokens
 const availableTokens = ref([
+  // {
+  //   symbol: 'ETH',
+  //   name: 'Ethereum',
+  //   address: '0x0000000000000000000000000000000000000000',
+  //   icon: '/token/eth.svg',
+  //   decimals: 18
+  // },
   {
-    symbol: 'ETH',
-    name: 'Ethereum',
+    symbol: 'BSC',
+    name: 'Binance Smart Chain',
     address: '0x0000000000000000000000000000000000000000',
-    icon: '/src/assets/images/eth-icon.png',
+    icon: '/token/bsc.png',
     decimals: 18
   },
   {
     symbol: 'PPO',
     name: 'PixelPayot Token',
     address: '0x1234567890123456789012345678901234567890',
-    icon: '/src/assets/images/ppo-icon.png',
+    icon: '/token/ppo.png',
     decimals: 18
   },
   {
     symbol: 'USDT',
     name: 'Tether USD',
     address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-    icon: '/src/assets/images/usdt-icon.png',
+    icon: '/token/usdt.png',
     decimals: 6
   },
   {
     symbol: 'USDC',
     name: 'USD Coin',
     address: '0xA0b86a33E6441b8C4C8C8C8C8C8C8C8C8C8C8C8',
-    icon: '/src/assets/images/usdc-icon.png',
+    icon: '/token/usdc.webp',
     decimals: 6
   }
 ])
@@ -544,7 +551,7 @@ onMounted(() => {
 }
 
 .swap-card {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(20px);
   border-radius: 20px;
   padding: 30px;

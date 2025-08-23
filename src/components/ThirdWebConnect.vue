@@ -1,9 +1,22 @@
 <template>
   <div class="thirdweb-connect" style="display: inline-block;">
-    <button @click="showModal = true" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);">
+    <button 
+      v-if="!isWalletConnected" 
+      @click="showModal = true" 
+      style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);"
+    >
       <i class="fas fa-wallet" style="font-size: 16px;"></i>
       Connect Wallet
     </button>
+    <div v-else style="color: white; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px;">
+      <i class="fas fa-wallet" style="font-size: 16px;"></i>
+      {{ walletAddressFormatted }}
+      <button 
+        @click="disconnectWalletHandler" 
+        style="background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500; margin-left: 10px;">
+        Disconnect
+      </button>
+    </div>
 
     <!-- Modal Overlay -->
     <div v-if="showModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(4px); padding: 16px;" @click="showModal = false">
@@ -27,7 +40,7 @@ background: white; border-radius: 16px; padding: 0; max-width: 450px; width: 100
             <button 
               v-for="wallet in walletList" 
               :key="wallet.id"
-              @click="connectWallet(wallet)"
+              @click="connectWalletHandler(wallet)"
               :disabled="isConnecting"
               style="width: 100%; background: white; border: 2px solid #f3f4f6; padding: 16px; border-radius: 12px; cursor: pointer; text-align: left; font-size: 14px; display: flex; align-items: center; gap: 12px; transition: all 0.3s ease; position: relative; overflow: hidden; min-height: 72px;"
               :style="{ 
@@ -56,35 +69,28 @@ background: white; border-radius: 16px; padding: 0; max-width: 450px; width: 100
             </button>
           </div>
         </div>
-        
-        <!-- Footer -->
-        <div style="padding: 16px 20px 20px 20px; border-top: 1px solid #f3f4f6; text-align: center; position: sticky; bottom: 0; background: white;">
-          <p style="margin: 0 0 16px 0; font-size: 12px; color: #6b7280; line-height: 1.4;">
-            Don't have a wallet? 
-            <a href="https://metamask.io/download/" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 500;">Get MetaMask</a>
-          </p>
-          <button @click="showModal = false" style="background: #f3f4f6; color: #374151; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s ease; width: 100%; max-width: 200px;">
-            Cancel
-          </button>
-        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
-import { createThirdwebClient } from 'thirdweb'
-import { createWallet } from 'thirdweb/wallets'
-import { thirdwebConfig } from '@/config/thirdweb.js'
+import { ref, computed } from 'vue'
+import { useWeb3 } from '@/composables/useWeb3.js'
 
 export default {
   name: 'ThirdWebConnect',
   setup() {
     const showModal = ref(false)
     const isConnecting = ref(false)
-    let client = null
-    let wallets = []
+
+    // Import state and methods from useWeb3 composable
+    const {
+      isWalletConnected,
+      walletAddress,
+      connectWallet,
+      disconnectWallet
+    } = useWeb3()
 
     const walletList = [
       { 
@@ -107,114 +113,88 @@ export default {
       }
     ]
 
-    onMounted(async () => {
-      try {
-        // Initialize ThirdWeb client with config
-        client = createThirdwebClient({
-          clientId: thirdwebConfig.clientId,
-        })
-
-        // Create wallet instances
-        wallets = walletList.map(wallet => createWallet(wallet.id))
-      } catch (error) {
-        console.error('Failed to initialize ThirdWeb:', error)
-      }
-    })
-
-    const connectWallet = async (walletConfig) => {
+    const connectWalletHandler = async (walletConfig) => {
       if (isConnecting.value) return
-      
       isConnecting.value = true
-      
+
+      // try {
+      //   // Find the corresponding wallet instance
+      //   const wallet = wallets.find(w => w.id === walletConfig.id)
+        
+      //   if (!wallet) {
+      //     throw new Error('Wallet not found')
+      //   }
+
+      //   // Connect to the wallet - this will trigger the actual Web3 popup
+      //   const result = await wallet.connect({
+      //     client,
+      //   })
+
+      //   if (result.error) {
+      //     throw new Error(result.error.message || 'Connection failed')
+      //   }
+
+      //   // Success - close modal and dispatch event
+      //   showModal.value = false
+        
+      //   window.dispatchEvent(new CustomEvent('wallet-connected', {
+      //     detail: {
+      //       address: result.data.address,
+      //       wallet: walletConfig.id,
+      //       connection: result.data
+      //     }
+      //   }))
+        
+      //   showNotification(`Connected to ${walletConfig.name}!`, 'success')
+        
+      // } catch (error) {
+      //   console.error('Wallet connection error:', error)
+        
+      //   let errorMessage = 'Connection failed'
+        
+      //   if (error.message.includes('User rejected')) {
+      //     errorMessage = 'Connection was cancelled'
+      //   } else if (error.message.includes('not installed')) {
+      //     errorMessage = `${walletConfig.name} is not installed`
+      //   } else if (error.message.includes('network')) {
+      //     errorMessage = 'Network error occurred'
+      //   }
+        
+      //   showNotification(errorMessage, 'error')
+      // } finally {
+      //   isConnecting.value = false
+      // }
+
       try {
-        // Find the corresponding wallet instance
-        const wallet = wallets.find(w => w.id === walletConfig.id)
-        
-        if (!wallet) {
-          throw new Error('Wallet not found')
-        }
-
-        // Connect to the wallet - this will trigger the actual Web3 popup
-        const result = await wallet.connect({
-          client,
-        })
-
-        if (result.error) {
-          throw new Error(result.error.message || 'Connection failed')
-        }
-
-        // Success - close modal and dispatch event
+        // Simulate wallet selection logic
+        console.log(`Connecting to wallet: ${walletConfig.name}`)
+        await connectWallet()
         showModal.value = false
-        
-        window.dispatchEvent(new CustomEvent('wallet-connected', {
-          detail: {
-            address: result.data.address,
-            wallet: walletConfig.id,
-            connection: result.data
-          }
-        }))
-        
-        showNotification(`Connected to ${walletConfig.name}!`, 'success')
-        
       } catch (error) {
         console.error('Wallet connection error:', error)
-        
-        let errorMessage = 'Connection failed'
-        
-        if (error.message.includes('User rejected')) {
-          errorMessage = 'Connection was cancelled'
-        } else if (error.message.includes('not installed')) {
-          errorMessage = `${walletConfig.name} is not installed`
-        } else if (error.message.includes('network')) {
-          errorMessage = 'Network error occurred'
-        }
-        
-        showNotification(errorMessage, 'error')
       } finally {
         isConnecting.value = false
       }
     }
 
-    const showNotification = (message, type = 'info') => {
-      const notification = document.createElement('div')
-      notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        left: 20px;
-        background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
-        color: white;
-        padding: 16px 20px;
-        border-radius: 12px;
-        z-index: 10000;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        font-size: 14px;
-        font-weight: 500;
-        animation: slideInRight 0.3s ease;
-        text-align: center;
-      `
-      notification.textContent = message
-      document.body.appendChild(notification)
-      
-      // Remove after 4 seconds
-      setTimeout(() => {
-        if (document.body.contains(notification)) {
-          notification.style.animation = 'slideOutRight 0.3s ease'
-          setTimeout(() => {
-            if (document.body.contains(notification)) {
-              document.body.removeChild(notification)
-            }
-          }, 300)
-        }
-      }, 4000)
+    const disconnectWalletHandler = () => {
+      disconnectWallet()
     }
+
+    const walletAddressFormatted = computed(() => {
+      if (!walletAddress.value) return ''
+      return `${walletAddress.value.slice(0, 6)}...${walletAddress.value.slice(-4)}`
+    })
 
     return {
       showModal,
       isConnecting,
       walletList,
-      connectWallet
+      connectWalletHandler,
+      disconnectWalletHandler,
+      isWalletConnected,
+      walletAddress,
+      walletAddressFormatted
     }
   }
 }
