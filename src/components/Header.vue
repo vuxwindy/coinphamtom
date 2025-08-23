@@ -62,7 +62,7 @@
           <!-- Wallet Section -->
           <div class="wallet-section">
             <WalletStatus />
-            <ThirdWebConnect />
+            <appkit-button :features="{ chain: false }" />
           </div>
 
           <!-- User Menu -->
@@ -162,7 +162,7 @@
           <div class="mobile-actions">
             <div class="mobile-wallet-section">
               <WalletStatus />
-              <ThirdWebConnect />
+              <appkit-button :features="{ chain: false }" />
             </div>
             
             <router-link v-if="!currentUser" to="/signup" class="mobile-btn-signin">
@@ -183,6 +183,7 @@ import { useWeb3 } from '../composables/useWeb3.js'
 import { useFirebase } from '../composables/useFirebase.js'
 import ThirdWebConnect from './ThirdWebConnect.vue'
 import WalletStatus from './WalletStatus.vue'
+import ReownWalletButton from './ReownWalletButton.vue'
 
 const router = useRouter()
 

@@ -37,6 +37,7 @@ export default defineConfig({
       'buffer',
       'process',
     ],
+    exclude: ['@vueuse/core'],
   },
   build: {
     rollupOptions: {
