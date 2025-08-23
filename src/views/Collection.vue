@@ -2,8 +2,10 @@
   <div class="collection-page">
     <Header />
     
+    <h1 class="coming-soon">Coming Soon</h1>
+
     <!-- Collection Hero Section -->
-    <section class="collection-hero padding-large">
+    <section class="collection-hero padding-large hidden">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -17,7 +19,7 @@
     </section>
 
     <!-- Collection Stats -->
-    <section class="collection-stats padding-large">
+    <section class="collection-stats padding-large hidden">
       <div class="container">
         <div class="row">
           <div class="col-lg-3 col-md-6 mb-4">
@@ -69,7 +71,7 @@
     </section>
 
     <!-- Collection Filters -->
-    <section class="collection-filters padding-large bg-dark">
+    <section class="collection-filters padding-large bg-dark hidden">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -116,7 +118,7 @@
     </section>
 
     <!-- Collection Grid/List -->
-    <section class="collection-content padding-large">
+    <section class="collection-content padding-large hidden">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -424,6 +426,22 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.coming-soon {
+  font-size: 3.5rem;
+  font-weight: 900;
+  background: linear-gradient(45deg, #cc00ff, #d739ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 200px 0;
+}
+
+.hidden {
+  display: none;
+}
+
 .collection-page {
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
   min-height: 100vh;

@@ -165,10 +165,10 @@
               <appkit-button :features="{ chain: false }" />
             </div>
             
-            <router-link v-if="!currentUser" to="/signup" class="mobile-btn-signin">
+            <!-- <router-link v-if="!currentUser" to="/signup" class="mobile-btn-signin">
               <i class="fas fa-sign-in-alt"></i>
               <span>Sign In</span>
-            </router-link>
+            </router-link> -->
           </div>
         </div>
       </div>

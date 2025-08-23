@@ -1052,6 +1052,13 @@ watch(address, async (newAddress, oldAddress) => {
   background: rgba(0, 0, 0, 0.3);
 }
 
+@media screen and (max-width: 768px) {
+  .section-title {
+    font-size: 2rem;
+    line-height: normal;
+  }
+}
+
 .transactions-list {
   max-width: 800px;
   margin: 0 auto;
