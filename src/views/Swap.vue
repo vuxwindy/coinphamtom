@@ -20,7 +20,7 @@
 
     <!-- Swap Interface -->
     <section class="swap-interface padding-large">
-      <div class="container">
+      <div class="container swap-container">
         <div class="row justify-content-center">
           <div class="col-lg-6 col-md-8">
             <div class="swap-card">
@@ -84,11 +84,11 @@
                 </div>
 
                 <!-- Swap Direction Button -->
-                <div class="swap-direction">
+                <!-- <div class="swap-direction">
                   <button class="direction-btn" @click="swapTokens">
                     <i class="fas fa-exchange-alt"></i>
                   </button>
-                </div>
+                </div> -->
 
                 <!-- To Token -->
                 <div class="token-input">
@@ -601,6 +601,10 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.swap-container {
+  max-width: 600px;
+}
+
 .swap-page {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
@@ -624,7 +628,7 @@ onMounted(() => {
 }
 
 .swap-card {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(20px);
   border-radius: 20px;
   padding: 30px;
@@ -683,6 +687,7 @@ onMounted(() => {
   color: white;
   font-size: 18px;
   font-weight: 600;
+  margin: 0;
 }
 
 .form-control::placeholder {
@@ -697,7 +702,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 15px 20px;
+  padding: 0 20px;
   background: rgba(255, 255, 255, 0.1);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -867,7 +872,7 @@ onMounted(() => {
   width: 90%;
   max-width: 500px;
   max-height: 80vh;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .modal-header {

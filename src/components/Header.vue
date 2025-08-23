@@ -208,12 +208,12 @@ const {
 
 // Menu items configuration
 const menuItems = ref([
-  {
-    id: 'home',
-    name: 'Home',
-    url: '/',
-    icon: 'fas fa-home'
-  },
+  // {
+  //   id: 'home',
+  //   name: 'Home',
+  //   url: '/',
+  //   icon: 'fas fa-home'
+  // },
   {
     id: 'game',
     name: 'Game',
@@ -432,7 +432,7 @@ onUnmounted(() => {
 }
 
 .nav-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 20px;
   height: 100%;
@@ -829,7 +829,7 @@ onUnmounted(() => {
 }
 
 /* Responsive Design */
-@media (max-width: 991px) {
+@media (max-width: 1280px) {
   .desktop-menu {
     display: none !important;
   }
