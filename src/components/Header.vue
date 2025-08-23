@@ -94,10 +94,10 @@
           </div>
 
           <!-- Sign In Button -->
-          <router-link v-else to="/signup" class="btn-signin">
+          <!-- <router-link v-else to="/signup" class="btn-signin">
             <i class="fas fa-sign-in-alt"></i>
             <span>Sign In</span>
-          </router-link>
+          </router-link> -->
         </div>
 
         <!-- Mobile Menu Toggle -->
@@ -420,7 +420,7 @@ onUnmounted(() => {
   background: rgba(0, 0, 0, 0.95);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  z-index: 1000;
+  z-index: 100;
   height: 70px;
   display: flex;
   align-items: center;

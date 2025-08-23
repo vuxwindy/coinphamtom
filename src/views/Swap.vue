@@ -59,10 +59,21 @@
                       placeholder="0.0"
                       @input="calculateSwap"
                     />
-                    <div
+                    <!-- <div
                       class="token-selector"
                       @click="showFromTokenModal = true"
                     >
+                      <img
+                        :src="selectedFromToken.icon"
+                        :alt="selectedFromToken.symbol"
+                        class="token-icon"
+                      />
+                      <span class="token-symbol">{{
+                        selectedFromToken.symbol
+                      }}</span>
+                      <i class="fas fa-chevron-down"></i>
+                    </div> -->
+                    <div class="token-selector">
                       <img
                         :src="selectedFromToken.icon"
                         :alt="selectedFromToken.symbol"
@@ -76,7 +87,7 @@
                   </div>
                   <div class="balance-info">
                     <span
-                      >Balance: {{ fromTokenBalance }}
+                      >Balance: {{ floorFragment(fromTokenBalance, 5) }}
                       {{ selectedFromToken.symbol }}</span
                     >
                     <button class="btn-link" @click="setMaxAmount">Max</button>
@@ -101,10 +112,21 @@
                       placeholder="0.0"
                       readonly
                     />
-                    <div
+                    <!-- <div
                       class="token-selector"
                       @click="showToTokenModal = true"
                     >
+                      <img
+                        :src="selectedToToken.icon"
+                        :alt="selectedToToken.symbol"
+                        class="token-icon"
+                      />
+                      <span class="token-symbol">{{
+                        selectedToToken.symbol
+                      }}</span>
+                      <i class="fas fa-chevron-down"></i>
+                    </div> -->
+                    <div class="token-selector">
                       <img
                         :src="selectedToToken.icon"
                         :alt="selectedToToken.symbol"
@@ -118,14 +140,14 @@
                   </div>
                   <div class="balance-info">
                     <span
-                      >Balance: {{ toTokenBalance }}
+                      >Balance: {{ floorFragment(toTokenBalance, 5) }}
                       {{ selectedToToken.symbol }}</span
                     >
                   </div>
                 </div>
 
                 <!-- Swap Details -->
-                <div v-if="swapForm.fromAmount > 0" class="swap-details">
+                <!-- <div v-if="swapForm.fromAmount > 0" class="swap-details">
                   <div class="detail-row">
                     <span>Rate</span>
                     <span
@@ -141,11 +163,11 @@
                     <span>Network Fee</span>
                     <span>{{ networkFee }} ETH</span>
                   </div>
-                </div>
+                </div> -->
 
                 <!-- Swap Button -->
                 <button
-                  class="btn btn-linear btn-large w-100"
+                  class="btn btn-swap btn-linear btn-large w-100"
                   @click="executeSwap"
                   :disabled="!canSwap || isLoading"
                 >
@@ -155,14 +177,14 @@
                 </button>
 
                 <!-- Settings -->
-                <div class="swap-settings">
+                <!-- <div class="swap-settings">
                   <button
                     class="btn-link"
                     @click="showSettings = !showSettings"
                   >
                     <i class="fas fa-cog me-2"></i>Settings
                   </button>
-                </div>
+                </div> -->
 
                 <!-- Settings Panel -->
                 <div v-if="showSettings" class="settings-panel">
@@ -278,19 +300,46 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, reactive } from "vue";
+import { ref, computed, onMounted, watch, reactive } from "vue";
+import { BrowserProvider, ethers, JsonRpcSigner } from "ethers";
+import { ppoTokenAbi } from "@/abis/ppoToken.js";
+import { ppoSwapAbi } from "@/abis/ppoSwap.js";
 import { useWeb3 } from "@/composables/useWeb3.js";
 import { useFirebase } from "@/composables/useFirebase.js";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import { useAppKit } from "@reown/appkit/vue";
-import { useAccount, useDisconnect } from "@wagmi/vue";
+import { useAccount, useDisconnect, useChainId } from "@wagmi/vue";
+import { erc20Abi } from "viem";
+import {
+  readContract,
+  getBalance,
+  getConnectorClient,
+  writeContract,
+} from "@wagmi/core";
+import { wagmiConfig } from "../config/wagmi";
+import { useToast } from "vue-toastification";
+import { floorFragment } from "@/utils/number";
+
+// PPO Token và PPO Swap contract addresses
+const PpoTokenAddress = "0x1C075C6053b1FC1Ee7EED91e4ebe20428bEf4E69";
+const ppoSwapAddress = "0x80B5AcE6283fAf55E8fE4FE9B15d1b2f41aFb95D";
 
 // Composables
 const { currentUser } = useFirebase();
 const { address } = useAccount();
+const chainId = useChainId();
 const { disconnect } = useDisconnect();
 const { open } = useAppKit();
+const toast = useToast();
+
+// State
+const provider = ref(null);
+const signer = ref(null);
+const ppoTokenContract = ref(null);
+const ppoSwapContract = ref(null);
+const nativeBalance = ref(0);
+const ppoBalance = ref(0);
 
 const isWalletConnected = computed(() => !!address.value);
 
@@ -338,16 +387,9 @@ const swapForm = reactive({
 
 // Available tokens
 const availableTokens = ref([
-  // {
-  //   symbol: 'ETH',
-  //   name: 'Ethereum',
-  //   address: '0x0000000000000000000000000000000000000000',
-  //   icon: '/token/eth.svg',
-  //   decimals: 18
-  // },
   {
-    symbol: "BSC",
-    name: "Binance Smart Chain",
+    symbol: "BNB",
+    name: "Binance",
     address: "0x0000000000000000000000000000000000000000",
     icon: "/token/bsc.png",
     decimals: 18,
@@ -355,7 +397,7 @@ const availableTokens = ref([
   {
     symbol: "PPO",
     name: "PixelPayot Token",
-    address: "0x1234567890123456789012345678901234567890",
+    address: PpoTokenAddress,
     icon: "/token/ppo.png",
     decimals: 18,
   },
@@ -448,23 +490,28 @@ const canSwap = computed(() => {
   );
 });
 
-// Methods
-const connectWallet = async () => {
-  try {
-    if (isWalletConnected.value) {
-      await web3Connect();
-    } else {
-      await web3Connect();
-    }
-  } catch (error) {
-    console.error("Failed to connect wallet:", error);
-  }
-};
-
 const calculateSwap = () => {
   if (swapForm.fromAmount > 0) {
     const rate = swapRate.value;
-    swapForm.toAmount = (parseFloat(swapForm.fromAmount) * rate).toFixed(6);
+
+    const parsedAmount = ethers.parseUnits(
+      swapForm.fromAmount?.toString(),
+      selectedFromToken.value.decimals
+    );
+    readContract(wagmiConfig, {
+      chainId: chainId.value,
+      abi: ppoSwapAbi,
+      address: ppoSwapAddress,
+      functionName: "getEstimateAmountsOut",
+      args: [parsedAmount],
+    }).then((data) => {
+      console.log("getEstimateAmountsOut:", data);
+      const formattedAmount = ethers.formatUnits(
+        data,
+        selectedToToken.value.decimals
+      );
+      swapForm.toAmount = (+formattedAmount).toFixed(5);
+    });
   } else {
     swapForm.toAmount = "";
   }
@@ -488,8 +535,26 @@ const executeSwap = async () => {
   try {
     isLoading.value = true;
 
-    // Mock swap execution - in real app, this would call DEX contract
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const balance = +tokenBalances.value[selectedFromToken.value.address] || 0;
+    if (balance < +swapForm.fromAmount) {
+      toast.error("Insufficient balance");
+      return;
+    }
+
+    const parsedAmount = ethers.parseUnits(
+      swapForm.fromAmount?.toString(),
+      selectedFromToken.value.decimals
+    );
+    await writeContract(wagmiConfig, {
+      chainId: chainId.value,
+      abi: ppoSwapAbi,
+      address: ppoSwapAddress,
+      functionName: "swap",
+      args: [],
+      value: parsedAmount,
+    });
+
+    toast.success("Swap successfully!");
 
     // Add to recent transactions
     recentTransactions.value.unshift({
@@ -510,6 +575,7 @@ const executeSwap = async () => {
     await loadTokenBalances();
   } catch (error) {
     console.error("Swap failed:", error);
+    toast.error("Swap failed!");
   } finally {
     isLoading.value = false;
   }
@@ -542,15 +608,41 @@ const getTokenBalance = (address) => {
 };
 
 const loadTokenBalances = async () => {
-  if (!isWalletConnected.value) return;
+  if (!address.value) return;
 
   try {
+    console.log("chainId.value:", chainId.value);
+
+    ethers;
+
+    // Lấy số dư của native token
+    const nativeBalance = await getBalance(wagmiConfig, {
+      chainId: chainId.value,
+      address: address.value,
+      units: "ether",
+    });
+
+    // const client = await getConnectorClient(wagmiConfig, { chainId });
+
+    console.log("nativeBalance:", nativeBalance);
+    const ppoBalance = await readContract(wagmiConfig, {
+      chainId: chainId.value,
+      abi: ppoTokenAbi,
+      address: PpoTokenAddress,
+      functionName: "balanceOf",
+      args: [address.value],
+    });
+
+    console.log("Balance:", ppoBalance);
+
+    const formattedPpoBalance = ethers.formatUnits(ppoBalance, 18);
+
     // Mock balances - in real app, this would fetch from blockchain
     tokenBalances.value = {
-      "0x0000000000000000000000000000000000000000": 2.5, // ETH
-      "0x1234567890123456789012345678901234567890": 5000, // PPO
-      "0xdAC17F958D2ee523a2206206994597C13D831ec7": 100, // USDT
-      "0xA0b86a33E6441b8C4C8C8C8C8C8C8C8C8C8C8C8": 50, // USDC
+      "0x0000000000000000000000000000000000000000": nativeBalance?.formatted, // BNB
+      [PpoTokenAddress]: formattedPpoBalance, // PPO
+      // "0xdAC17F958D2ee523a2206206994597C13D831ec7": 100, // USDT
+      // "0xA0b86a33E6441b8C4C8C8C8C8C8C8C8C8C8C8C8": 50, // USDC
     };
 
     fromTokenBalance.value = getTokenBalance(selectedFromToken.value.address);
@@ -563,7 +655,7 @@ const loadTokenBalances = async () => {
 const getSwapButtonText = () => {
   if (isLoading.value) return "Swapping...";
   if (!isWalletConnected.value) return "Connect Wallet";
-  if (!swapForm.fromAmount) return "Enter an amount";
+  if (!swapForm.fromAmount) return "Swap";
   if (parseFloat(swapForm.fromAmount) > fromTokenBalance.value)
     return "Insufficient Balance";
   if (selectedFromToken.value.address === selectedToToken.value.address)
@@ -595,8 +687,16 @@ const getStatusIcon = (status) => {
 };
 
 // Lifecycle
-onMounted(() => {
-  loadTokenBalances();
+onMounted(async () => {
+  await loadTokenBalances();
+});
+
+// Watch for wallet address changes
+watch(address, async (newAddress, oldAddress) => {
+  console.log(`Address changed from ${oldAddress} to ${newAddress}`);
+  if (newAddress !== oldAddress) {
+    await loadTokenBalances();
+  }
 });
 </script>
 
@@ -782,6 +882,11 @@ onMounted(() => {
 
 .detail-row:last-child {
   margin-bottom: 0;
+}
+
+.btn-swap {
+  display: block;
+  margin: auto;
 }
 
 .btn-linear {

@@ -1,9 +1,11 @@
 <template>
   <div class="marketplace-page">
     <Header />
+
+    <h1 class="coming-soon">Coming Soon</h1>
     
     <!-- Marketplace Hero Section -->
-    <section class="marketplace-hero padding-large">
+    <section class="marketplace-hero padding-large hidden">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -17,7 +19,7 @@
     </section>
 
     <!-- Filters Section -->
-    <section class="filters-section padding-large bg-dark">
+    <section class="filters-section padding-large bg-dark hidden">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -62,7 +64,7 @@
     </section>
 
     <!-- NFT Grid Section -->
-    <section class="nft-grid-section padding-large">
+    <section class="nft-grid-section padding-large hidden">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -100,7 +102,7 @@
     </section>
 
     <!-- Pagination -->
-    <section class="pagination-section padding-large">
+    <section class="pagination-section padding-large hidden">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -356,6 +358,22 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.coming-soon {
+  font-size: 3.5rem;
+  font-weight: 900;
+  background: linear-gradient(45deg, #cc00ff, #d739ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 200px 0;
+}
+
+.hidden {
+  display: none;
+}
+
 .marketplace-page {
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
   min-height: 100vh;

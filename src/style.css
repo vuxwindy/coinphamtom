@@ -243,7 +243,7 @@ ul li.active a {
 
 ul li:last-child,
 ol li:last-child {
-  margin-bottom: 0;
+  /* margin-bottom: 0; */
 }
 
 dl {

@@ -1,17 +1,20 @@
 <template>
   <div class="game-page">
     <Header />
-    
+
+    <h1 class="coming-soon">Coming Soon</h1>
+
     <!-- Game Hero Section -->
-    <section class="game-hero padding-large">
+    <section class="game-hero padding-large hidden">
       <div class="container">
         <div class="row align-items-center">
           <div class="col-md-6">
             <div class="game-content">
               <h1 class="game-title">Archery Challenge</h1>
               <p class="game-description">
-                Test your archery skills in this exciting game! Hit targets to earn $PPO tokens and climb the leaderboard.
-                The more accurate your shots, the higher your rewards!
+                Test your archery skills in this exciting game! Hit targets to
+                earn $PPO tokens and climb the leaderboard. The more accurate
+                your shots, the higher your rewards!
               </p>
               <div class="game-stats">
                 <div class="stat-item">
@@ -31,7 +34,10 @@
                 <button class="btn btn-linear btn-large" @click="openGameFile">
                   <i class="fas fa-play me-2"></i>Start Game
                 </button>
-                <button class="btn btn-outline-linear btn-large" @click="showRules">
+                <button
+                  class="btn btn-outline-linear btn-large"
+                  @click="showRules"
+                >
                   <i class="fas fa-info-circle me-2"></i>How to Play
                 </button>
               </div>
@@ -53,7 +59,7 @@
     </section>
 
     <!-- Game Rules Section -->
-    <section class="game-rules padding-large bg-dark">
+    <section class="game-rules padding-large bg-dark hidden">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -94,26 +100,35 @@
     </section>
 
     <!-- Daily Missions Section -->
-    <section class="daily-missions padding-large">
+    <section class="daily-missions padding-large hidden">
       <div class="container">
         <div class="row">
           <div class="col-12">
             <h2 class="section-title text-center">Daily Missions</h2>
             <div class="missions-grid">
-              <div class="mission-item" v-for="mission in dailyMissions" :key="mission.id">
+              <div
+                class="mission-item"
+                v-for="mission in dailyMissions"
+                :key="mission.id"
+              >
                 <div class="mission-header">
                   <h4>{{ mission.title }}</h4>
                   <span class="mission-reward">{{ mission.reward }} $PPO</span>
                 </div>
                 <div class="mission-progress">
                   <div class="progress">
-                    <div class="progress-bar" :style="{ width: mission.progress + '%' }"></div>
+                    <div
+                      class="progress-bar"
+                      :style="{ width: mission.progress + '%' }"
+                    ></div>
                   </div>
-                  <span class="progress-text">{{ mission.current }}/{{ mission.target }}</span>
+                  <span class="progress-text"
+                    >{{ mission.current }}/{{ mission.target }}</span
+                  >
                 </div>
                 <div class="mission-status">
                   <span :class="mission.completed ? 'completed' : 'incomplete'">
-                    {{ mission.completed ? 'Completed' : 'In Progress' }}
+                    {{ mission.completed ? "Completed" : "In Progress" }}
                   </span>
                 </div>
               </div>
@@ -124,19 +139,29 @@
     </section>
 
     <!-- Leaderboard Preview -->
-    <section class="leaderboard-preview padding-large bg-dark">
+    <section class="leaderboard-preview padding-large bg-dark hidden">
       <div class="container">
         <div class="row">
           <div class="col-12">
             <div class="section-header text-center">
               <h2 class="section-title">Top Players</h2>
-              <router-link to="/leaderboard" class="btn btn-linear btn-medium">View Full Leaderboard</router-link>
+              <router-link to="/leaderboard" class="btn btn-linear btn-medium"
+                >View Full Leaderboard</router-link
+              >
             </div>
             <div class="leaderboard-table">
-              <div class="leaderboard-item" v-for="(player, index) in topPlayers" :key="player.id">
+              <div
+                class="leaderboard-item"
+                v-for="(player, index) in topPlayers"
+                :key="player.id"
+              >
                 <div class="rank">{{ index + 1 }}</div>
                 <div class="player-info">
-                  <img :src="player.avatar" :alt="player.name" class="player-avatar">
+                  <img
+                    :src="player.avatar"
+                    :alt="player.name"
+                    class="player-avatar"
+                  />
                   <span class="player-name">{{ player.name }}</span>
                 </div>
                 <div class="player-score">{{ player.score }}</div>
@@ -153,152 +178,168 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import Header from '../components/Header.vue'
-import Footer from '../components/Footer.vue'
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import Header from "../components/Header.vue";
+import Footer from "../components/Footer.vue";
 
-const router = useRouter()
-const gameCanvas = ref(null)
-const gameStarted = ref(false)
+const router = useRouter();
+const gameCanvas = ref(null);
+const gameStarted = ref(false);
 
 // Daily Missions Data
 const dailyMissions = ref([
   {
     id: 1,
-    title: 'Hit 10 Targets',
+    title: "Hit 10 Targets",
     reward: 5,
     current: 0,
     target: 10,
     progress: 0,
-    completed: false
+    completed: false,
   },
   {
     id: 2,
-    title: 'Achieve 80% Accuracy',
+    title: "Achieve 80% Accuracy",
     reward: 10,
     current: 0,
     target: 80,
     progress: 0,
-    completed: false
+    completed: false,
   },
   {
     id: 3,
-    title: 'Score 1000 Points',
+    title: "Score 1000 Points",
     reward: 15,
     current: 0,
     target: 1000,
     progress: 0,
-    completed: false
+    completed: false,
   },
   {
     id: 4,
-    title: 'Play 5 Games',
+    title: "Play 5 Games",
     reward: 8,
     current: 0,
     target: 5,
     progress: 0,
-    completed: false
-  }
-])
+    completed: false,
+  },
+]);
 
 // Top Players Data
 const topPlayers = ref([
   {
     id: 1,
-    name: 'Loura Chin',
-    avatar: '/src/assets/images/clients-item-lg1.jpg',
+    name: "Loura Chin",
+    avatar: "/src/assets/images/clients-item-lg1.jpg",
     score: 2500,
-    reward: 150
+    reward: 150,
   },
   {
     id: 2,
-    name: 'Kelvin Glan',
-    avatar: '/src/assets/images/clients-item-lg2.jpg',
+    name: "Kelvin Glan",
+    avatar: "/src/assets/images/clients-item-lg2.jpg",
     score: 2200,
-    reward: 120
+    reward: 120,
   },
   {
     id: 3,
-    name: 'Glam Lee',
-    avatar: '/src/assets/images/clients-item-lg3.jpg',
+    name: "Glam Lee",
+    avatar: "/src/assets/images/clients-item-lg3.jpg",
     score: 2000,
-    reward: 100
+    reward: 100,
   },
   {
     id: 4,
-    name: 'Alameda',
-    avatar: '/src/assets/images/clients-item-lg4.jpg',
+    name: "Alameda",
+    avatar: "/src/assets/images/clients-item-lg4.jpg",
     score: 1800,
-    reward: 80
+    reward: 80,
   },
   {
     id: 5,
-    name: 'Mutin Cap',
-    avatar: '/src/assets/images/clients-item2.jpg',
+    name: "Mutin Cap",
+    avatar: "/src/assets/images/clients-item2.jpg",
     score: 1600,
-    reward: 60
-  }
-])
+    reward: 60,
+  },
+]);
 
 const startGame = () => {
-  gameStarted.value = true
+  gameStarted.value = true;
   // Game logic would go here
-  console.log('Game started!')
-}
+  console.log("Game started!");
+};
 
 const openGameFile = () => {
   // Navigate to the classic archery game using Vue Router
-  router.push('/arrow-game')
-}
+  router.push("/arrow-game");
+};
 
 const showRules = () => {
   // Scroll to rules section
-  document.querySelector('.game-rules').scrollIntoView({ behavior: 'smooth' })
-}
+  document.querySelector(".game-rules").scrollIntoView({ behavior: "smooth" });
+};
 
 onMounted(() => {
   // Initialize game canvas
-  const canvas = gameCanvas.value
+  const canvas = gameCanvas.value;
   if (canvas) {
-    const ctx = canvas.getContext('2d')
-    canvas.width = 400
-    canvas.height = 300
-    
+    const ctx = canvas.getContext("2d");
+    canvas.width = 400;
+    canvas.height = 300;
+
     // Draw a simple target
-    ctx.fillStyle = '#333'
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-    
+    ctx.fillStyle = "#333";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
     // Draw target circles
-    ctx.beginPath()
-    ctx.arc(200, 150, 80, 0, 2 * Math.PI)
-    ctx.fillStyle = '#fff'
-    ctx.fill()
-    
-    ctx.beginPath()
-    ctx.arc(200, 150, 60, 0, 2 * Math.PI)
-    ctx.fillStyle = '#ff6b6b'
-    ctx.fill()
-    
-    ctx.beginPath()
-    ctx.arc(200, 150, 40, 0, 2 * Math.PI)
-    ctx.fillStyle = '#4ecdc4'
-    ctx.fill()
-    
-    ctx.beginPath()
-    ctx.arc(200, 150, 20, 0, 2 * Math.PI)
-    ctx.fillStyle = '#45b7d1'
-    ctx.fill()
-    
-    ctx.beginPath()
-    ctx.arc(200, 150, 10, 0, 2 * Math.PI)
-    ctx.fillStyle = '#96ceb4'
-    ctx.fill()
+    ctx.beginPath();
+    ctx.arc(200, 150, 80, 0, 2 * Math.PI);
+    ctx.fillStyle = "#fff";
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(200, 150, 60, 0, 2 * Math.PI);
+    ctx.fillStyle = "#ff6b6b";
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(200, 150, 40, 0, 2 * Math.PI);
+    ctx.fillStyle = "#4ecdc4";
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(200, 150, 20, 0, 2 * Math.PI);
+    ctx.fillStyle = "#45b7d1";
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(200, 150, 10, 0, 2 * Math.PI);
+    ctx.fillStyle = "#96ceb4";
+    ctx.fill();
   }
-})
+});
 </script>
 
 <style scoped>
+.coming-soon {
+  font-size: 3.5rem;
+  font-weight: 900;
+  background: linear-gradient(45deg, #cc00ff, #d739ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 200px 0;
+}
+
+.hidden {
+  display: none;
+}
+
 .game-page {
   background: linear-gradient(135deg, #1a0033 0%, #330066 50%, #6600cc 100%);
   min-height: 100vh;
@@ -571,30 +612,30 @@ onMounted(() => {
   .game-title {
     font-size: 2.5rem;
   }
-  
+
   .game-stats {
     flex-direction: column;
     gap: 15px;
   }
-  
+
   .game-controls {
     flex-direction: column;
   }
-  
+
   .rules-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .missions-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .leaderboard-item {
     flex-direction: column;
     text-align: center;
     gap: 15px;
   }
-  
+
   .player-info {
     flex-direction: column;
   }
