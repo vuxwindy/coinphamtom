@@ -38,7 +38,6 @@
               <div v-if="!isWalletConnected" class="wallet-notice">
                 <div class="notice-content">
                   <i class="fas fa-wallet"></i>
-                  <h4>Connect Your Wallet</h4>
                   <p>Please connect your wallet to start swapping tokens</p>
                   <div class="connect-btn">
                     <ReownWalletButton />
@@ -743,7 +742,7 @@ watch(address, async (newAddress, oldAddress) => {
 
 .wallet-notice {
   text-align: center;
-  padding: 40px 20px;
+  padding: 40px 0;
   color: white;
 }
 

@@ -131,7 +131,7 @@
     </section>
 
     <!-- My Investments -->
-    <section class="my-investments padding-large">
+    <!-- <section class="my-investments padding-large">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -190,10 +190,10 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- Yield Farming -->
-    <section class="yield-farming padding-large bg-dark">
+    <!-- <section class="yield-farming padding-large bg-dark">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -239,10 +239,10 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- Investment History -->
-    <section class="investment-history padding-large">
+    <!-- <section class="investment-history padding-large">
       <div class="container">
       <div class="row">
         <div class="col-12">
@@ -278,7 +278,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- Staking Modal -->
     <div v-if="showStakeModal" class="modal-overlay" @click="closeStakeModal">
@@ -653,6 +653,10 @@ onMounted(() => {
   color: rgba(255, 255, 255, 0.8);
 }
 
+.investment-overview {
+  padding: 0 0 60px;
+}
+
 .stat-card {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
@@ -696,6 +700,11 @@ onMounted(() => {
 
 .staking-pools {
   background: rgba(0, 0, 0, 0.3);
+}
+
+.staking-pools .section-title {
+  color: white;
+  padding: 0 0 40px;
 }
 
 .pools-grid {

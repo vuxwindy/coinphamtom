@@ -2,7 +2,7 @@
   <div class="collection-page">
     <Header />
     
-    <h1 class="coming-soon">Coming Soon</h1>
+    <p class="coming-soon">Coming Soon</p>
 
     <!-- Collection Hero Section -->
     <section class="collection-hero padding-large hidden">
@@ -433,7 +433,6 @@ onMounted(() => {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 20px;
   text-align: center;
   padding: 200px 0;
 }

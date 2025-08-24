@@ -1,11 +1,15 @@
 <template>
-  <div class="game-page">
+  <div class="coming-soon-wrapper">
+    <Header />
+    <p class="coming-soon">Coming Soon</p>
+    <Footer />
+  </div>
+
+  <div class="game-page hidden">
     <Header />
 
-    <h1 class="coming-soon">Coming Soon</h1>
-
     <!-- Game Hero Section -->
-    <section class="game-hero padding-large hidden">
+    <!-- <section class="game-hero padding-large">
       <div class="container">
         <div class="row align-items-center">
           <div class="col-md-6">
@@ -56,10 +60,10 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- Game Rules Section -->
-    <section class="game-rules padding-large bg-dark hidden">
+    <!-- <section class="game-rules padding-large bg-dark">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -97,10 +101,10 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- Daily Missions Section -->
-    <section class="daily-missions padding-large hidden">
+    <!-- <section class="daily-missions padding-large">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -136,10 +140,10 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- Leaderboard Preview -->
-    <section class="leaderboard-preview padding-large bg-dark hidden">
+    <!-- <section class="leaderboard-preview padding-large bg-dark">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -171,7 +175,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <Footer />
   </div>
@@ -324,6 +328,10 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.coming-soon-wrapper {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+}
+
 .coming-soon {
   font-size: 3.5rem;
   font-weight: 900;
@@ -331,7 +339,6 @@ onMounted(() => {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 20px;
   text-align: center;
   padding: 200px 0;
 }
