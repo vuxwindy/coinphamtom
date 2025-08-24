@@ -315,6 +315,7 @@ import {
   getBalance,
   getConnectorClient,
   writeContract,
+  waitForTransactionReceipt,
 } from "@wagmi/core";
 import { wagmiConfig } from "../config/wagmi";
 import { useToast } from "vue-toastification";
@@ -545,13 +546,23 @@ const executeSwap = async () => {
       swapForm.fromAmount?.toString(),
       selectedFromToken.value.decimals
     );
-    await writeContract(wagmiConfig, {
+    const txHash = await writeContract(wagmiConfig, {
       chainId: chainId.value,
       abi: ppoSwapAbi,
       address: ppoSwapAddress,
       functionName: "swap",
       args: [],
       value: parsedAmount,
+    });
+    toast.info("Transaction sent. Waiting for confirmation...");
+
+    // Reset form
+    swapForm.fromAmount = "";
+    swapForm.toAmount = "";
+
+    await waitForTransactionReceipt(wagmiConfig, {
+      chainId: chainId.value,
+      hash: txHash,
     });
 
     toast.success("Swap successfully!");
@@ -566,10 +577,6 @@ const executeSwap = async () => {
       timestamp: Date.now(),
       status: "completed",
     });
-
-    // Reset form
-    swapForm.fromAmount = "";
-    swapForm.toAmount = "";
 
     // Update balances
     await loadTokenBalances();
