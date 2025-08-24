@@ -321,10 +321,15 @@ import { wagmiConfig } from "../config/wagmi";
 import { useToast } from "vue-toastification";
 import { floorFragment } from "@/utils/number";
 import ReownWalletButton from "../components/ReownWalletButton.vue";
+import { bsc, bscTestnet } from "viem/chains";
 
 // PPO Token và PPO Swap contract addresses
-const PpoTokenAddress = "0x1C075C6053b1FC1Ee7EED91e4ebe20428bEf4E69";
-const ppoSwapAddress = "0x80B5AcE6283fAf55E8fE4FE9B15d1b2f41aFb95D";
+const ppoSwapAddress = computed(() => {
+  if (bsc.id === chainId.value) {
+    return "0x8dCa51f217969A7f9ea1FA5e99d5a66152063188";
+  }
+  return "0x80B5AcE6283fAf55E8fE4FE9B15d1b2f41aFb95D";
+});
 
 // Composables
 const { currentUser } = useFirebase();
@@ -386,9 +391,10 @@ const swapForm = reactive({
   toAmount: "",
 });
 
-// Available tokens
-const availableTokens = ref([
+// Total tokens
+const totalTokens = ref([
   {
+    chainId: bscTestnet.id,
     symbol: "BNB",
     name: "Binance",
     address: "0x0000000000000000000000000000000000000000",
@@ -396,13 +402,31 @@ const availableTokens = ref([
     decimals: 18,
   },
   {
+    chainId: bscTestnet.id,
     symbol: "PPO",
     name: "PixelPayot Token",
-    address: PpoTokenAddress,
+    address: "0x1C075C6053b1FC1Ee7EED91e4ebe20428bEf4E69",
     icon: "/token/ppo.png",
     decimals: 18,
   },
   {
+    chainId: bsc.id,
+    symbol: "BNB",
+    name: "Binance",
+    address: "0x0000000000000000000000000000000000000000",
+    icon: "/token/bsc.png",
+    decimals: 18,
+  },
+  {
+    chainId: bsc.id,
+    symbol: "PPO",
+    name: "PixelPayot Token",
+    address: "0xCdA7eBb5005aaC33B6F4f32c17647698b020eFC9",
+    icon: "/token/ppo.png",
+    decimals: 18,
+  },
+  {
+    chainId: bscTestnet.id,
     symbol: "USDT",
     name: "Tether USD",
     address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
@@ -410,6 +434,7 @@ const availableTokens = ref([
     decimals: 6,
   },
   {
+    chainId: bscTestnet.id,
     symbol: "USDC",
     name: "USD Coin",
     address: "0xA0b86a33E6441b8C4C8C8C8C8C8C8C8C8C8C8C8",
@@ -418,9 +443,23 @@ const availableTokens = ref([
   },
 ]);
 
+// Available tokens
+const availableTokens = computed(() =>
+  totalTokens.value.filter((token) => token.chainId === chainId.value)
+);
+
 // Selected tokens
 const selectedFromToken = ref(availableTokens.value[0]);
 const selectedToToken = ref(availableTokens.value[1]);
+watch(availableTokens, () => {
+  if (chainId.value === bscTestnet.id) {
+    selectedFromToken.value = availableTokens.value[0];
+    selectedToToken.value = availableTokens.value[1];
+  } else if (chainId.value === bsc.id) {
+    selectedFromToken.value = availableTokens.value[0];
+    selectedToToken.value = availableTokens.value[1];
+  }
+});
 
 // Balances
 const tokenBalances = ref({});
@@ -499,10 +538,12 @@ const calculateSwap = () => {
       swapForm.fromAmount?.toString(),
       selectedFromToken.value.decimals
     );
+    console.log("Parsed Amount:", parsedAmount);
+    console.log("ppoSwapAddress.value:", ppoSwapAddress.value);
     readContract(wagmiConfig, {
       chainId: chainId.value,
       abi: ppoSwapAbi,
-      address: ppoSwapAddress,
+      address: ppoSwapAddress.value,
       functionName: "getEstimateAmountsOut",
       args: [parsedAmount],
     }).then((data) => {
@@ -546,10 +587,11 @@ const executeSwap = async () => {
       swapForm.fromAmount?.toString(),
       selectedFromToken.value.decimals
     );
+    console.log("Parsed Amount:", parsedAmount);
     const txHash = await writeContract(wagmiConfig, {
       chainId: chainId.value,
       abi: ppoSwapAbi,
-      address: ppoSwapAddress,
+      address: ppoSwapAddress.value,
       functionName: "swap",
       args: [],
       value: parsedAmount,
@@ -635,7 +677,7 @@ const loadTokenBalances = async () => {
     const ppoBalance = await readContract(wagmiConfig, {
       chainId: chainId.value,
       abi: ppoTokenAbi,
-      address: PpoTokenAddress,
+      address: selectedToToken.value.address,
       functionName: "balanceOf",
       args: [address.value],
     });
@@ -647,7 +689,7 @@ const loadTokenBalances = async () => {
     // Mock balances - in real app, this would fetch from blockchain
     tokenBalances.value = {
       "0x0000000000000000000000000000000000000000": nativeBalance?.formatted, // BNB
-      [PpoTokenAddress]: formattedPpoBalance, // PPO
+      [selectedToToken.value.address]: formattedPpoBalance, // PPO
       // "0xdAC17F958D2ee523a2206206994597C13D831ec7": 100, // USDT
       // "0xA0b86a33E6441b8C4C8C8C8C8C8C8C8C8C8C8C8": 50, // USDC
     };
