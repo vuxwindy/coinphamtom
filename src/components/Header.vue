@@ -62,7 +62,7 @@
           <!-- Wallet Section -->
           <div class="wallet-section">
             <WalletStatus />
-            <appkit-button :features="{ chain: false }" />
+            <ReownWalletButton />
           </div>
 
           <!-- User Menu -->
@@ -162,7 +162,7 @@
           <div class="mobile-actions">
             <div class="mobile-wallet-section">
               <WalletStatus />
-              <appkit-button :features="{ chain: false }" />
+              <ReownWalletButton />
             </div>
             
             <!-- <router-link v-if="!currentUser" to="/signup" class="mobile-btn-signin">

@@ -41,7 +41,7 @@
                   <h4>Connect Your Wallet</h4>
                   <p>Please connect your wallet to start swapping tokens</p>
                   <div class="connect-btn">
-                    <appkit-button :features="{ chain: false }" />
+                    <ReownWalletButton />
                   </div>
                 </div>
               </div>
@@ -263,7 +263,7 @@
     </div>
 
     <!-- Recent Transactions -->
-    <section class="recent-transactions padding-large bg-dark">
+    <!-- <section class="recent-transactions padding-large bg-dark">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -293,7 +293,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <Footer />
   </div>
@@ -320,6 +320,7 @@ import {
 import { wagmiConfig } from "../config/wagmi";
 import { useToast } from "vue-toastification";
 import { floorFragment } from "@/utils/number";
+import ReownWalletButton from "../components/ReownWalletButton.vue";
 
 // PPO Token và PPO Swap contract addresses
 const PpoTokenAddress = "0x1C075C6053b1FC1Ee7EED91e4ebe20428bEf4E69";
@@ -711,8 +712,8 @@ watch(address, async (newAddress, oldAddress) => {
 }
 
 .swap-hero {
-  padding-top: 120px;
-  padding-bottom: 60px;
+  padding-top: 60px;
+  padding-bottom: 20px;
 }
 
 .swap-title {
@@ -720,6 +721,11 @@ watch(address, async (newAddress, oldAddress) => {
   font-weight: bold;
   color: white;
   margin-bottom: 15px;
+}
+
+.swap-interface {
+  padding-top: 20px;
+  padding-bottom: 60px;
 }
 
 .swap-subtitle {
