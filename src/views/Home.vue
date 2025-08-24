@@ -473,7 +473,7 @@
     </section>
 
     <!-- Product Card Section -->
-    <section id="product-card" class="">
+    <!-- <section id="product-card" class="">
       <div class="container">
         <div class="row">
           <div class="section-header text-center">
@@ -522,10 +522,10 @@
         </div>
         <div class="swiper-pagination"></div>
       </div>
-    </section>
+    </section> -->
 
     <!-- Top Creators Section -->
-    <section id="top-creators" class="padding-large">
+    <!-- <section id="top-creators" class="padding-large">
       <div class="container">
         <div class="row">
           <div class="section-header align-center">
@@ -566,10 +566,10 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- Subscribe Section -->
-    <section id="subscribe" class="pattern-circle">
+    <!-- <section id="subscribe" class="pattern-circle">
       <div class="pattern-overlay">
         <img src="../assets/images/pattern-overlay.png" alt="pattern-overlay">
       </div>
@@ -614,10 +614,10 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- NFT Collections Section -->
-    <section id="nft-collection" class="padding-large">
+    <!-- <section id="nft-collection" class="padding-large">
       <div class="container">
         <div class="row overflow-hidden">
           <div class="section-header align-center">
@@ -643,10 +643,10 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- Blog Section -->
-    <section id="blog" class="padding-large">
+    <!-- <section id="blog" class="padding-large">
       <div class="container">
         <div class="row overflow-hidden">
           <div class="section-header d-md-flex justify-content-between">
@@ -679,7 +679,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <Footer />
   </div>
