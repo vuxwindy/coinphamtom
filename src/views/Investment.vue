@@ -585,7 +585,7 @@ const unstake = (stakeId) => {
 }
 
 const viewPoolDetails = (poolId) => {
-  router.push(`/investment/pool/${poolId}`)
+  // router.push(`/investment/pool/${poolId}`)
 }
 
 const addLiquidity = (farmId) => {
@@ -1135,6 +1135,7 @@ onMounted(() => {
   width: 90%;
   max-width: 500px;
   border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
 }
 
 .modal-header {
