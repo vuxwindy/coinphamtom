@@ -300,7 +300,7 @@
 
     <!-- Mystery Box -->
     <Dialog :open="showMysteryBox" @close="showMysteryBox = false">
-      <MysteryBox />
+      <MysteryBox @minted="loadUserNFTs" />
     </Dialog>
 
     <Footer />

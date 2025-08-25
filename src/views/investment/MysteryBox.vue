@@ -129,6 +129,8 @@ import { ppoPackageAbi } from "@/abis/ppoPackage.js";
 import { wagmiConfig } from "../../config/wagmi";
 import { useContractAddress } from "../../composables/useContractAddress";
 
+const emit = defineEmits(["mint"]);
+
 const bnb = ref(0);
 const result = ref(null);
 const ppo = ref(0);
@@ -207,6 +209,7 @@ async function handleOpenBox() {
       result.value = ["Bronze NFT", "Silver NFT", "Gold NFT"][tier];
       ppo.value = Math.floor((bnb.value * exchangeRate) / ppoPrice);
       bnb.value = ''
+      emit('minted', mintResult.value);
     } else {
       toast.error("Minted event not found!");
     }

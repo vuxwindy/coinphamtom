@@ -62,7 +62,7 @@ const props = defineProps({
     required: true,
   },
 });
-const emit = defineEmits(["stake", "details"]);
+const emit = defineEmits(["claimed", "details"]);
 
 const { address } = useAccount();
 const chainId = useChainId();
@@ -118,6 +118,7 @@ async function handleClaim() {
       chainId: chainId.value,
       hash: txHash,
     });
+    emit('claimed');
     toast.success("Claim successful!");
   } catch (err) {
     toast.error("Claim failed!");
