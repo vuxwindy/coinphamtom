@@ -8,8 +8,8 @@
         <div class="row">
           <div class="col-12">
             <div class="investment-header text-center">
-              <h1 class="investment-title">Investment & Staking</h1>
-              <p class="investment-subtitle">Grow your $PPO tokens through staking and yield farming</p>
+              <h1 class="investment-title">Investment</h1>
+              <!-- <p class="investment-subtitle">Grow your $PPO tokens through staking and yield farming</p> -->
             </div>
           </div>
         </div>
@@ -69,61 +69,23 @@
     </section>
 
     <!-- Staking Pools -->
-    <section class="staking-pools padding-large bg-dark">
+    <section class="staking-pools padding-large bg-dark relative">
+      <button
+        class="absolute top-4 right-4 bg-pink-600 hover:bg-pink-700 text-white font-semibold px-6 py-2 rounded-xl shadow-lg z-10"
+        @click="showMysteryBox = true"
+      >
+        Invest
+      </button>
       <div class="container">
         <div class="row">
           <div class="col-12">
-            <h2 class="section-title text-center mb-5">Staking Pools</h2>
+            <h2 class="section-title text-center mb-5">My NFTs</h2>
             <div class="pools-grid">
-              <div v-for="pool in stakingPools" :key="pool.id" class="pool-card">
-                <div class="pool-header">
-                  <div class="pool-icon">
-                    <i :class="pool.icon"></i>
-                  </div>
-                  <div class="pool-info">
-                    <h3 class="pool-name">{{ pool.name }}</h3>
-                    <p class="pool-description">{{ pool.description }}</p>
-                  </div>
-                  <div class="pool-status" :class="pool.status">
-                    {{ pool.status }}
-                  </div>
-                </div>
-                
-                <div class="pool-stats">
-                  <div class="stat-row">
-                    <span class="stat-label">APY</span>
-                    <span class="stat-value">{{ pool.apy }}%</span>
-                  </div>
-                  <div class="stat-row">
-                    <span class="stat-label">Lock Period</span>
-                    <span class="stat-value">{{ pool.lockPeriod }}</span>
-                  </div>
-                  <div class="stat-row">
-                    <span class="stat-label">Min Stake</span>
-                    <span class="stat-value">{{ pool.minStake }} PPO</span>
-                  </div>
-                  <div class="stat-row">
-                    <span class="stat-label">Total Staked</span>
-                    <span class="stat-value">{{ pool.totalStaked }} PPO</span>
-                  </div>
-                </div>
-                
-                <div class="pool-actions">
-                  <button 
-                    class="btn btn-linear"
-                    @click="openStakeModal(pool)"
-                    :disabled="pool.status === 'coming-soon'"
-                  >
-                    <i class="fas fa-lock me-2"></i>Stake Now
-                  </button>
-                  <button 
-                    class="btn btn-outline-linear"
-                    @click="viewPoolDetails(pool.id)"
-                  >
-                    <i class="fas fa-info-circle me-2"></i>Details
-                  </button>
-                </div>
-              </div>
+              <InvestNFTCard
+                v-for="nft in nftPackages"
+                :key="nft.tier + '-' + nft.startTime"
+                :nft="nft"
+              />
             </div>
           </div>
         </div>
@@ -336,25 +298,44 @@
       </div>
     </div>
 
+    <!-- Mystery Box -->
+    <Dialog :open="showMysteryBox" @close="showMysteryBox = false">
+      <MysteryBox />
+    </Dialog>
+
     <Footer />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useFirebase } from '@/composables/useFirebase.js'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
+import MysteryBox from '@/views/investment/MysteryBox.vue'
+import Dialog from '@/components/Dialog.vue'
+import InvestNFTCard from './InvestNFTCard.vue'
+import { readContract } from "@wagmi/core";
+import { useAccount, useChainId } from "@wagmi/vue";
+import { ppoPackageAbi } from "@/abis/ppoPackage.js";
+import { useContractAddress } from "@/composables/useContractAddress";
+import { wagmiConfig } from '../../config/wagmi'
 
 const router = useRouter()
 const { currentUser, getUserData } = useFirebase()
 
 // State
 const showStakeModal = ref(false)
+const showMysteryBox = ref(false)
 const selectedPool = ref(null)
 const stakeAmount = ref('')
 const userBalance = ref(0)
+
+const nftPackages = ref([]);
+const { address } = useAccount();
+const { ppoPackageAddress } = useContractAddress(); // Địa chỉ contract
+const chainId = useChainId();
 
 // Investment stats
 const investmentStats = ref({
@@ -514,6 +495,24 @@ const setMaxAmount = () => {
   stakeAmount.value = userBalance.value.toString()
 }
 
+const loadUserNFTs = async () => {
+  if (!address.value) return;
+  try {
+    const result = await readContract(wagmiConfig, {
+      address: ppoPackageAddress.value,
+      abi: ppoPackageAbi,
+      functionName: "getPackagesOfOwner",
+      args: [address.value],
+      chainId: chainId.value,
+    });
+
+    console.log("User NFTs:", result);
+    nftPackages.value = result;
+  } catch (err) {
+    console.error("Error loading NFTs:", err);
+  }
+};
+
 const confirmStake = async () => {
   if (!canStake.value) return
   
@@ -627,7 +626,11 @@ const loadUserData = async () => {
 
 onMounted(() => {
   loadUserData()
+  loadUserNFTs()
 })
+
+watch(address, loadUserNFTs);
+
 </script>
 
 <style scoped>
@@ -711,138 +714,6 @@ onMounted(() => {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 30px;
-}
-
-.pool-card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  border-radius: 20px;
-  padding: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
-}
-
-.pool-card:hover {
-  transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.pool-header {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 25px;
-}
-
-.pool-icon {
-  width: 50px;
-  height: 50px;
-  background: linear-gradient(45deg, #cc00ff, #d739ff);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  color: white;
-}
-
-.pool-info {
-  flex: 1;
-}
-
-.pool-name {
-  color: white;
-  margin-bottom: 5px;
-  font-size: 1.2rem;
-}
-
-.pool-description {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.9rem;
-  margin: 0;
-}
-
-.pool-status {
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.pool-status.active {
-  background: rgba(81, 207, 102, 0.2);
-  color: #51cf66;
-  border: 1px solid rgba(81, 207, 102, 0.3);
-}
-
-.pool-status.coming-soon {
-  background: rgba(255, 212, 59, 0.2);
-  color: #ffd43b;
-  border: 1px solid rgba(255, 212, 59, 0.3);
-}
-
-.pool-stats {
-  margin-bottom: 25px;
-}
-
-.stat-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  color: white;
-}
-
-.stat-row .stat-label {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.stat-row .stat-value {
-  font-weight: 600;
-  color: #cc00ff;
-}
-
-.pool-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.btn-linear {
-  background: linear-gradient(45deg, #cc00ff, #d739ff);
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  flex: 1;
-}
-
-.btn-linear:hover:not(:disabled) {
-  background: linear-gradient(45deg, #d739ff, #cc00ff);
-  transform: translateY(-2px);
-}
-
-.btn-linear:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-outline-linear {
-  background: transparent;
-  border: 2px solid #cc00ff;
-  color: #cc00ff;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  flex: 1;
-}
-
-.btn-outline-linear:hover {
-  background: #cc00ff;
-  color: white;
 }
 
 .empty-state {

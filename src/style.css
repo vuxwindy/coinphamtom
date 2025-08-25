@@ -822,34 +822,34 @@ input[type="submit"],
 input[type="reset"],
 input[type="file"],
 button {
-  background-image: none;
-  background: var(--dark-color);
-  text-decoration: none !important;
-  display: inline-block;
-  position: relative;
+  /* background-image: none; */
+  /* background: var(--dark-color); */
+  /* text-decoration: none !important; */
+  /* display: inline-block; */
+  /* position: relative; */
   /* border: 2px solid transparent; */
-  text-transform: capitalize;
-  border-radius: 0;
-  padding: 0.75em 1.5em;
+  /* text-transform: capitalize; */
+  /* border-radius: 0; */
+  /* padding: 0.75em 1.5em; */
   /* margin-top: 15px; */
-  font-family: var(--body-font);
-  font-size: 15px;
-  font-weight: 500;
-  line-height: normal;
-  text-align: center;
-  color: var(--light-color);
-  z-index: 1;
-  cursor: pointer;
-  white-space: nowrap;
-  vertical-align: middle;
-  -webkit-transition: all 0.3s ease-in;
-  transition: all 0.3s ease-in;
-  -ms-touch-action: manipulation;
-  touch-action: manipulation;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  /* font-family: var(--body-font); */
+  /* font-size: 15px; */
+  /* font-weight: 500; */
+  /* line-height: normal; */
+  /* text-align: center; */
+  /* color: var(--light-color); */
+  /* z-index: 1; */
+  /* cursor: pointer; */
+  /* white-space: nowrap; */
+  /* vertical-align: middle; */
+  /* -webkit-transition: all 0.3s ease-in; */
+  /* transition: all 0.3s ease-in; */
+  /* -ms-touch-action: manipulation; */
+  /* touch-action: manipulation; */
+  /* -webkit-user-select: none; */
+  /* -moz-user-select: none; */
+  /* -ms-user-select: none; */
+  /* user-select: none; */
 }
 
 .btn:hover,
@@ -2724,3 +2724,5 @@ iconify-icon.signup-social-icon{
   background: linear-gradient(45deg, #b72bff, #890495a1);
   color: white !important
 }
+
+@import "tailwindcss";
