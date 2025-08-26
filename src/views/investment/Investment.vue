@@ -31,18 +31,18 @@
               </div>
             </div>
           </div>
-          <!-- <div class="col-lg-3 col-md-6 mb-4">
+          <div class="col-lg-3 col-md-6 mb-4">
             <div class="stat-card">
               <div class="stat-icon">
                 <i class="fas fa-chart-line"></i>
               </div>
               <div class="stat-content">
                 <h3 class="stat-value">{{ investmentStats.totalEarned }}</h3>
-                <p class="stat-label">Total Earned</p>
+                <p class="stat-label">Total My NFTs</p>
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-6 mb-4">
+          <!-- <div class="col-lg-3 col-md-6 mb-4">
             <div class="stat-card">
               <div class="stat-icon">
                 <i class="fas fa-percentage"></i>
@@ -80,7 +80,7 @@
         <div class="row">
           <div class="col-12">
             <h2 class="section-title text-center mb-5">My NFTs</h2>
-            <div class="pools-grid">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
               <InvestNFTCard
                 v-for="nft in nftPackages"
                 :key="nft.tier + '-' + nft.startTime"
