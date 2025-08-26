@@ -31,7 +31,7 @@
     <div class="pool-stats">
       <div class="stat-row">
         <span class="stat-label">Lock Period</span>
-        <span class="stat-value">{{ lockPeriod }}</span>
+        <span class="stat-value">{{ lockPeriod }} days</span>
       </div>
       <div class="stat-row">
         <span class="stat-label">Min Stake</span>
@@ -134,9 +134,9 @@ async function handleClaim() {
       abi: ppoPackageAbi,
       address: ppoPackageAddress.value,
       functionName: "claim",
-      args: [props.nft.tokenId],
+      args: [+props.nft.tokenId?.toString()],
     });
-    console.log("Claiming PPO...", props.nft.tokenId);
+    console.log("Claiming PPO...", +props.nft.tokenId?.toString());
     await waitForTransactionReceipt(wagmiConfig, {
       chainId: chainId.value,
       hash: txHash,
@@ -237,7 +237,8 @@ async function handleClaim() {
 
 .stat-row .stat-value {
   font-weight: 600;
-  color: #cc00ff;
+  /* color: #cc00ff; */
+  color: white;
 }
 
 .pool-actions {

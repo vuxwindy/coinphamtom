@@ -1,7 +1,7 @@
 <template>
   <div class="investment-page">
     <Header />
-    
+
     <!-- Investment Hero Section -->
     <section class="investment-hero padding-large">
       <div class="container">
@@ -27,11 +27,11 @@
               </div>
               <div class="stat-content">
                 <h3 class="stat-value">{{ investmentStats.totalStaked }}</h3>
-                <p class="stat-label">Total Staked</p>
+                <p class="stat-label">Total NFTs</p>
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-6 mb-4">
+          <!-- <div class="col-lg-3 col-md-6 mb-4">
             <div class="stat-card">
               <div class="stat-icon">
                 <i class="fas fa-chart-line"></i>
@@ -63,20 +63,20 @@
                 <p class="stat-label">Total Stakers</p>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </section>
 
     <!-- Staking Pools -->
-    <section class="staking-pools padding-large bg-dark relative">
-      <button
-        class="absolute top-4 right-4 bg-pink-600 hover:bg-pink-700 text-white font-semibold px-6 py-2 rounded-xl shadow-lg z-10"
-        @click="showMysteryBox = true"
-      >
-        Invest
-      </button>
-      <div class="container">
+    <section class="staking-pools padding-large bg-dark">
+      <div class="container relative">
+        <button
+          class="absolute top-[-80px] md:top-4 right-4 bg-pink-600 hover:bg-pink-700 text-white font-semibold px-6 py-2 rounded-xl shadow-lg z-10"
+          @click="showMysteryBox = true"
+        >
+          Invest
+        </button>
         <div class="row">
           <div class="col-12">
             <h2 class="section-title text-center mb-5">My NFTs</h2>
@@ -257,13 +257,13 @@
             <div class="form-group">
               <label>Amount to Stake</label>
               <div class="input-group">
-                <input 
+                <input
                   v-model="stakeAmount"
                   type="number"
                   class="form-control"
                   placeholder="Enter amount"
                   min="0"
-                >
+                />
                 <span class="input-suffix">PPO</span>
               </div>
               <div class="balance-info">
@@ -271,7 +271,7 @@
                 <button class="btn-link" @click="setMaxAmount">Max</button>
               </div>
             </div>
-            
+
             <div class="stake-preview">
               <div class="preview-item">
                 <span>APY:</span>
@@ -286,8 +286,8 @@
                 <span>{{ estimatedRewards }} PPO</span>
               </div>
             </div>
-            
-            <button 
+
+            <button
               class="btn btn-linear btn-large w-100"
               @click="confirmStake"
               :disabled="!canStake"
@@ -309,29 +309,29 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
-import { useRouter } from 'vue-router'
-import { useFirebase } from '@/composables/useFirebase.js'
-import Header from '@/components/Header.vue'
-import Footer from '@/components/Footer.vue'
-import MysteryBox from '@/views/investment/MysteryBox.vue'
-import Dialog from '@/components/Dialog.vue'
-import InvestNFTCard from './InvestNFTCard.vue'
+import { ref, computed, onMounted, watch } from "vue";
+import { useRouter } from "vue-router";
+import { useFirebase } from "@/composables/useFirebase.js";
+import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
+import MysteryBox from "@/views/investment/MysteryBox.vue";
+import Dialog from "@/components/Dialog.vue";
+import InvestNFTCard from "./InvestNFTCard.vue";
 import { readContract } from "@wagmi/core";
 import { useAccount, useChainId } from "@wagmi/vue";
 import { ppoPackageAbi } from "@/abis/ppoPackage.js";
 import { useContractAddress } from "@/composables/useContractAddress";
-import { wagmiConfig } from '../../config/wagmi'
+import { wagmiConfig } from "../../config/wagmi";
 
-const router = useRouter()
-const { currentUser, getUserData } = useFirebase()
+const router = useRouter();
+const { currentUser, getUserData } = useFirebase();
 
 // State
-const showStakeModal = ref(false)
-const showMysteryBox = ref(false)
-const selectedPool = ref(null)
-const stakeAmount = ref('')
-const userBalance = ref(0)
+const showStakeModal = ref(false);
+const showMysteryBox = ref(false);
+const selectedPool = ref(null);
+const stakeAmount = ref("");
+const userBalance = ref(0);
 
 const nftPackages = ref([]);
 const { address } = useAccount();
@@ -340,161 +340,161 @@ const chainId = useChainId();
 
 // Investment stats
 const investmentStats = ref({
-  totalStaked: '2,450,000',
-  totalEarned: '125,000',
-  apy: '15.8',
-  totalStakers: '12,450'
-})
+  totalStaked: "-",
+  totalEarned: "125,000",
+  apy: "15.8",
+  totalStakers: "12,450",
+});
 
 // Staking pools
 const stakingPools = ref([
   {
     id: 1,
-    name: 'Flexible Staking',
-    description: 'Stake and unstake anytime with no lock period',
-    icon: 'fas fa-unlock',
+    name: "Flexible Staking",
+    description: "Stake and unstake anytime with no lock period",
+    icon: "fas fa-unlock",
     apy: 8.5,
-    lockPeriod: 'No lock',
+    lockPeriod: "No lock",
     minStake: 100,
-    totalStaked: '850,000',
-    status: 'active'
+    totalStaked: "850,000",
+    status: "active",
   },
   {
     id: 2,
-    name: '30-Day Lock',
-    description: 'Lock your tokens for 30 days for higher rewards',
-    icon: 'fas fa-lock',
+    name: "30-Day Lock",
+    description: "Lock your tokens for 30 days for higher rewards",
+    icon: "fas fa-lock",
     apy: 12.5,
-    lockPeriod: '30 days',
+    lockPeriod: "30 days",
     minStake: 500,
-    totalStaked: '1,200,000',
-    status: 'active'
+    totalStaked: "1,200,000",
+    status: "active",
   },
   {
     id: 3,
-    name: '90-Day Lock',
-    description: 'Long-term staking with maximum rewards',
-    icon: 'fas fa-lock',
+    name: "90-Day Lock",
+    description: "Long-term staking with maximum rewards",
+    icon: "fas fa-lock",
     apy: 18.5,
-    lockPeriod: '90 days',
+    lockPeriod: "90 days",
     minStake: 1000,
-    totalStaked: '400,000',
-    status: 'active'
+    totalStaked: "400,000",
+    status: "active",
   },
   {
     id: 4,
-    name: 'VIP Staking',
-    description: 'Exclusive staking for large holders',
-    icon: 'fas fa-crown',
+    name: "VIP Staking",
+    description: "Exclusive staking for large holders",
+    icon: "fas fa-crown",
     apy: 25.0,
-    lockPeriod: '180 days',
+    lockPeriod: "180 days",
     minStake: 10000,
-    totalStaked: '0',
-    status: 'coming-soon'
-  }
-])
+    totalStaked: "0",
+    status: "coming-soon",
+  },
+]);
 
 // My stakes
 const myStakes = ref([
   {
     id: 1,
-    poolName: 'Flexible Staking',
+    poolName: "Flexible Staking",
     amount: 500,
     earned: 12.5,
-    stakeDate: new Date('2024-01-15'),
-    progress: 100
+    stakeDate: new Date("2024-01-15"),
+    progress: 100,
   },
   {
     id: 2,
-    poolName: '30-Day Lock',
+    poolName: "30-Day Lock",
     amount: 1000,
     earned: 45.2,
-    stakeDate: new Date('2024-02-01'),
-    progress: 75
-  }
-])
+    stakeDate: new Date("2024-02-01"),
+    progress: 75,
+  },
+]);
 
 // Yield farms
 const yieldFarms = ref([
   {
     id: 1,
-    token1: 'PPO',
-    token2: 'ETH',
-    token1Icon: '/src/assets/images/ppo-icon.png',
-    token2Icon: '/src/assets/images/eth-icon.png',
-    description: 'PPO/ETH liquidity pool',
+    token1: "PPO",
+    token2: "ETH",
+    token1Icon: "/src/assets/images/ppo-icon.png",
+    token2Icon: "/src/assets/images/eth-icon.png",
+    description: "PPO/ETH liquidity pool",
     apy: 45.2,
     tvl: 2.5,
-    rewards: 'PPO + ETH'
+    rewards: "PPO + ETH",
   },
   {
     id: 2,
-    token1: 'PPO',
-    token2: 'USDT',
-    token1Icon: '/src/assets/images/ppo-icon.png',
-    token2Icon: '/src/assets/images/usdt-icon.png',
-    description: 'PPO/USDT liquidity pool',
+    token1: "PPO",
+    token2: "USDT",
+    token1Icon: "/src/assets/images/ppo-icon.png",
+    token2Icon: "/src/assets/images/usdt-icon.png",
+    description: "PPO/USDT liquidity pool",
     apy: 38.7,
     tvl: 1.8,
-    rewards: 'PPO + USDT'
-  }
-])
+    rewards: "PPO + USDT",
+  },
+]);
 
 // Investment history
 const investmentHistory = ref([
   {
     id: 1,
-    date: new Date('2024-02-15'),
-    type: 'stake',
+    date: new Date("2024-02-15"),
+    type: "stake",
     amount: 500,
-    status: 'completed'
+    status: "completed",
   },
   {
     id: 2,
-    date: new Date('2024-02-10'),
-    type: 'unstake',
+    date: new Date("2024-02-10"),
+    type: "unstake",
     amount: 250,
-    status: 'completed'
+    status: "completed",
   },
   {
     id: 3,
-    date: new Date('2024-02-05'),
-    type: 'claim',
+    date: new Date("2024-02-05"),
+    type: "claim",
     amount: 12.5,
-    status: 'completed'
-  }
-])
+    status: "completed",
+  },
+]);
 
 // Computed
 const estimatedRewards = computed(() => {
-  if (!selectedPool.value || !stakeAmount.value) return 0
-  const amount = parseFloat(stakeAmount.value)
-  const apy = selectedPool.value.apy
-  return ((amount * apy) / 100 / 12).toFixed(2)
-})
+  if (!selectedPool.value || !stakeAmount.value) return 0;
+  const amount = parseFloat(stakeAmount.value);
+  const apy = selectedPool.value.apy;
+  return ((amount * apy) / 100 / 12).toFixed(2);
+});
 
 const canStake = computed(() => {
-  if (!selectedPool.value || !stakeAmount.value) return false
-  const amount = parseFloat(stakeAmount.value)
-  return amount >= selectedPool.value.minStake && amount <= userBalance.value
-})
+  if (!selectedPool.value || !stakeAmount.value) return false;
+  const amount = parseFloat(stakeAmount.value);
+  return amount >= selectedPool.value.minStake && amount <= userBalance.value;
+});
 
 // Methods
 const openStakeModal = (pool) => {
-  selectedPool.value = pool
-  stakeAmount.value = ''
-  showStakeModal.value = true
-}
+  selectedPool.value = pool;
+  stakeAmount.value = "";
+  showStakeModal.value = true;
+};
 
 const closeStakeModal = () => {
-  showStakeModal.value = false
-  selectedPool.value = null
-  stakeAmount.value = ''
-}
+  showStakeModal.value = false;
+  selectedPool.value = null;
+  stakeAmount.value = "";
+};
 
 const setMaxAmount = () => {
-  stakeAmount.value = userBalance.value.toString()
-}
+  stakeAmount.value = userBalance.value.toString();
+};
 
 const loadUserNFTs = async () => {
   if (!address.value) return;
@@ -509,18 +509,33 @@ const loadUserNFTs = async () => {
 
     console.log("User NFTs:", result);
     nftPackages.value = result;
+    // Fetch totalSupply and update investmentStats.totalStaked
+    try {
+      const totalSupply = await readContract(wagmiConfig, {
+        address: ppoPackageAddress.value,
+        abi: ppoPackageAbi,
+        functionName: "totalSupply",
+        chainId: chainId.value,
+      });
+      investmentStats.value.totalStaked = totalSupply.toLocaleString();
+    } catch (err) {
+      console.error("Error loading totalSupply:", err);
+      investmentStats.value.totalStaked = "-";
+    }
   } catch (err) {
     console.error("Error loading NFTs:", err);
   }
 };
 
 const confirmStake = async () => {
-  if (!canStake.value) return
-  
+  if (!canStake.value) return;
+
   try {
     // Mock staking - in real app, this would call smart contract
-    console.log(`Staking ${stakeAmount.value} PPO in ${selectedPool.value.name}`)
-    
+    console.log(
+      `Staking ${stakeAmount.value} PPO in ${selectedPool.value.name}`
+    );
+
     // Add to my stakes
     myStakes.value.push({
       id: Date.now(),
@@ -528,110 +543,109 @@ const confirmStake = async () => {
       amount: parseFloat(stakeAmount.value),
       earned: 0,
       stakeDate: new Date(),
-      progress: 0
-    })
-    
+      progress: 0,
+    });
+
     // Add to history
     investmentHistory.value.unshift({
       id: Date.now(),
       date: new Date(),
-      type: 'stake',
+      type: "stake",
       amount: parseFloat(stakeAmount.value),
-      status: 'completed'
-    })
-    
-    closeStakeModal()
-    
+      status: "completed",
+    });
+
+    closeStakeModal();
   } catch (error) {
-    console.error('Staking failed:', error)
+    console.error("Staking failed:", error);
   }
-}
+};
 
 const claimRewards = (stakeId) => {
-  const stake = myStakes.value.find(s => s.id === stakeId)
+  const stake = myStakes.value.find((s) => s.id === stakeId);
   if (stake && stake.earned > 0) {
-    console.log(`Claiming ${stake.earned} PPO rewards`)
-    stake.earned = 0
-    
+    console.log(`Claiming ${stake.earned} PPO rewards`);
+    stake.earned = 0;
+
     // Add to history
     investmentHistory.value.unshift({
       id: Date.now(),
       date: new Date(),
-      type: 'claim',
+      type: "claim",
       amount: stake.earned,
-      status: 'completed'
-    })
+      status: "completed",
+    });
   }
-}
+};
 
 const unstake = (stakeId) => {
-  const stakeIndex = myStakes.value.findIndex(s => s.id === stakeId)
+  const stakeIndex = myStakes.value.findIndex((s) => s.id === stakeId);
   if (stakeIndex !== -1) {
-    const stake = myStakes.value[stakeIndex]
-    console.log(`Unstaking ${stake.amount} PPO`)
-    
+    const stake = myStakes.value[stakeIndex];
+    console.log(`Unstaking ${stake.amount} PPO`);
+
     // Add to history
     investmentHistory.value.unshift({
       id: Date.now(),
       date: new Date(),
-      type: 'unstake',
+      type: "unstake",
       amount: stake.amount,
-      status: 'completed'
-    })
-    
+      status: "completed",
+    });
+
     // Remove from my stakes
-    myStakes.value.splice(stakeIndex, 1)
+    myStakes.value.splice(stakeIndex, 1);
   }
-}
+};
 
 const viewPoolDetails = (poolId) => {
   // router.push(`/investment/pool/${poolId}`)
-}
+};
 
 const addLiquidity = (farmId) => {
-  router.push(`/investment/farm/${farmId}`)
-}
+  router.push(`/investment/farm/${farmId}`);
+};
 
 const viewFarm = (farmId) => {
-  router.push(`/investment/farm/${farmId}`)
-}
+  router.push(`/investment/farm/${farmId}`);
+};
 
 const viewTransaction = (txId) => {
-  console.log(`Viewing transaction ${txId}`)
-}
+  console.log(`Viewing transaction ${txId}`);
+};
 
 const scrollToPools = () => {
-  const poolsSection = document.querySelector('.staking-pools')
+  const poolsSection = document.querySelector(".staking-pools");
   if (poolsSection) {
-    poolsSection.scrollIntoView({ behavior: 'smooth' })
+    poolsSection.scrollIntoView({ behavior: "smooth" });
   }
-}
+};
 
 const formatDate = (date) => {
-  return new Date(date).toLocaleDateString()
-}
+  return new Date(date).toLocaleDateString();
+};
 
 // Load user data
 const loadUserData = async () => {
   if (currentUser.value) {
     try {
-      const result = await getUserData()
+      const result = await getUserData();
       if (result.success) {
-        userBalance.value = result.data.tokenBalance || 0
+        userBalance.value = result.data.tokenBalance || 0;
       }
     } catch (error) {
-      console.error('Failed to load user data:', error)
+      console.error("Failed to load user data:", error);
     }
   }
-}
+};
 
 onMounted(() => {
-  loadUserData()
-  loadUserNFTs()
-})
+  loadUserData();
+  loadUserNFTs();
+  setInterval(loadUserNFTs, 60000);
+});
 
 watch(address, loadUserNFTs);
-
 </script>
 
 <style scoped>
@@ -1107,30 +1121,30 @@ watch(address, loadUserNFTs);
   .investment-title {
     font-size: 2.5rem;
   }
-  
+
   .pools-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .stake-item {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .farming-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .table-header,
   .table-row {
     grid-template-columns: 1fr;
     gap: 10px;
   }
-  
+
   .table-header {
     display: none;
   }
-  
+
   .table-row {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;

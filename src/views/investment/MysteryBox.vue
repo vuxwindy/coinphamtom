@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full max-w-[400px] shadow-2xl rounded-2xl border border-purple-500 bg-purple-800 mx-auto"
+    class="w-full max-w-[600px] shadow-2xl rounded-2xl border border-purple-500 bg-purple-800 mx-auto"
   >
     <div class="flex flex-col items-center p-6 sm:p-8 space-y-4">
       <div
@@ -52,8 +52,8 @@
       <h2 class="!text-white text-xl sm:text-2xl font-bold text-center">
         Mystery Box
       </h2>
-      <p class="text-purple-200 text-center text-sm">
-        Enter BNB amount to open the box and receive NFT + PPO instantly
+      <p class="!mb-[16px] text-purple-200 text-center !text-[16px]">
+        Enter BNB amount to open the box and receive NFT & PPO instantly
       </p>
       <input
         type="number"
@@ -94,14 +94,11 @@
       <transition name="fade">
         <div v-if="result" class="mt-4 text-center">
           <p class="text-lg text-white font-bold">You received: {{ result }}</p>
-          <p v-if="ppo > 0" class="text-green-400 mt-2">
-            PPO reward: {{ ppo.toLocaleString() }} PPO
-          </p>
           <div v-if="mintResult" class="mt-2 text-purple-200 text-sm">
             <div>NFT ID: {{ mintResult.tokenId }}</div>
             <div>Tier: {{ ["Bronze", "Silver", "Gold"][mintResult.tier] }}</div>
             <div>BNB: {{ mintResult.amountBNB }}</div>
-            <div>PPO/day: {{ mintResult.ppoPerDay }}</div>
+            <div>PPO/day: {{ floorFragment(mintResult.ppoPerDay) }}</div>
           </div>
         </div>
       </transition>
@@ -117,6 +114,7 @@ import { writeContract, waitForTransactionReceipt } from "@wagmi/core";
 import { useToast } from "vue-toastification";
 import { ppoPackageAbi } from "@/abis/ppoPackage.js";
 import { wagmiConfig } from "../../config/wagmi";
+import { floorFragment } from "@/utils/number";
 import { useContractAddress } from "../../composables/useContractAddress";
 
 const emit = defineEmits(["mint"]);
