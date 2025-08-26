@@ -71,16 +71,20 @@
     <!-- Staking Pools -->
     <section class="staking-pools padding-large bg-dark">
       <div class="container relative">
-        <button
-          class="absolute top-[-80px] md:top-4 right-4 bg-pink-600 hover:bg-pink-700 text-white font-semibold px-6 py-2 rounded-xl shadow-lg z-10"
-          @click="showMysteryBox = true"
-        >
-          Invest
-        </button>
+        <div class="flex justify-end md:mb-[-80px]">
+          <button
+            class="bg-pink-600 hover:bg-pink-700 text-white font-semibold px-6 py-2 rounded-xl shadow-lg z-10"
+            @click="showMysteryBox = true"
+          >
+            Invest
+          </button>
+        </div>
         <div class="row">
           <div class="col-12">
             <h2 class="section-title text-center mb-5">My NFTs</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]">
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]"
+            >
               <InvestNFTCard
                 v-for="nft in nftPackages"
                 :key="nft.tier + '-' + nft.startTime"
