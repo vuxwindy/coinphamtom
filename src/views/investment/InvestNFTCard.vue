@@ -1,5 +1,5 @@
 <template>
-  <div class="pool-card">
+  <div class="pool-card p-[16px] md:p-[30px]">
     <div class="pool-header">
       <div class="pool-icon">
         <img
@@ -157,7 +157,6 @@ async function handleClaim() {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
   border-radius: 20px;
-  padding: 30px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
 }

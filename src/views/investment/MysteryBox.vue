@@ -3,7 +3,7 @@
     class="w-full max-w-[600px] shadow-2xl rounded-2xl border border-purple-500 bg-purple-800 mx-auto"
   >
     <div class="flex flex-col items-center p-6 sm:p-8 space-y-4">
-      <div
+      <!-- <div
         class="w-32 h-32 sm:w-40 sm:h-40 bg-gradient-to-br from-pink-500 to-purple-500 rounded-xl shadow-lg flex items-center justify-center"
       >
         <span v-if="isLoading" class="text-white text-3xl animate-spin">
@@ -48,7 +48,7 @@
             class="w-[100px] h-[100px] object-cover rounded-full"
           />
         </span>
-      </div>
+      </div> -->
       <h2 class="!text-white text-xl sm:text-2xl font-bold text-center">
         Mystery Box
       </h2>
@@ -119,7 +119,7 @@ import { useContractAddress } from "../../composables/useContractAddress";
 
 const emit = defineEmits(["mint"]);
 
-const bnb = ref(0);
+const bnb = ref('');
 const result = ref(null);
 const ppo = ref(0);
 const mintResult = ref(null);
