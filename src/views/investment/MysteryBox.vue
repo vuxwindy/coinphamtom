@@ -1,10 +1,10 @@
 <template>
   <div
-    class="w-[400px] shadow-2xl rounded-2xl border border-purple-500 bg-purple-800"
+    class="w-full max-w-[400px] shadow-2xl rounded-2xl border border-purple-500 bg-purple-800 mx-auto"
   >
-    <div class="flex flex-col items-center p-8 space-y-4">
+    <div class="flex flex-col items-center p-6 sm:p-8 space-y-4">
       <div
-        class="w-40 h-40 bg-gradient-to-br from-pink-500 to-purple-500 rounded-xl shadow-lg animate-pulse flex items-center justify-center"
+        class="w-32 h-32 sm:w-40 sm:h-40 bg-gradient-to-br from-pink-500 to-purple-500 rounded-xl shadow-lg flex items-center justify-center"
       >
         <span v-if="isLoading" class="text-white text-3xl animate-spin">
           <svg
@@ -28,40 +28,30 @@
             ></path>
           </svg>
         </span>
-        <span v-else-if="mintResult" class="text-6xl">
-          <svg
+        <span v-else-if="mintResult">
+          <img
             v-if="mintResult.tier === 0"
-            class="w-20 h-20"
-            fill="#b87333"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M12 2C7.03 2 3 6.03 3 11c0 3.87 2.69 7.16 6.44 7.86L12 22l2.56-3.14C18.31 18.16 21 14.87 21 11c0-4.97-4.03-9-9-9zm0 16c-3.31 0-6-2.69-6-6 0-3.31 2.69-6 6-6s6 2.69 6 6c0 3.31-2.69 6-6 6z"
-            />
-          </svg>
-          <svg
+            src="/nft/ppo-bronze.png"
+            alt="Bronze NFT"
+            class="w-[100px] h-[100px] object-cover rounded-full"
+          />
+          <img
             v-else-if="mintResult.tier === 1"
-            class="w-20 h-20"
-            fill="#C0C0C0"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M12 2C7.03 2 3 6.03 3 11c0 3.87 2.69 7.16 6.44 7.86L12 22l2.56-3.14C18.31 18.16 21 14.87 21 11c0-4.97-4.03-9-9-9zm0 16c-3.31 0-6-2.69-6-6 0-3.31 2.69-6 6-6s6 2.69 6 6c0 3.31-2.69 6-6 6z"
-            />
-          </svg>
-          <svg
+            src="/nft/ppo-silver.png"
+            alt="Silver NFT"
+            class="w-[100px] h-[100px] object-cover rounded-full"
+          />
+          <img
             v-else-if="mintResult.tier === 2"
-            class="w-20 h-20"
-            fill="#FFD700"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M12 2C7.03 2 3 6.03 3 11c0 3.87 2.69 7.16 6.44 7.86L12 22l2.56-3.14C18.31 18.16 21 14.87 21 11c0-4.97-4.03-9-9-9zm0 16c-3.31 0-6-2.69-6-6 0-3.31 2.69-6 6-6s6 2.69 6 6c0 3.31-2.69 6-6 6z"
-            />
-          </svg>
+            src="/nft/ppo-gold.png"
+            alt="Gold NFT"
+            class="w-[100px] h-[100px] object-cover rounded-full"
+          />
         </span>
       </div>
-      <h2 class="!text-white text-2xl font-bold">Mystery Box</h2>
+      <h2 class="!text-white text-xl sm:text-2xl font-bold text-center">
+        Mystery Box
+      </h2>
       <p class="text-purple-200 text-center text-sm">
         Enter BNB amount to open the box and receive NFT + PPO instantly
       </p>
@@ -69,12 +59,12 @@
         type="number"
         v-model.number="bnb"
         placeholder="Enter BNB amount"
-        class="w-full px-5 py-3 rounded-2xl border-2 border-purple-400 bg-white text-purple-900 text-lg font-semibold shadow focus:border-purple-600 focus:shadow-lg transition duration-200 outline-none"
+        class="w-full px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border-2 border-purple-400 bg-white text-purple-900 text-base sm:text-lg font-semibold shadow focus:border-purple-600 focus:shadow-lg transition duration-200 outline-none"
         :disabled="isLoading"
       />
       <button
         @click="handleOpenBox"
-        class="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-400 to-purple-700 text-white text-lg font-bold shadow hover:from-purple-700 hover:to-purple-400 hover:shadow-xl transition duration-200 flex items-center justify-center"
+        class="w-full py-3 sm:py-4 rounded-2xl bg-gradient-to-r from-purple-400 to-purple-700 text-white text-base sm:text-lg font-bold shadow hover:from-purple-700 hover:to-purple-400 hover:shadow-xl transition duration-200 flex items-center justify-center"
         :disabled="isLoading"
       >
         <span v-if="isLoading" class="mr-2">
@@ -170,14 +160,17 @@ async function handleOpenBox() {
       functionName: "mint",
       args: [],
       value,
+      gas: BigInt(300000),
     });
-    toast.info("Minting NFT...");
+
     const receipt = await waitForTransactionReceipt(wagmiConfig, {
       chainId: chainId.value,
       hash: txHash,
     });
     // Find Minted event
+
     const iface = new ethers.Interface(ppoPackageAbi);
+
     const mintedEvent = receipt.logs
       .map((log) => {
         try {
@@ -198,7 +191,7 @@ async function handleOpenBox() {
         ppoPerDay: ethers.formatUnits(ppoPerDay, 18),
       };
 
-      console.log('mintResult', mintResult?.value)
+      console.log("mintResult", mintResult?.value);
       toast.success(
         `Mint successful! NFT #${tokenId} (${
           ["Bronze", "Silver", "Gold"][tier]
@@ -208,8 +201,8 @@ async function handleOpenBox() {
       );
       result.value = ["Bronze NFT", "Silver NFT", "Gold NFT"][tier];
       ppo.value = Math.floor((bnb.value * exchangeRate) / ppoPrice);
-      bnb.value = ''
-      emit('minted', mintResult.value);
+      bnb.value = "";
+      emit("minted", mintResult.value);
     } else {
       toast.error("Minted event not found!");
     }

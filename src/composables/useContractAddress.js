@@ -23,7 +23,7 @@ export function useContractAddress() {
     if (bsc.id === chainId.value) {
       return "";
     }
-    return "0x1AD4B4f9dFAA8A7935AcF76fD81B8434c60F355e";
+    return "0x755301EA7F87F70C7E2cD0C1c118F0AAFFbFdDe9";
   });
 
   return {

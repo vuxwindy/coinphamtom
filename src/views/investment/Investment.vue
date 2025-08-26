@@ -85,6 +85,7 @@
                 v-for="nft in nftPackages"
                 :key="nft.tier + '-' + nft.startTime"
                 :nft="nft"
+                @claimed="loadUserNFTs"
               />
             </div>
           </div>

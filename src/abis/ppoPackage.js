@@ -1,31 +1,5 @@
 export const ppoPackageAbi = [
   {
-    inputs: [
-      {
-        internalType: "string",
-        name: "name_",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "symbol_",
-        type: "string",
-      },
-      {
-        internalType: "address",
-        name: "ppoToken_",
-        type: "address",
-      },
-      {
-        internalType: "address payable",
-        name: "treasury_",
-        type: "address",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
-  {
     anonymous: false,
     inputs: [
       {
@@ -142,6 +116,19 @@ export const ppoPackageAbi = [
       },
     ],
     name: "DailyRatesUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint8",
+        name: "version",
+        type: "uint8",
+      },
+    ],
+    name: "Initialized",
     type: "event",
   },
   {
@@ -404,6 +391,11 @@ export const ppoPackageAbi = [
       {
         components: [
           {
+            internalType: "uint256",
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
             internalType: "enum PPOPackage.Tier",
             name: "tier",
             type: "uint8",
@@ -433,13 +425,46 @@ export const ppoPackageAbi = [
             name: "ppoPerDay",
             type: "uint256",
           },
+          {
+            internalType: "uint256",
+            name: "pendingPPO",
+            type: "uint256",
+          },
         ],
-        internalType: "struct PPOPackage.PackageInfo[]",
+        internalType: "struct PPOPackage.PackageInfoResponse[]",
         name: "",
         type: "tuple[]",
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "name_",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "symbol_",
+        type: "string",
+      },
+      {
+        internalType: "address",
+        name: "ppoToken_",
+        type: "address",
+      },
+      {
+        internalType: "address payable",
+        name: "treasury_",
+        type: "address",
+      },
+    ],
+    name: "initialize",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {

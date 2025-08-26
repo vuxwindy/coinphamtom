@@ -1,8 +1,25 @@
 <template>
   <div class="pool-card">
     <div class="pool-header">
-      <div class="pool-icon" :style="iconStyle">
-        <!-- icon hoặc chữ NFT -->
+      <div class="pool-icon">
+        <img
+          v-if="props.nft.tier === 0"
+          src="/nft/ppo-bronze.png"
+          alt="Bronze NFT"
+          class="w-full h-full object-cover rounded-full"
+        />
+        <img
+          v-else-if="props.nft.tier === 1"
+          src="/nft/ppo-silver.png"
+          alt="Silver NFT"
+          class="w-full h-full object-cover rounded-full"
+        />
+        <img
+          v-else-if="props.nft.tier === 2"
+          src="/nft/ppo-gold.png"
+          alt="Gold NFT"
+          class="w-full h-full object-cover rounded-full"
+        />
       </div>
       <div class="pool-info">
         <h3 class="pool-name">{{ tier }}</h3>
@@ -24,6 +41,10 @@
         <span class="stat-label">PPO per day</span>
         <span class="stat-value">{{ ppoPerDay }} PPO</span>
       </div>
+      <div class="stat-row">
+        <span class="stat-label">Pending PPO</span>
+        <span class="stat-value">{{ pendingPPO }} PPO</span>
+      </div>
     </div>
     <div class="pool-actions">
       <button
@@ -34,12 +55,6 @@
         <i class="fas fa-lock me-2"></i>
         {{ isClaiming ? "Claiming..." : "Claim Now" }}
       </button>
-      <!-- <button 
-        class="btn btn-outline-linear"
-        @click="$emit('details', nft.id)"
-      >
-        <i class="fas fa-info-circle me-2"></i>Details
-      </button> -->
     </div>
   </div>
 </template>
@@ -47,9 +62,13 @@
 <script setup>
 import dayjs from "dayjs";
 import { ethers } from "ethers";
-import { defineProps, defineEmits, computed, ref } from "vue";
+import { defineProps, defineEmits, computed, ref, onMounted, watch } from "vue";
 import { useToast } from "vue-toastification";
-import { writeContract, waitForTransactionReceipt } from "@wagmi/core";
+import {
+  writeContract,
+  waitForTransactionReceipt,
+  readContract,
+} from "@wagmi/core";
 import { useAccount, useChainId } from "@wagmi/vue";
 import { ppoPackageAbi } from "@/abis/ppoPackage.js";
 import { wagmiConfig } from "../../config/wagmi";
@@ -78,8 +97,8 @@ const tier = computed(() => {
 
 const isActive = computed(
   () =>
-    dayjs().isBefore(dayjs(props.nft.endTime?.toString() * 1000)) &&
-    dayjs().isAfter(dayjs(props.nft.startTime?.toString() * 1000))
+    dayjs().isAfter(dayjs(props.nft.startTime?.toString() * 1000)) &&
+    dayjs().isBefore(dayjs(props.nft.endTime?.toString() * 1000))
 );
 
 const lockPeriod = computed(() =>
@@ -94,6 +113,10 @@ const mintStake = computed(() =>
 );
 const ppoPerDay = computed(() =>
   floorFragment(ethers.formatUnits(props.nft.ppoPerDay?.toString(), 18), 5)
+);
+
+const pendingPPO = computed(() =>
+  floorFragment(ethers.formatUnits(props.nft.pendingPPO?.toString(), 18), 5)
 );
 
 const isClaiming = ref(false);
@@ -113,12 +136,12 @@ async function handleClaim() {
       functionName: "claim",
       args: [props.nft.tokenId],
     });
-    toast.info("Claiming PPO...");
-    const receipt = await waitForTransactionReceipt(wagmiConfig, {
+    console.log("Claiming PPO...", props.nft.tokenId);
+    await waitForTransactionReceipt(wagmiConfig, {
       chainId: chainId.value,
       hash: txHash,
     });
-    emit('claimed');
+    emit("claimed");
     toast.success("Claim successful!");
   } catch (err) {
     toast.error("Claim failed!");
@@ -127,15 +150,6 @@ async function handleClaim() {
     isClaiming.value = false;
   }
 }
-
-const tierColors = [
-  'linear-gradient(45deg, #b87333, #c68642)', // Bronze
-  'linear-gradient(45deg, #C0C0C0, #A9A9A9)', // Silver
-  'linear-gradient(45deg, #FFD700, #FFA500)', // Gold
-];
-const iconStyle = computed(() => ({
-  background: tierColors[props.nft.tier] || tierColors[0],
-}));
 </script>
 
 <style scoped>
