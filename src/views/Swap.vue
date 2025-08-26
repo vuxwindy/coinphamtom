@@ -166,7 +166,7 @@
 
                 <!-- Swap Button -->
                 <button
-                  class="btn btn-swap btn-linear btn-large w-100"
+                  class="btn btn-swap btn-linear btn-large w-full"
                   @click="executeSwap"
                   :disabled="!canSwap || isLoading"
                 >
