@@ -19,14 +19,14 @@
     <!-- Investment Overview -->
     <section class="investment-overview padding-large">
       <div class="container">
-        <div class="row">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="col-lg-3 col-md-6 mb-4">
             <div class="stat-card">
               <div class="stat-icon">
                 <i class="fas fa-wallet"></i>
               </div>
               <div class="stat-content">
-                <h3 class="stat-value">{{ investmentStats.totalStaked }}</h3>
+                <h3 class="stat-value">{{ investmentStats.totalNfts }}</h3>
                 <p class="stat-label">Total NFTs</p>
               </div>
             </div>
@@ -37,7 +37,7 @@
                 <i class="fas fa-chart-line"></i>
               </div>
               <div class="stat-content">
-                <h3 class="stat-value">{{ investmentStats.totalEarned }}</h3>
+                <h3 class="stat-value">{{ investmentStats.totalMyNfts }}</h3>
                 <p class="stat-label">Total My NFTs</p>
               </div>
             </div>
@@ -340,7 +340,8 @@ const chainId = useChainId();
 
 // Investment stats
 const investmentStats = ref({
-  totalStaked: "-",
+  totalNfts: "-",
+  totalMyNfts: "-",
   totalEarned: "125,000",
   apy: "15.8",
   totalStakers: "12,450",
@@ -509,7 +510,7 @@ const loadUserNFTs = async () => {
 
     console.log("User NFTs:", result);
     nftPackages.value = result;
-    // Fetch totalSupply and update investmentStats.totalStaked
+    // Fetch totalSupply and update investmentStats.totalNfts
     try {
       const totalSupply = await readContract(wagmiConfig, {
         address: ppoPackageAddress.value,
@@ -517,10 +518,24 @@ const loadUserNFTs = async () => {
         functionName: "totalSupply",
         chainId: chainId.value,
       });
-      investmentStats.value.totalStaked = totalSupply.toLocaleString();
+      investmentStats.value.totalNfts = totalSupply.toLocaleString();
     } catch (err) {
       console.error("Error loading totalSupply:", err);
-      investmentStats.value.totalStaked = "-";
+      investmentStats.value.totalNfts = "-";
+    }
+
+    try {
+      const balanceOf = await readContract(wagmiConfig, {
+        address: ppoPackageAddress.value,
+        abi: ppoPackageAbi,
+        functionName: "balanceOf",
+        args: [address.value],
+        chainId: chainId.value,
+      });
+      investmentStats.value.totalMyNfts = balanceOf.toLocaleString();
+    } catch (err) {
+      console.error("Error loading balanceOf:", err);
+      investmentStats.value.totalMyNfts = "-";
     }
   } catch (err) {
     console.error("Error loading NFTs:", err);
