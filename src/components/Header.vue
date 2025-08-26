@@ -115,13 +115,13 @@
 
       <!-- Mobile Menu -->
       <div class="mobile-menu" :class="{ 'show': isMobileMenuOpen }">
-        <div class="mobile-menu-content">
-          <ul class="mobile-nav-list">
-            <li class="mobile-nav-item" v-for="item in menuItems" :key="item.id">
+        <div class="flex flex-col p-5 h-[calc(100vh-70px)] overflow-y-auto pb-[80px]">
+          <ul class="mobile-nav-list list-none m-0 p-0 flex-1">
+            <li class="mobile-nav-item mb-2" v-for="item in menuItems" :key="item.id">
               <template v-if="item.submenu">
                 <div class="mobile-dropdown">
                   <a 
-                    class="mobile-nav-link" 
+                    class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-white font-medium bg-white/5 border border-white/10 transition-all text-base hover:bg-pink-100/20 hover:text-pink-600"
                     href="#" 
                     @click.prevent="handleDropdownClick(item.id)"
                     :class="{ 'active': activeDropdown === item.id }"
@@ -134,7 +134,7 @@
                     <li v-for="subItem in item.submenu" :key="subItem.id">
                       <router-link 
                         :to="subItem.url" 
-                        class="mobile-dropdown-item"
+                        class="mobile-dropdown-item flex items-center gap-2 px-4 py-2 rounded-lg text-white hover:bg-pink-100/20 hover:text-pink-600"
                         @click="handleMenuClick(subItem)"
                       >
                         <i :class="subItem.icon"></i>
@@ -147,7 +147,7 @@
               <template v-else>
                 <router-link 
                   :to="item.url" 
-                  class="mobile-nav-link"
+                  class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-white font-medium bg-white/5 border border-white/10 transition-all text-base hover:bg-pink-100/20 hover:text-pink-600"
                   @click="handleMenuClick(item)"
                   :class="{ 'active': $route.path === item.url }"
                 >
@@ -159,16 +159,11 @@
           </ul>
 
           <!-- Mobile Actions -->
-          <div class="mobile-actions">
-            <div class="mobile-wallet-section">
+          <div class="mobile-actions mt-6">
+            <div class="mobile-wallet-section mb-4">
               <WalletStatus />
               <ReownWalletButton />
             </div>
-            
-            <!-- <router-link v-if="!currentUser" to="/signup" class="mobile-btn-signin">
-              <i class="fas fa-sign-in-alt"></i>
-              <span>Sign In</span>
-            </router-link> -->
           </div>
         </div>
       </div>
@@ -721,14 +716,6 @@ onUnmounted(() => {
 .mobile-menu.show {
   transform: translateX(0);
   visibility: visible;
-}
-
-.mobile-menu-content {
-  padding: 20px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
 }
 
 .mobile-nav-list {
