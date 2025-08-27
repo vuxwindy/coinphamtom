@@ -822,34 +822,36 @@ input[type="submit"],
 input[type="reset"],
 input[type="file"],
 button {
-  background-image: none;
-  background: var(--dark-color);
-  text-decoration: none !important;
-  display: inline-block;
-  position: relative;
+  /* background-image: none; */
+  /* background: var(--dark-color); */
+  /* text-decoration: none !important; */
+  /* display: inline-block; */
+  /* position: relative; */
   /* border: 2px solid transparent; */
   text-transform: capitalize;
   border-radius: 0;
+  /* text-transform: capitalize; */
+  /* border-radius: 0; */
   /* padding: 0.75em 1.5em; */
   /* margin-top: 15px; */
-  font-family: var(--body-font);
-  font-size: 15px;
-  font-weight: 500;
-  line-height: normal;
-  text-align: center;
-  color: var(--light-color);
-  z-index: 1;
-  cursor: pointer;
-  white-space: nowrap;
-  vertical-align: middle;
-  -webkit-transition: all 0.3s ease-in;
-  transition: all 0.3s ease-in;
-  -ms-touch-action: manipulation;
-  touch-action: manipulation;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  /* font-family: var(--body-font); */
+  /* font-size: 15px; */
+  /* font-weight: 500; */
+  /* line-height: normal; */
+  /* text-align: center; */
+  /* color: var(--light-color); */
+  /* z-index: 1; */
+  /* cursor: pointer; */
+  /* white-space: nowrap; */
+  /* vertical-align: middle; */
+  /* -webkit-transition: all 0.3s ease-in; */
+  /* transition: all 0.3s ease-in; */
+  /* -ms-touch-action: manipulation; */
+  /* touch-action: manipulation; */
+  /* -webkit-user-select: none; */
+  /* -moz-user-select: none; */
+  /* -ms-user-select: none; */
+  /* user-select: none; */
 }
 
 .btn:hover,
@@ -2726,13 +2728,13 @@ iconify-icon.signup-social-icon{
 }
 
 /* Import Font Awesome */
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+/* @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'); */
 
 /* Import custom icon font */
-@import url('./assets/fonts/icomoon.css');
+/* @import url('./assets/fonts/icomoon.css'); */
 
 /* Global styles */
-* {
+/* * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -2746,10 +2748,10 @@ body {
 
 #app {
   min-height: 100vh;
-}
+} */
 
 /* Ensure icons display properly */
-[class^="icon-"], [class*=" icon-"] {
+/* [class^="icon-"], [class*=" icon-"] {
   font-family: 'icomoon' !important;
   speak: never;
   font-style: normal;
@@ -2759,35 +2761,35 @@ body {
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
+} */
 
 /* Font Awesome fallback */
-.fas, .far, .fab {
+/* .fas, .far, .fab {
   font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands', 'Font Awesome 6 Regular' !important;
-}
+} */
 
 /* Ensure proper icon rendering */
-i {
+/* i {
   display: inline-block;
   font-style: normal;
   font-variant: normal;
   text-rendering: auto;
   line-height: 1;
-}
+} */
 
 /* Custom icon classes */
-.icon-facebook:before {
+/* .icon-facebook:before {
   content: "\ea90";
-}
+} */
 
-.icon-twitter:before {
+/* .icon-twitter:before {
   content: "\ea96";
-}
-
+} */
+/* 
 .icon-youtube:before {
   content: "\ea9d";
-}
-
+} */
+/* 
 .icon-linkedin:before {
   content: "\eaca";
 }
@@ -2798,10 +2800,10 @@ i {
 
 .icon-instagram:before {
   content: "\f16d";
-}
+} */
 
 /* Bootstrap overrides for dark theme */
-.bg-dark {
+/* .bg-dark {
   background-color: #000 !important;
 }
 
@@ -2811,10 +2813,10 @@ i {
 
 .text-white-50 {
   color: rgba(255, 255, 255, 0.5) !important;
-}
+} */
 
 /* Button styles */
-.btn-linear {
+/* .btn-linear {
   background: linear-gradient(45deg, #cc00ff, #d739ff);
   border: none;
   color: white;
@@ -2838,18 +2840,18 @@ i {
   background: #cc00ff;
   color: white;
   transform: translateY(-2px);
-}
+} */
 
 /* Responsive utilities */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .container {
     padding-left: 15px;
     padding-right: 15px;
   }
-}
+} */
 
 /* Animation utilities */
-.fade-in {
+/* .fade-in {
   animation: fadeIn 0.5s ease-in;
 }
 
@@ -2862,10 +2864,10 @@ i {
     opacity: 1;
     transform: translateY(0);
   }
-}
+} */
 
 /* Custom scrollbar */
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 8px;
 }
 
@@ -2880,4 +2882,5 @@ i {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #d739ff;
-}
+} */
+@import "tailwindcss";

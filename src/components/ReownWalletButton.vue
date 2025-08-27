@@ -102,6 +102,14 @@ onUnmounted(() => {
   animation: fadeIn 0.2s ease-in-out;
 }
 
+@media screen and (max-width: 600px) {
+  .wallet-dropdown {
+    right: auto;
+    left: 0;
+    width: 180px;
+  }
+}
+
 .dropdown-content {
   display: flex;
   flex-direction: column;

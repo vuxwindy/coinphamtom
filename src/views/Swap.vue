@@ -125,12 +125,27 @@
                 </div>
 
                 <!-- Swap Button -->
-                <div class="swap-actions">
+                <!-- <div class="swap-actions">
                   <button 
                     class="btn-swap" 
                     @click="executeSwap"
                     :disabled="!canSwap"
-                    :class="{ 'disabled': !canSwap }"
+                    :class="{ 'disabled': !canSwap }" -->
+                <button
+                  class="btn btn-swap btn-linear btn-large w-full"
+                  @click="executeSwap"
+                  :disabled="!canSwap || isLoading"
+                >
+                  <i v-if="isLoading" class="fas fa-spinner fa-spin me-2"></i>
+                  <i v-else class="fas fa-exchange-alt me-2"></i>
+                  {{ getSwapButtonText() }}
+                </button>
+
+                <!-- Settings -->
+                <!-- <div class="swap-settings">
+                  <button
+                    class="btn-link"
+                    @click="showSettings = !showSettings"
                   >
                     <i class="fas fa-exchange-alt me-2"></i>
                     {{ swapButtonText }}

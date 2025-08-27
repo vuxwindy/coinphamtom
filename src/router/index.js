@@ -35,7 +35,7 @@ const routes = [
   {
     path: "/investment",
     name: "Investment",
-    component: () => import("../views/Investment.vue"),
+    component: () => import("../views/investment/Investment.vue"),
   },
   {
     path: "/nft-investment",

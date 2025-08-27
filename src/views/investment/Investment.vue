@@ -1,15 +1,15 @@
 <template>
   <div class="investment-page">
     <Header />
-    
+
     <!-- Investment Hero Section -->
     <section class="investment-hero padding-large">
       <div class="container">
         <div class="row">
           <div class="col-12">
             <div class="investment-header text-center">
-              <h1 class="investment-title">Investment & Staking</h1>
-              <p class="investment-subtitle">Grow your $PPO tokens through staking and yield farming</p>
+              <h1 class="investment-title">Investment</h1>
+              <!-- <p class="investment-subtitle">Grow your $PPO tokens through staking and yield farming</p> -->
             </div>
           </div>
         </div>
@@ -19,15 +19,15 @@
     <!-- Investment Overview -->
     <section class="investment-overview padding-large">
       <div class="container">
-        <div class="row">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="col-lg-3 col-md-6 mb-4">
             <div class="stat-card">
               <div class="stat-icon">
                 <i class="fas fa-wallet"></i>
               </div>
               <div class="stat-content">
-                <h3 class="stat-value">{{ investmentStats.totalStaked }}</h3>
-                <p class="stat-label">Total Staked</p>
+                <h3 class="stat-value">{{ investmentStats.totalNfts }}</h3>
+                <p class="stat-label">Total NFTs</p>
               </div>
             </div>
           </div>
@@ -37,12 +37,12 @@
                 <i class="fas fa-chart-line"></i>
               </div>
               <div class="stat-content">
-                <h3 class="stat-value">{{ investmentStats.totalEarned }}</h3>
-                <p class="stat-label">Total Earned</p>
+                <h3 class="stat-value">{{ investmentStats.totalMyNfts }}</h3>
+                <p class="stat-label">Total My NFTs</p>
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-6 mb-4">
+          <!-- <div class="col-lg-3 col-md-6 mb-4">
             <div class="stat-card">
               <div class="stat-icon">
                 <i class="fas fa-percentage"></i>
@@ -63,7 +63,7 @@
                 <p class="stat-label">Total Stakers</p>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </section>
@@ -127,60 +127,27 @@
 
     <!-- Staking Pools -->
     <section class="staking-pools padding-large bg-dark">
-      <div class="container">
+      <div class="container relative">
+        <div class="flex justify-end md:mb-[-80px]">
+          <button
+            class="bg-pink-600 hover:bg-pink-700 text-white font-semibold px-6 py-2 rounded-xl shadow-lg z-10"
+            @click="showMysteryBox = true"
+          >
+            Invest
+          </button>
+        </div>
         <div class="row">
           <div class="col-12">
-            <h2 class="section-title text-center mb-5">Staking Pools</h2>
-            <div class="pools-grid">
-              <div v-for="pool in stakingPools" :key="pool.id" class="pool-card">
-                <div class="pool-header">
-                  <div class="pool-icon">
-                    <i :class="pool.icon"></i>
-                  </div>
-                  <div class="pool-info">
-                    <h3 class="pool-name">{{ pool.name }}</h3>
-                    <p class="pool-description">{{ pool.description }}</p>
-                  </div>
-                  <div class="pool-status" :class="pool.status">
-                    {{ pool.status }}
-                  </div>
-                </div>
-                
-                <div class="pool-stats">
-                  <div class="stat-row">
-                    <span class="stat-label">APY</span>
-                    <span class="stat-value">{{ pool.apy }}%</span>
-                  </div>
-                  <div class="stat-row">
-                    <span class="stat-label">Lock Period</span>
-                    <span class="stat-value">{{ pool.lockPeriod }}</span>
-                  </div>
-                  <div class="stat-row">
-                    <span class="stat-label">Min Stake</span>
-                    <span class="stat-value">{{ pool.minStake }} PPO</span>
-                  </div>
-                  <div class="stat-row">
-                    <span class="stat-label">Total Staked</span>
-                    <span class="stat-value">{{ pool.totalStaked }} PPO</span>
-                  </div>
-                </div>
-                
-                <div class="pool-actions">
-                  <button 
-                    class="btn btn-linear"
-                    @click="openStakeModal(pool)"
-                    :disabled="pool.status === 'coming-soon'"
-                  >
-                    <i class="fas fa-lock me-2"></i>Stake Now
-                  </button>
-                  <button 
-                    class="btn btn-outline-linear"
-                    @click="viewPoolDetails(pool.id)"
-                  >
-                    <i class="fas fa-info-circle me-2"></i>Details
-                  </button>
-                </div>
-              </div>
+            <h2 class="section-title text-center mb-5">My NFTs</h2>
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px]"
+            >
+              <InvestNFTCard
+                v-for="nft in nftPackages"
+                :key="nft.tier + '-' + nft.startTime"
+                :nft="nft"
+                @claimed="loadUserNFTs"
+              />
             </div>
           </div>
         </div>
@@ -351,13 +318,13 @@
             <div class="form-group">
               <label>Amount to Stake</label>
               <div class="input-group">
-                <input 
+                <input
                   v-model="stakeAmount"
                   type="number"
                   class="form-control"
                   placeholder="Enter amount"
                   min="0"
-                >
+                />
                 <span class="input-suffix">PPO</span>
               </div>
               <div class="balance-info">
@@ -365,7 +332,7 @@
                 <button class="btn-link" @click="setMaxAmount">Max</button>
               </div>
             </div>
-            
+
             <div class="stake-preview">
               <div class="preview-item">
                 <span>APY:</span>
@@ -380,8 +347,8 @@
                 <span>{{ estimatedRewards }} PPO</span>
               </div>
             </div>
-            
-            <button 
+
+            <button
               class="btn btn-linear btn-large w-100"
               @click="confirmStake"
               :disabled="!canStake"
@@ -394,7 +361,7 @@
     </div>
 
     <!-- Toast Notification -->
-    <div v-if="showToast" class="toast-notification" :class="toastType">
+    <!-- <div v-if="showToast" class="toast-notification" :class="toastType">
       <div class="toast-content">
         <i :class="getToastIcon()" class="toast-icon"></i>
         <span class="toast-message">{{ toastMessage }}</span>
@@ -402,22 +369,39 @@
           <i class="fas fa-times"></i>
         </button>
       </div>
-    </div>
+    </div> -->
+    <!-- Mystery Box -->
+    <Dialog :open="showMysteryBox" @close="showMysteryBox = false">
+      <MysteryBox @minted="loadUserNFTs" />
+    </Dialog>
 
     <Footer />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useWeb3 } from '../composables/useWeb3.js'
-import { useFirebase } from '@/composables/useFirebase.js'
-import Header from '@/components/Header.vue'
-import Footer from '@/components/Footer.vue'
+// import { ref, computed, onMounted } from 'vue'
+// import { useRouter } from 'vue-router'
+// import { useWeb3 } from '../composables/useWeb3.js'
+// import { useFirebase } from '@/composables/useFirebase.js'
+// import Header from '@/components/Header.vue'
+// import Footer from '@/components/Footer.vue'
+import { ref, computed, onMounted, watch } from "vue";
+import { useRouter } from "vue-router";
+import { useFirebase } from "@/composables/useFirebase.js";
+import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
+import MysteryBox from "@/views/investment/MysteryBox.vue";
+import Dialog from "@/components/Dialog.vue";
+import InvestNFTCard from "./InvestNFTCard.vue";
+import { readContract } from "@wagmi/core";
+import { useAccount, useChainId } from "@wagmi/vue";
+import { ppoPackageAbi } from "@/abis/ppoPackage.js";
+import { useContractAddress } from "@/composables/useContractAddress";
+import { wagmiConfig } from "../../config/wagmi";
 
-const router = useRouter()
-const { currentUser, getUserData } = useFirebase()
+const router = useRouter();
+const { currentUser, getUserData } = useFirebase();
 
 // Use Web3 composable for wallet connection
 const {
@@ -427,10 +411,16 @@ const {
 } = useWeb3()
 
 // State
-const showStakeModal = ref(false)
-const selectedPool = ref(null)
-const stakeAmount = ref('')
-const userBalance = ref(0)
+const showStakeModal = ref(false);
+const showMysteryBox = ref(false);
+const selectedPool = ref(null);
+const stakeAmount = ref("");
+const userBalance = ref(0);
+
+const nftPackages = ref([]);
+const { address } = useAccount();
+const { ppoPackageAddress } = useContractAddress(); // Địa chỉ contract
+const chainId = useChainId();
 
 // Toast notification state
 const showToast = ref(false)
@@ -439,11 +429,12 @@ const toastType = ref('info')
 
 // Investment stats - make personal numbers conditional
 const investmentStats = ref({
-  totalStaked: '2,450,000',
-  totalEarned: '125,000',
-  apy: '15.8',
-  totalStakers: '12,450'
-})
+  totalNfts: "-",
+  totalMyNfts: "-",
+  totalEarned: "125,000",
+  apy: "15.8",
+  totalStakers: "12,450",
+});
 
 // Personal stats - only show when wallet connected
 const personalStats = computed(() => {
@@ -467,105 +458,192 @@ const personalStats = computed(() => {
 const stakingPools = ref([
   {
     id: 1,
-    name: 'Flexible Staking',
-    description: 'Stake and unstake anytime with no lock period',
-    icon: 'fas fa-unlock',
+    name: "Flexible Staking",
+    description: "Stake and unstake anytime with no lock period",
+    icon: "fas fa-unlock",
     apy: 8.5,
-    lockPeriod: 'No lock',
+    lockPeriod: "No lock",
     minStake: 100,
-    totalStaked: '850,000',
-    status: 'active'
+    totalStaked: "850,000",
+    status: "active",
   },
   {
     id: 2,
-    name: '30-Day Lock',
-    description: 'Lock your tokens for 30 days for higher rewards',
-    icon: 'fas fa-lock',
+    name: "30-Day Lock",
+    description: "Lock your tokens for 30 days for higher rewards",
+    icon: "fas fa-lock",
     apy: 12.5,
-    lockPeriod: '30 days',
+    lockPeriod: "30 days",
     minStake: 500,
-    totalStaked: '1,200,000',
-    status: 'active'
+    totalStaked: "1,200,000",
+    status: "active",
   },
   {
     id: 3,
-    name: '90-Day Lock',
-    description: 'Long-term staking with maximum rewards',
-    icon: 'fas fa-lock',
+    name: "90-Day Lock",
+    description: "Long-term staking with maximum rewards",
+    icon: "fas fa-lock",
     apy: 18.5,
-    lockPeriod: '90 days',
+    lockPeriod: "90 days",
     minStake: 1000,
-    totalStaked: '400,000',
-    status: 'active'
-  }
-])
+//     totalStaked: '400,000',
+//     status: 'active'
+//   }
+// ])
+    totalStaked: "400,000",
+    status: "active",
+  },
+  {
+    id: 4,
+    name: "VIP Staking",
+    description: "Exclusive staking for large holders",
+    icon: "fas fa-crown",
+    apy: 25.0,
+    lockPeriod: "180 days",
+    minStake: 10000,
+    totalStaked: "0",
+    status: "coming-soon",
+  },
+]);
+
+// My stakes
+const myStakes = ref([
+  {
+    id: 1,
+    poolName: "Flexible Staking",
+    amount: 500,
+    earned: 12.5,
+    stakeDate: new Date("2024-01-15"),
+    progress: 100,
+  },
+  {
+    id: 2,
+    poolName: "30-Day Lock",
+    amount: 1000,
+    earned: 45.2,
+    stakeDate: new Date("2024-02-01"),
+    progress: 75,
+  },
+]);
 
 // Yield farms
 const yieldFarms = ref([
   {
     id: 1,
-    token1: 'PPO',
-    token2: 'BNB',
-    token1Icon: '/src/assets/images/ppo-icon.png',
-    token2Icon: '/src/assets/images/bnb-icon.png',
-    description: 'PPO-BNB Liquidity Pool',
-    apy: 25.5,
-    tvl: '2.5M PPO',
-    rewards: 'PPO + BNB'
+//     token1: 'PPO',
+//     token2: 'BNB',
+//     token1Icon: '/src/assets/images/ppo-icon.png',
+//     token2Icon: '/src/assets/images/bnb-icon.png',
+//     description: 'PPO-BNB Liquidity Pool',
+//     apy: 25.5,
+//     tvl: '2.5M PPO',
+//     rewards: 'PPO + BNB'
+//   },
+//   {
+//     id: 2,
+//     token1: 'PPO',
+//     token2: 'USDT',
+//     token1Icon: '/src/assets/images/ppo-icon.png',
+//     token2Icon: '/src/assets/images/usdt-icon.png',
+//     description: 'PPO-USDT Liquidity Pool',
+//     apy: 22.8,
+//     tvl: '1.8M PPO',
+//     rewards: 'PPO + USDT'
+//   }
+// ])
+    token1: "PPO",
+    token2: "ETH",
+    token1Icon: "/src/assets/images/ppo-icon.png",
+    token2Icon: "/src/assets/images/eth-icon.png",
+    description: "PPO/ETH liquidity pool",
+    apy: 45.2,
+    tvl: 2.5,
+    rewards: "PPO + ETH",
   },
   {
     id: 2,
-    token1: 'PPO',
-    token2: 'USDT',
-    token1Icon: '/src/assets/images/ppo-icon.png',
-    token2Icon: '/src/assets/images/usdt-icon.png',
-    description: 'PPO-USDT Liquidity Pool',
-    apy: 22.8,
-    tvl: '1.8M PPO',
-    rewards: 'PPO + USDT'
-  }
-])
+    token1: "PPO",
+    token2: "USDT",
+    token1Icon: "/src/assets/images/ppo-icon.png",
+    token2Icon: "/src/assets/images/usdt-icon.png",
+    description: "PPO/USDT liquidity pool",
+    apy: 38.7,
+    tvl: 1.8,
+    rewards: "PPO + USDT",
+  },
+]);
 
 // Investment history
 const investmentHistory = ref([
   {
     id: 1,
-    date: '2024-01-15',
-    type: 'stake',
-    amount: 1000,
-    status: 'completed'
+//     date: '2024-01-15',
+//     type: 'stake',
+//     amount: 1000,
+//     status: 'completed'
+//   },
+//   {
+//     id: 2,
+//     date: '2024-01-10',
+//     type: 'unstake',
+//     amount: 500,
+//     status: 'completed'
+//   },
+//   {
+//     id: 3,
+//     date: '2024-01-05',
+//     type: 'reward',
+//     amount: 25,
+//     status: 'completed'
+//   }
+// ])
+    date: new Date("2024-02-15"),
+    type: "stake",
+    amount: 500,
+    status: "completed",
   },
   {
     id: 2,
-    date: '2024-01-10',
-    type: 'unstake',
-    amount: 500,
-    status: 'completed'
+    date: new Date("2024-02-10"),
+    type: "unstake",
+    amount: 250,
+    status: "completed",
   },
   {
     id: 3,
-    date: '2024-01-05',
-    type: 'reward',
-    amount: 25,
-    status: 'completed'
-  }
-])
+    date: new Date("2024-02-05"),
+    type: "claim",
+    amount: 12.5,
+    status: "completed",
+  },
+]);
 
 // Computed properties
 const estimatedRewards = computed(() => {
-  if (!stakeAmount.value || !selectedPool.value) return 0
-  const amount = parseFloat(stakeAmount.value)
-  const apy = selectedPool.value.apy
-  return ((amount * apy) / 100 / 12).toFixed(2)
-})
+//   if (!stakeAmount.value || !selectedPool.value) return 0
+//   const amount = parseFloat(stakeAmount.value)
+//   const apy = selectedPool.value.apy
+//   return ((amount * apy) / 100 / 12).toFixed(2)
+// })
+
+// const canStake = computed(() => {
+//   if (!isWalletConnected.value) return false
+//   if (!stakeAmount.value || parseFloat(stakeAmount.value) <= 0) return false
+//   if (parseFloat(stakeAmount.value) > userBalance.value) return false
+//   if (parseFloat(stakeAmount.value) < selectedPool.value?.minStake) return false
+//   return true
+// })
+  if (!selectedPool.value || !stakeAmount.value) return 0;
+  const amount = parseFloat(stakeAmount.value);
+  const apy = selectedPool.value.apy;
+  return ((amount * apy) / 100 / 12).toFixed(2);
+});
 
 const canStake = computed(() => {
-  if (!isWalletConnected.value) return false
-  if (!stakeAmount.value || parseFloat(stakeAmount.value) <= 0) return false
-  if (parseFloat(stakeAmount.value) > userBalance.value) return false
-  if (parseFloat(stakeAmount.value) < selectedPool.value?.minStake) return false
-  return true
-})
+  if (!selectedPool.value || !stakeAmount.value) return false;
+  const amount = parseFloat(stakeAmount.value);
+  return amount >= selectedPool.value.minStake && amount <= userBalance.value;
+});
 
 // Methods
 const showToastMessage = (message, type = 'info') => {
@@ -597,94 +675,255 @@ const getToastIcon = () => {
 }
 
 const openStakeModal = (pool) => {
-  if (!isWalletConnected.value) {
-    showToastMessage('Please connect your wallet first to stake tokens', 'warning')
-    return
-  }
+//   if (!isWalletConnected.value) {
+//     showToastMessage('Please connect your wallet first to stake tokens', 'warning')
+//   }
   
-  selectedPool.value = pool
-  showStakeModal.value = true
-  stakeAmount.value = ''
-}
+//   selectedPool.value = pool
+//   showStakeModal.value = true
+//   stakeAmount.value = ''
+// }
+  selectedPool.value = pool;
+  stakeAmount.value = "";
+};
 
 const closeStakeModal = () => {
-  showStakeModal.value = false
-  selectedPool.value = null
-  stakeAmount.value = ''
-}
+  selectedPool.value = null;
+  stakeAmount.value = "";
+};
 
 const setMaxAmount = () => {
-  stakeAmount.value = userBalance.value.toString()
-}
+  stakeAmount.value = userBalance.value.toString();
+};
 
-const confirmStake = () => {
-  if (!isWalletConnected.value) {
-    showToastMessage('Please connect your wallet first', 'warning')
-    return
+const loadUserNFTs = async () => {
+  if (!address.value) return;
+  try {
+    const result = await readContract(wagmiConfig, {
+      address: ppoPackageAddress.value,
+      abi: ppoPackageAbi,
+      functionName: "getPackagesOfOwner",
+      args: [address.value],
+      chainId: chainId.value,
+    });
+
+    console.log("User NFTs:", result);
+    nftPackages.value = result;
+    // Fetch totalSupply and update investmentStats.totalNfts
+    try {
+      const totalSupply = await readContract(wagmiConfig, {
+        address: ppoPackageAddress.value,
+        abi: ppoPackageAbi,
+        functionName: "totalSupply",
+        chainId: chainId.value,
+      });
+      investmentStats.value.totalNfts = totalSupply.toLocaleString();
+    } catch (err) {
+      console.error("Error loading totalSupply:", err);
+      investmentStats.value.totalNfts = "-";
+    }
+
+    try {
+      const balanceOf = await readContract(wagmiConfig, {
+        address: ppoPackageAddress.value,
+        abi: ppoPackageAbi,
+        functionName: "balanceOf",
+        args: [address.value],
+        chainId: chainId.value,
+      });
+      investmentStats.value.totalMyNfts = balanceOf.toLocaleString();
+    } catch (err) {
+      console.error("Error loading balanceOf:", err);
+      investmentStats.value.totalMyNfts = "-";
+    }
+  } catch (err) {
+    console.error("Error loading NFTs:", err);
   }
+};
+
+// const confirmStake = () => {
+//   if (!isWalletConnected.value) {
+//     showToastMessage('Please connect your wallet first', 'warning')
+//     return
+//   }
   
-  if (!canStake.value) {
-    showToastMessage('Please check your stake amount and balance', 'warning')
-    return
+//   if (!canStake.value) {
+//     showToastMessage('Please check your stake amount and balance', 'warning')
+//     return
+//   }
+  
+//   // Simulate staking
+//   console.log('Staking:', {
+//     pool: selectedPool.value.name,
+//     amount: stakeAmount.value,
+//     wallet: walletAddress.value
+//   })
+  
+//   // Update user balance
+//   userBalance.value -= parseFloat(stakeAmount.value)
+  
+//   // Close modal
+//   closeStakeModal()
+  
+//   // Show success message
+//   showToastMessage('Staking successful!', 'success')
+// }
+
+// const addLiquidity = (farmId) => {
+//   if (!isWalletConnected.value) {
+//     showToastMessage('Please connect your wallet first to add liquidity', 'warning')
+//     return
+//   }
+  
+//   console.log('Adding liquidity to farm:', farmId)
+//   // Implement liquidity addition logic
+// }
+
+// const viewFarm = (farmId) => {
+//   console.log('Viewing farm:', farmId)
+//   // Navigate to farm details
+// }
+
+// const viewTransaction = (transactionId) => {
+//   console.log('Viewing transaction:', transactionId)
+//   // Show transaction details
+// }
+
+// const viewPoolDetails = (poolId) => {
+//   console.log('Viewing pool details:', poolId)
+//   // Navigate to pool details page
+// }
+
+// const formatDate = (dateString) => {
+//   return new Date(dateString).toLocaleDateString()
+// }
+const confirmStake = async () => {
+  if (!canStake.value) return;
+
+  try {
+    // Mock staking - in real app, this would call smart contract
+    console.log(
+      `Staking ${stakeAmount.value} PPO in ${selectedPool.value.name}`
+    );
+
+    // Add to my stakes
+    myStakes.value.push({
+      id: Date.now(),
+      poolName: selectedPool.value.name,
+      amount: parseFloat(stakeAmount.value),
+      earned: 0,
+      stakeDate: new Date(),
+      progress: 0,
+    });
+
+    // Add to history
+    investmentHistory.value.unshift({
+      id: Date.now(),
+      date: new Date(),
+      type: "stake",
+      amount: parseFloat(stakeAmount.value),
+      status: "completed",
+    });
+
+    closeStakeModal();
+  } catch (error) {
+    console.error("Staking failed:", error);
   }
-  
-  // Simulate staking
-  console.log('Staking:', {
-    pool: selectedPool.value.name,
-    amount: stakeAmount.value,
-    wallet: walletAddress.value
-  })
-  
-  // Update user balance
-  userBalance.value -= parseFloat(stakeAmount.value)
-  
-  // Close modal
-  closeStakeModal()
-  
-  // Show success message
-  showToastMessage('Staking successful!', 'success')
-}
+};
 
-const addLiquidity = (farmId) => {
-  if (!isWalletConnected.value) {
-    showToastMessage('Please connect your wallet first to add liquidity', 'warning')
-    return
+const claimRewards = (stakeId) => {
+  const stake = myStakes.value.find((s) => s.id === stakeId);
+  if (stake && stake.earned > 0) {
+    console.log(`Claiming ${stake.earned} PPO rewards`);
+    stake.earned = 0;
+
+    // Add to history
+    investmentHistory.value.unshift({
+      id: Date.now(),
+      date: new Date(),
+      type: "claim",
+      amount: stake.earned,
+      status: "completed",
+    });
   }
-  
-  console.log('Adding liquidity to farm:', farmId)
-  // Implement liquidity addition logic
-}
+};
 
-const viewFarm = (farmId) => {
-  console.log('Viewing farm:', farmId)
-  // Navigate to farm details
-}
+const unstake = (stakeId) => {
+  const stakeIndex = myStakes.value.findIndex((s) => s.id === stakeId);
+  if (stakeIndex !== -1) {
+    const stake = myStakes.value[stakeIndex];
+    console.log(`Unstaking ${stake.amount} PPO`);
 
-const viewTransaction = (transactionId) => {
-  console.log('Viewing transaction:', transactionId)
-  // Show transaction details
-}
+    // Add to history
+    investmentHistory.value.unshift({
+      id: Date.now(),
+      date: new Date(),
+      type: "unstake",
+      amount: stake.amount,
+      status: "completed",
+    });
+
+    // Remove from my stakes
+    myStakes.value.splice(stakeIndex, 1);
+  }
+};
 
 const viewPoolDetails = (poolId) => {
-  console.log('Viewing pool details:', poolId)
-  // Navigate to pool details page
-}
+  // router.push(`/investment/pool/${poolId}`)
+};
 
-const formatDate = (dateString) => {
-  return new Date(dateString).toLocaleDateString()
-}
+const addLiquidity = (farmId) => {
+  router.push(`/investment/farm/${farmId}`);
+};
+
+const viewFarm = (farmId) => {
+  router.push(`/investment/farm/${farmId}`);
+};
+
+const viewTransaction = (txId) => {
+  console.log(`Viewing transaction ${txId}`);
+};
+
+const scrollToPools = () => {
+  const poolsSection = document.querySelector(".staking-pools");
+  if (poolsSection) {
+    poolsSection.scrollIntoView({ behavior: "smooth" });
+  }
+};
+
+const formatDate = (date) => {
+  return new Date(date).toLocaleDateString();
+};
 
 onMounted(async () => {
   console.log('Investment component mounted')
   
   // Load user data if authenticated
   if (currentUser.value) {
-    const userData = await getUserData()
-    if (userData) {
-      userBalance.value = userData.balance || 0
+//     const userData = await getUserData()
+//     if (userData) {
+//       userBalance.value = userData.balance || 0
+//     }
+//   }
+// })
+    try {
+      const result = await getUserData();
+      if (result.success) {
+        userBalance.value = result.data.tokenBalance || 0;
+      }
+    } catch (error) {
+      console.error("Failed to load user data:", error);
     }
   }
-})
+};
+
+onMounted(() => {
+  loadUserData();
+  loadUserNFTs();
+  setInterval(loadUserNFTs, 60000);
+});
+
+watch(address, loadUserNFTs);
 </script>
 
 <style scoped>
@@ -867,144 +1106,200 @@ onMounted(async () => {
   margin-top: 40px;
 }
 
-.pool-card {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 30px;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: white;
 }
 
-.pool-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  border-radius: 20px;
-  z-index: -1;
-}
-
-.pool-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 25px 50px rgba(204, 0, 255, 0.2);
-  border-color: rgba(204, 0, 255, 0.3);
-}
-
-.pool-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 25px;
-}
-
-.pool-icon {
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  border-radius: 15px;
+.empty-icon {
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
-  color: white;
-  margin-right: 20px;
-  position: relative;
-  overflow: hidden;
+  margin: 0 auto 30px;
+  font-size: 3rem;
+  color: #cc00ff;
 }
 
-.pool-icon::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+.empty-state h3 {
+  margin-bottom: 15px;
+}
+
+.empty-state p {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 30px;
+}
+
+.stakes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stake-item {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
   border-radius: 15px;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: white;
 }
 
-.pool-info {
+.stake-info {
   flex: 1;
 }
 
-.pool-name {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #ffffff;
+.stake-pool h4 {
+  margin-bottom: 5px;
+  color: white;
+}
+
+.stake-date {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+.stake-amount {
+  margin: 15px 0;
+}
+
+.amount {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #cc00ff;
+}
+
+.earned {
+  color: #51cf66;
+  font-size: 0.9rem;
+}
+
+.stake-progress {
+  margin-top: 15px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
   margin-bottom: 5px;
 }
 
-.pool-description {
-  color: #b0b0b0;
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(45deg, #cc00ff, #d739ff);
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.stake-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+.yield-farming {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.farming-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.farm-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.farm-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.farm-tokens {
+  display: flex;
+  align-items: center;
+}
+
+.token-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.token-icon:last-child {
+  margin-left: -10px;
+}
+
+.farm-info h4 {
+  color: white;
+  margin-bottom: 5px;
+}
+
+.farm-info p {
+  color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;
   margin: 0;
 }
 
-.pool-status {
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.pool-status.active {
-  background: linear-gradient(135deg, #34d399, #10b981);
-  color: white;
-}
-
-.pool-status.coming-soon {
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  color: white;
-}
-
-.pool-stats {
-  margin-bottom: 25px;
-}
-
-.stat-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.stat-row:last-child {
-  border-bottom: none;
-}
-
-.stat-row .stat-label {
-  color: #b0b0b0;
-  font-size: 0.9rem;
-}
-
-.stat-row .stat-value {
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-.pool-actions {
-  display: flex;
+.farm-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 15px;
+  margin-bottom: 20px;
 }
 
-.btn-stake {
-  flex: 1;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  border: none;
-  color: white;
-  padding: 12px 20px;
-  border-radius: 12px;
+.stat-item {
+  text-align: center;
+}
+
+.stat-item .stat-label {
+  display: block;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.8rem;
+  margin-bottom: 5px;
+}
+
+.stat-item .stat-value {
+  color: #cc00ff;
   font-weight: 600;
-  transition: all 0.3s ease;
-  position: relative;
+}
+
+.farm-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.history-table {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
   overflow: hidden;
 }
 
@@ -1052,204 +1347,34 @@ onMounted(async () => {
   .investment-title {
     font-size: 2.5rem;
   }
-  
-  .investment-header {
-    padding: 40px 20px;
-  }
-  
+
   .pools-grid {
     grid-template-columns: 1fr;
   }
-  
-  .pool-card {
-    padding: 20px;
-  }
-  
-  .stat-card {
-    padding: 20px;
-  }
-  
-  .stat-value {
-    font-size: 2rem;
-  }
-  
-  /* Mobile wallet connection fixes */
-  .pool-actions {
+
+  .stake-item {
     flex-direction: column;
+    text-align: center;
+  }
+
+  .farming-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .table-header,
+  .table-row {
+    grid-template-columns: 1fr;
     gap: 10px;
   }
-  
-  .btn-stake,
-  .btn-details {
-    width: 100%;
-    padding: 15px 20px;
-    font-size: 1rem;
+
+  .table-header {
+    display: none;
   }
-  
-  /* Ensure wallet connection works properly on mobile */
-  .staking-modal {
-    margin: 20px;
-    max-width: calc(100% - 40px);
-  }
-  
-  .modal-body {
-    padding: 20px;
-  }
-  
-  .form-control {
-    font-size: 1rem;
-    padding: 15px;
-  }
-  
-  .btn-linear {
-    padding: 15px 20px;
-    font-size: 1rem;
-  }
-}
 
-/* Animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.stat-card,
-.pool-card {
-  animation: fadeInUp 0.6s ease forwards;
-}
-
-.stat-card:nth-child(1) { animation-delay: 0.1s; }
-.stat-card:nth-child(2) { animation-delay: 0.2s; }
-.stat-card:nth-child(3) { animation-delay: 0.3s; }
-.stat-card:nth-child(4) { animation-delay: 0.4s; }
-
-.pool-card:nth-child(1) { animation-delay: 0.5s; }
-.pool-card:nth-child(2) { animation-delay: 0.6s; }
-.pool-card:nth-child(3) { animation-delay: 0.7s; }
-
-/* Personal Stats Section */
-.personal-stats {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.stat-card.personal {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(15px);
-}
-
-.stat-card.personal .stat-icon {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-}
-
-.stat-card.personal .stat-value {
-  color: #667eea;
-}
-
-/* Toast Notification Styles */
-.toast-notification {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 9999;
-  max-width: 400px;
-  animation: slideInRight 0.3s ease;
-}
-
-.toast-notification.success {
-  background: linear-gradient(135deg, #28a745, #20c997);
-  border-left: 4px solid #155724;
-}
-
-.toast-notification.warning {
-  background: linear-gradient(135deg, #ffc107, #fd7e14);
-  border-left: 4px solid #856404;
-}
-
-.toast-notification.error {
-  background: linear-gradient(135deg, #dc3545, #e83e8c);
-  border-left: 4px solid #721c24;
-}
-
-.toast-notification.info {
-  background: linear-gradient(135deg, #17a2b8, #6f42c1);
-  border-left: 4px solid #0c5460;
-}
-
-.toast-content {
-  display: flex;
-  align-items: center;
-  padding: 16px 20px;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.toast-icon {
-  font-size: 1.2rem;
-  margin-right: 12px;
-  color: white;
-}
-
-.toast-message {
-  flex: 1;
-  color: white;
-  font-weight: 500;
-  font-size: 0.95rem;
-}
-
-.toast-close {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1rem;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-  margin-left: 12px;
-}
-
-.toast-close:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.1);
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Mobile responsive for toast */
-@media (max-width: 768px) {
-  .toast-notification {
-    top: 10px;
-    right: 10px;
-    left: 10px;
-    max-width: none;
-  }
-  
-  .toast-content {
-    padding: 14px 16px;
-  }
-  
-  .toast-message {
-    font-size: 0.9rem;
+  .table-row {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-bottom: 10px;
   }
 }
 </style>
