@@ -33,7 +33,7 @@
                    MetaMask Connected!
                  </div>
                  <p><strong>Address:</strong> {{ shortAddress }}</p>
-                 <p><strong>Balance:</strong> {{ walletBalance }} ETH</p>
+                 <p><strong>Balance:</strong> {{ walletBalance }} BNB</p>
                  <div class="mt-3">
                    <button @click="refreshBalance" class="btn btn-outline-primary me-2">
                      <i class="fas fa-sync-alt me-2"></i>
@@ -97,7 +97,7 @@ import { computed } from 'vue'
 import { useWeb3 } from '../composables/useWeb3.js'
 import { useFirebase } from '../composables/useFirebase.js'
 
-// Use composables
+// Use Web3 composable
 const {
   isWeb3Ready,
   web3Error,

@@ -120,6 +120,11 @@ const generateReferralCode = () => {
   return result
 }
 
+// Generate referral link
+const generateReferralLink = (code) => {
+  return `https://pixelpayot.com/signup?ref=${code}`
+}
+
 // Sign in with email and password
 const signIn = async (email, password) => {
   try {
@@ -367,6 +372,8 @@ export function useFirebase() {
     updateUserData,
     getUserData,
     claimTaskReward,
-    addReferral
+    addReferral,
+    generateReferralCode,
+    generateReferralLink
   }
 }

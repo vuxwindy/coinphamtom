@@ -198,6 +198,9 @@ import { useWeb3 } from '@/composables/useWeb3.js'
 export default {
   name: 'ArrowGameModern',
   setup() {
+    // Use Pinia store
+          const { isWalletConnected } = useWeb3()
+
     // Game state
     const gameArea = ref(null)
     const isLandscape = ref(true)

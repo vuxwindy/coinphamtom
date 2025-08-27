@@ -205,10 +205,27 @@
                         readonly
                       >
                       <button class="btn btn-primary" @click="copyReferralCode">
-                        <i class="fas fa-copy"></i> Copy
+                        <i class="fas fa-copy"></i> Copy Code
                       </button>
                     </div>
-                    <p class="referral-info">Share this code with friends to earn 5 $PPO for each successful referral!</p>
+                    
+                    <!-- Referral Link Section -->
+                    <div class="referral-link-section">
+                      <h5>Your Referral Link</h5>
+                      <div class="referral-link">
+                        <input 
+                          type="text" 
+                          :value="generateReferralLink(userProfile.referralCode)" 
+                          class="form-control"
+                          readonly
+                        >
+                        <button class="btn btn-secondary" @click="copyReferralLink">
+                          <i class="fas fa-copy"></i> Copy Link
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <p class="referral-info">Share this code or link with friends to earn 5 $PPO for each successful referral!</p>
                   </div>
                   <div class="referral-links">
                     <h4>Quick Share Links</h4>
@@ -453,25 +470,37 @@ const manageWallets = () => {
   alert('Wallet management functionality will be implemented here')
 }
 
+const generateReferralLink = (code) => {
+  return `https://pixelpayot.com/signup?ref=${code}`
+}
+
 const copyReferralCode = () => {
   navigator.clipboard.writeText(userProfile.value.referralCode)
   alert('Referral code copied to clipboard!')
 }
 
+const copyReferralLink = () => {
+  const referralLink = generateReferralLink(userProfile.value.referralCode)
+  navigator.clipboard.writeText(referralLink)
+  alert('Referral link copied to clipboard!')
+}
+
 const shareOnTwitter = () => {
-  const text = `Join me on PixelPayot! Use my referral code: ${userProfile.value.referralCode}`
-  const url = window.location.origin
-  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`)
+  const referralLink = generateReferralLink(userProfile.value.referralCode)
+  const text = `Join me on PixelPayot! Use my referral link and get 5 $PPO bonus!`
+  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(referralLink)}`)
 }
 
 const shareOnTelegram = () => {
-  const text = `Join me on PixelPayot! Use my referral code: ${userProfile.value.referralCode}`
-  window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.origin)}&text=${encodeURIComponent(text)}`)
+  const referralLink = generateReferralLink(userProfile.value.referralCode)
+  const text = `Join me on PixelPayot! Use my referral link and get 5 $PPO bonus!`
+  window.open(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(text)}`)
 }
 
 const shareOnFacebook = () => {
-  const text = `Join me on PixelPayot! Use my referral code: ${userProfile.value.referralCode}`
-  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin)}&quote=${encodeURIComponent(text)}`)
+  const referralLink = generateReferralLink(userProfile.value.referralCode)
+  const text = `Join me on PixelPayot! Use my referral link and get 5 $PPO bonus!`
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}&quote=${encodeURIComponent(text)}`)
 }
 
 const saveSettings = () => {
@@ -813,6 +842,55 @@ onMounted(() => {
   font-size: 0.9rem;
 }
 
+.referral-link-section {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.referral-link-section h5 {
+  margin-bottom: 15px;
+  color: #ffffff;
+  font-weight: 600;
+  text-align: center;
+}
+
+.referral-link {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.referral-link input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 15px 20px;
+  color: #ffffff;
+  font-size: 0.9rem;
+  word-break: break-all;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #6c757d, #495057);
+  border: none;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+}
+
 .share-buttons {
   display: flex;
   gap: 10px;
@@ -1078,3 +1156,4 @@ onMounted(() => {
   }
 }
 </style>
+

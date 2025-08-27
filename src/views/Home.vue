@@ -43,7 +43,7 @@
               <div class="hero-stats">
                 <div class="stat-card">
                   <div class="stat-icon">
-                    <i class="fas fa-users"></i>
+                    <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20 18L17 18M17 18L14 18M17 18V15M17 18V21M11 21H4C4 17.134 7.13401 14 11 14C11.695 14 12.3663 14.1013 13 14.2899M15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7Z" stroke="#fb00ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                   </div>
                   <div class="stat-content">
                     <h4>10K+</h4>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="stat-card">
                   <div class="stat-icon">
-                    <i class="fas fa-coins"></i>
+                    <svg width="32px" height="32px" viewBox="-2 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="reward-4" transform="translate(-4 -2)"> <path id="secondary" fill="#fb00ff" d="M12,3a7,7,0,1,0,7,7,7,7,0,0,0-7-7Zm1.24,8.75L12,11.15l-1.24.6L11,10.48l-1-.89,1.38-.19L12,8.25l.62,1.15L14,9.59l-1,.89Z"></path> <path id="primary" d="M16.11,15.66,17,21l-5-1L7,21l.89-5.34" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path> <path id="primary-2" data-name="primary" d="M12.62,9.4,14,9.59l-1,.89.24,1.27L12,11.15l-1.24.6L11,10.48l-1-.89,1.38-.19L12,8.25ZM12,3a7,7,0,1,0,7,7,7,7,0,0,0-7-7Z" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path> </g> </g></svg>
                   </div>
                   <div class="stat-content">
                     <h4>$1.5M</h4>
@@ -61,7 +61,7 @@
                 </div>
                 <div class="stat-card">
                   <div class="stat-icon">
-                    <i class="fas fa-bullseye"></i>
+                    <svg width="32px" height="32px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect> <path d="M24 4L29.2533 7.83204L35.7557 7.81966L37.7533 14.0077L43.0211 17.8197L41 24L43.0211 30.1803L37.7533 33.9923L35.7557 40.1803L29.2533 40.168L24 44L18.7467 40.168L12.2443 40.1803L10.2467 33.9923L4.97887 30.1803L7 24L4.97887 17.8197L10.2467 14.0077L12.2443 7.81966L18.7467 7.83204L24 4Z" fill="#fb00ff" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M17 24L22 29L32 19" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                   </div>
                   <div class="stat-content">
                     <h4>95%</h4>
@@ -126,7 +126,7 @@
             <div class="tasks-card">
               <div class="card-header">
                 <div class="header-icon">
-                  <i class="fas fa-list-check"></i>
+                  <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.19C2 19.83 4.17 22 7.81 22H16.19C19.83 22 22 19.83 22 16.19V7.81C22 4.17 19.83 2 16.19 2ZM9.97 14.9L7.72 17.15C7.57 17.3 7.38 17.37 7.19 17.37C7 17.37 6.8 17.3 6.66 17.15L5.91 16.4C5.61 16.11 5.61 15.63 5.91 15.34C6.2 15.05 6.67 15.05 6.97 15.34L7.19 15.56L8.91 13.84C9.2 13.55 9.67 13.55 9.97 13.84C10.26 14.13 10.26 14.61 9.97 14.9ZM9.97 7.9L7.72 10.15C7.57 10.3 7.38 10.37 7.19 10.37C7 10.37 6.8 10.3 6.66 10.15L5.91 9.4C5.61 9.11 5.61 8.63 5.91 8.34C6.2 8.05 6.67 8.05 6.97 8.34L7.19 8.56L8.91 6.84C9.2 6.55 9.67 6.55 9.97 6.84C10.26 7.13 10.26 7.61 9.97 7.9ZM17.56 16.62H12.31C11.9 16.62 11.56 16.28 11.56 15.87C11.56 15.46 11.9 15.12 12.31 15.12H17.56C17.98 15.12 18.31 15.46 18.31 15.87C18.31 16.28 17.98 16.62 17.56 16.62ZM17.56 9.62H12.31C11.9 9.62 11.56 9.28 11.56 8.87C11.56 8.46 11.9 8.12 12.31 8.12H17.56C17.98 8.12 18.31 8.46 18.31 8.87C18.31 9.28 17.98 9.62 17.56 9.62Z" fill="#fb00ff"></path> </g></svg>
                 </div>
                 <div class="header-content">
                   <h3>Daily Tasks</h3>
@@ -147,8 +147,8 @@
                       <h5>Daily Check-in</h5>
                       <p class="task-reward">+1 PPO</p>
                     </div>
-                    <button class="btn btn-task completed" disabled>
-                      <i class="fas fa-check"></i>
+                    <button class="btn btn-task completed" >
+                      <i class="fas fa-check-circle"></i>
                     </button>
                   </div>
 
@@ -300,7 +300,7 @@
               </div>
             </div>
                 
-                <div class="referral-section">
+                <div v-if="isWalletConnected" class="referral-section">
                   <div class="referral-header">
                     <div class="referral-icon">
                       <i class="fas fa-user-friends"></i>
@@ -311,21 +311,65 @@
                     </div>
                   </div>
                   
+                  <div class="referral-code">
+                    <label>Your Referral Code</label>
+                    <div class="code-input">
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        :value="userReferralCode" 
+                        readonly 
+                        placeholder="Your referral code will appear here"
+                      >
+                      <button class="btn btn-copy" @click="copyReferralCode">
+                        <i class="fas fa-copy"></i>
+                      </button>
+                    </div>
+                  </div>
+                  
                   <div class="referral-link">
-                    <input type="text" class="form-control" id="referralLink" readonly placeholder="Your referral link will appear here">
-                    <button class="btn btn-copy">
-                      <i class="fas fa-copy"></i>
-                    </button>
+                    <label>Your Referral Link</label>
+                    <div class="link-input">
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        :value="userReferralLink" 
+                        readonly 
+                        placeholder="Your referral link will appear here"
+                      >
+                      <button class="btn btn-copy" @click="copyReferralLink">
+                        <i class="fas fa-copy"></i>
+                      </button>
+                    </div>
                   </div>
                   
                   <div class="referral-progress">
                     <div class="progress-info">
-                      <span class="current-refs">0 Referrals</span>
+                      <span class="current-refs">{{ referralCount }} Referrals</span>
                       <span class="next-level">15 needed for Level F1</span>
                     </div>
                     <div class="progress-bar">
-                      <div class="progress-fill" style="width: 0%"></div>
+                      <div class="progress-fill" :style="{ width: Math.min((referralCount / 15) * 100, 100) + '%' }"></div>
                     </div>
+                  </div>
+                </div>
+                
+                <div v-else class="referral-section wallet-required">
+                  <div class="referral-header">
+                    <div class="referral-icon">
+                      <i class="fas fa-user-friends"></i>
+                    </div>
+                    <div class="referral-content">
+                      <h4>Invite Friends</h4>
+                      <p>Connect your wallet to get your referral link and start earning PPO!</p>
+                    </div>
+                  </div>
+                  
+                  <div class="referral-connect">
+                    <button class="btn btn-primary" @click="connectWallet">
+                      <i class="fas fa-wallet me-2"></i>
+                      Connect Wallet
+                    </button>
                   </div>
                 </div>
               </div>
@@ -681,95 +725,506 @@
       </div>
     </section> -->
 
+    <!-- NFT Investment Section -->
+    <section class="nft-investment-section">
+      <div class="container">
+        <div class="section-header text-center mb-5">
+          <div class="section-badge">
+            <i class="fas fa-chart-line me-2"></i>
+            <span>NFT Investment</span>
+          </div>
+          <h2 class="section-title">Invest in Premium NFTs</h2>
+          <p class="section-description">
+            Discover high-value NFTs with potential for significant returns
+          </p>
+        </div>
+        
+        <div class="row g-4">
+          <div class="col-lg-4 col-md-6" v-for="nft in investmentNFTs" :key="nft.id">
+            <div class="nft-investment-card">
+              <div class="nft-image">
+                <img :src="nft.image" :alt="nft.title">
+                <div class="nft-badge" :class="nft.rarityClass">
+                  {{ nft.rarity }}
+                </div>
+                <div class="nft-overlay">
+                  <button class="btn btn-invest">
+                    <i class="fas fa-chart-line me-2"></i>
+                    Invest Now
+                  </button>
+                </div>
+              </div>
+              <div class="nft-content">
+                <h4>{{ nft.title }}</h4>
+                <p class="nft-description">{{ nft.description }}</p>
+                <div class="nft-stats">
+                  <div class="stat">
+                    <span class="label">Current Price</span>
+                    <span class="value">{{ nft.price }} PPO</span>
+                  </div>
+                  <div class="stat">
+                    <span class="label">ROI Potential</span>
+                    <span class="value">{{ nft.roi }}</span>
+                  </div>
+                </div>
+                <div class="nft-actions">
+                  <button class="btn btn-primary btn-sm" @click="openDetailsModal(nft)">
+                    <i class="fas fa-eye me-1"></i>
+                    View Details
+                  </button>
+                  <button class="btn btn-success btn-sm" @click="openBuyModal(nft)">
+                    <i class="fas fa-shopping-cart me-1"></i>
+                    Buy Now
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NFT Purchase Section -->
+    <section class="nft-purchase-section">
+      <div class="container">
+        <div class="section-header text-center mb-5">
+          <div class="section-badge">
+            <i class="fas fa-shopping-bag me-2"></i>
+            <span>NFT Purchase</span>
+          </div>
+          <h2 class="section-title">Buy Exclusive NFTs</h2>
+          <p class="section-description">
+            Purchase unique NFTs directly from our marketplace
+          </p>
+        </div>
+        
+        <div class="row g-4">
+          <div class="col-lg-3 col-md-6" v-for="nft in purchaseNFTs" :key="nft.id">
+            <div class="nft-purchase-card">
+              <div class="nft-image">
+                <img :src="nft.image" :alt="nft.title">
+                <div class="nft-badge" :class="nft.rarityClass">
+                  {{ nft.rarity }}
+                </div>
+              </div>
+              <div class="nft-content">
+                <h5>{{ nft.title }}</h5>
+                <p class="nft-creator">by {{ nft.creator }}</p>
+                <div class="nft-price">
+                  <span class="price">{{ nft.price }} PPO</span>
+                  <span class="usd-price">≈ ${{ nft.usdPrice }}</span>
+                </div>
+                <button class="btn btn-primary w-100" @click="openBuyModal(nft)">
+                  <i class="fas fa-shopping-cart me-2"></i>
+                  Purchase
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NFT Game Trading Section -->
+    <section class="nft-trading-section">
+      <div class="container">
+        <div class="section-header text-center mb-5">
+          <div class="section-badge">
+            <i class="fas fa-gamepad me-2"></i>
+            <span>NFT Game Trading</span>
+          </div>
+          <h2 class="section-title">Trade Game NFTs</h2>
+          <p class="section-description">
+            Buy and sell game NFTs, characters, weapons, and collectibles
+          </p>
+        </div>
+        
+        <div class="trading-container">
+          <div class="row">
+            <div class="col-lg-8">
+              <div class="trading-chart">
+                <div class="chart-header">
+                  <h4>Game NFT Market Overview</h4>
+                  <div class="chart-controls">
+                    <button class="btn btn-sm btn-outline-primary">24H</button>
+                    <button class="btn btn-sm btn-outline-primary active">7D</button>
+                    <button class="btn btn-sm btn-outline-primary">30D</button>
+                  </div>
+                </div>
+                <div class="chart-placeholder">
+                  <i class="fas fa-chart-line"></i>
+                  <p>Game NFT Trading Chart</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="trading-sidebar">
+                <div class="order-book">
+                  <h5>Game NFT Order Book</h5>
+                  <div class="order-list">
+                    <div class="order-item buy">
+                      <span class="price">850 PPO</span>
+                      <span class="amount">1</span>
+                    </div>
+                    <div class="order-item buy">
+                      <span class="price">800 PPO</span>
+                      <span class="amount">2</span>
+                    </div>
+                    <div class="order-item sell">
+                      <span class="price">900 PPO</span>
+                      <span class="amount">1</span>
+                    </div>
+                    <div class="order-item sell">
+                      <span class="price">950 PPO</span>
+                      <span class="amount">3</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="trade-form">
+                  <h5>Place Game NFT Order</h5>
+                  <div class="form-group">
+                    <label>Price (PPO)</label>
+                    <input type="number" class="form-control" placeholder="0.00">
+                  </div>
+                  <div class="form-group">
+                    <label>Amount</label>
+                    <input type="number" class="form-control" placeholder="0.00">
+                  </div>
+                  <div class="btn-group w-100">
+                    <button class="btn btn-success">Buy Game NFT</button>
+                    <button class="btn btn-danger">Sell Game NFT</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Personal NFT Game Storage Section -->
+    <section class="nft-storage-section">
+      <div class="container">
+        <div class="section-header text-center mb-5">
+          <div class="section-badge">
+            <i class="fas fa-gamepad me-2"></i>
+            <span>My Game NFT Collection</span>
+          </div>
+          <h2 class="section-title">Your Game NFT Vault</h2>
+          <p class="section-description">
+            Manage and view your personal game NFT collection
+          </p>
+        </div>
+        
+        <div class="storage-stats">
+          <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-images"></i>
+                </div>
+                <div class="stat-content">
+                  <h3>{{ personalNFTs.length }}</h3>
+                  <span>Total NFTs</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="stat-content">
+                  <h3>${{ totalValue }}</h3>
+                  <span>Total Value</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-trophy"></i>
+                </div>
+                <div class="stat-content">
+                  <h3>{{ rareNFTs }}</h3>
+                  <span>Rare Items</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-content">
+                  <h3>{{ portfolioGrowth }}%</h3>
+                  <span>Growth</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="nft-grid">
+          <div class="row g-4">
+            <div class="col-lg-4 col-md-6" v-for="nft in personalNFTs" :key="nft.id">
+              <div class="personal-nft-card">
+                <div class="nft-image">
+                  <img :src="nft.image" :alt="nft.title">
+                  <div class="nft-badge" :class="nft.rarityClass">
+                    {{ nft.rarity }}
+                  </div>
+                  <div class="nft-actions">
+                    <button class="btn btn-sm btn-outline-light">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-light">
+                      <i class="fas fa-share"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-light">
+                      <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="nft-content">
+                  <h5>{{ nft.title }}</h5>
+                  <p class="nft-description">{{ nft.description }}</p>
+                  <div class="nft-meta">
+                    <span class="acquisition-date">Acquired: {{ nft.acquiredDate }}</span>
+                    <span class="current-value">Value: ${{ nft.currentValue }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Buy NFT Modal -->
+    <div v-if="showBuyModal" class="modal-overlay" @click="closeBuyModal">
+      <div class="buy-modal" @click.stop>
+        <div class="modal-header">
+          <h3>Buy NFT</h3>
+          <button class="close-btn" @click="closeBuyModal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div v-if="selectedNFT" class="nft-preview">
+            <img :src="selectedNFT.image" :alt="selectedNFT.title" class="nft-image">
+            <div class="nft-info">
+              <h4>{{ selectedNFT.title }}</h4>
+              <p class="nft-description">{{ selectedNFT.description }}</p>
+              <div class="nft-stats" v-if="selectedNFT.stats">
+                <div class="stat-item" v-for="(value, key) in selectedNFT.stats" :key="key">
+                  <span class="stat-label">{{ key.charAt(0).toUpperCase() + key.slice(1) }}:</span>
+                  <span class="stat-value">{{ value }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="purchase-form">
+            <div class="form-group">
+              <label>Purchase Amount (PPO)</label>
+              <input 
+                v-model="buyAmount"
+                type="number"
+                class="form-control"
+                placeholder="Enter amount"
+                step="0.01"
+                min="0"
+              >
+            </div>
+            
+            <div class="purchase-summary">
+              <div class="summary-item">
+                <span>NFT Price:</span>
+                <span>{{ selectedNFT?.price }} PPO</span>
+              </div>
+              <div class="summary-item">
+                <span>Your Offer:</span>
+                <span>{{ buyAmount }} PPO</span>
+              </div>
+              <div class="summary-item total">
+                <span>Total:</span>
+                <span>{{ buyAmount }} PPO</span>
+              </div>
+            </div>
+            
+            <button 
+              class="btn btn-success w-100"
+              @click="confirmBuy"
+              :disabled="!buyAmount || parseFloat(buyAmount) <= 0"
+            >
+              <i class="fas fa-shopping-cart me-2"></i>Confirm Purchase
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NFT Details Modal -->
+    <div v-if="showDetailsModal" class="modal-overlay" @click="closeDetailsModal">
+      <div class="details-modal" @click.stop>
+        <div class="modal-header">
+          <h3>NFT Details</h3>
+          <button class="close-btn" @click="closeDetailsModal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div v-if="selectedNFT" class="nft-details">
+            <div class="nft-image-large">
+              <img :src="selectedNFT.image" :alt="selectedNFT.title">
+              <div class="nft-badge" :class="selectedNFT.rarityClass">
+                {{ selectedNFT.rarity }}
+              </div>
+            </div>
+            
+            <div class="nft-info-detailed">
+              <h2>{{ selectedNFT.title }}</h2>
+              <p class="nft-description">{{ selectedNFT.description }}</p>
+              
+              <div class="nft-meta">
+                <div class="meta-item">
+                  <span class="meta-label">Creator:</span>
+                  <span class="meta-value">{{ selectedNFT.creator }}</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Price:</span>
+                  <span class="meta-value">{{ selectedNFT.price }} PPO</span>
+                </div>
+                <div class="meta-item" v-if="selectedNFT.usdPrice">
+                  <span class="meta-label">USD Value:</span>
+                  <span class="meta-value">${{ selectedNFT.usdPrice }}</span>
+                </div>
+                <div class="meta-item" v-if="selectedNFT.roi">
+                  <span class="meta-label">ROI:</span>
+                  <span class="meta-value">{{ selectedNFT.roi }}</span>
+                </div>
+              </div>
+              
+              <div class="nft-stats-detailed" v-if="selectedNFT.stats">
+                <h4>Statistics</h4>
+                <div class="stats-grid">
+                  <div class="stat-card" v-for="(value, key) in selectedNFT.stats" :key="key">
+                    <div class="stat-icon">
+                      <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="stat-content">
+                      <span class="stat-label">{{ key.charAt(0).toUpperCase() + key.slice(1) }}</span>
+                      <span class="stat-value">{{ value }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="nft-actions-modal">
+                <button class="btn btn-success btn-large" @click="openBuyModal(selectedNFT)">
+                  <i class="fas fa-shopping-cart me-2"></i>Buy Now
+                </button>
+                <button class="btn btn-outline-primary btn-large" @click="closeDetailsModal">
+                  <i class="fas fa-times me-2"></i>Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div v-if="showToast" class="toast-notification" :class="toastType">
+      <div class="toast-content">
+        <i :class="toastType === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle'"></i>
+        <span>{{ toastMessage }}</span>
+      </div>
+      <button class="toast-close" @click="closeToast">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
     <Footer />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import Swiper from 'swiper'
-import { Navigation, Pagination } from 'swiper/modules'
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
+import { ref, onMounted, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useWeb3 } from '../composables/useWeb3.js'
+import { useFirebase } from '../composables/useFirebase.js'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
+import Swiper from 'swiper'
+import { Navigation, Pagination } from 'swiper/modules'
 
+const router = useRouter()
+
+// Use Web3 composable for wallet connection
+const {
+  isWalletConnected,
+  walletAddress,
+  connectWallet
+} = useWeb3()
+
+// Use Firebase composable for referral functionality
+const {
+  currentUser,
+  getUserData,
+  generateReferralCode,
+  generateReferralLink
+} = useFirebase()
+
+// State for modals
+const showBuyModal = ref(false)
+const showDetailsModal = ref(false)
+const selectedNFT = ref(null)
+const buyAmount = ref('')
+const showToast = ref(false)
+const toastMessage = ref('')
+const toastType = ref('success')
+
+// Email for newsletter
 const email = ref('')
 
-// NFT Items Data
-const nftItems = ref([
+// Referral state
+const userReferralCode = ref('')
+const userReferralLink = ref('')
+const referralCount = ref(0)
+
+// Hero Section Data
+const heroTitle = ref('Welcome to TOKENPPO')
+const heroSubtitle = ref('The Future of Digital Assets and Gaming')
+const heroDescription = ref('Discover, collect, and trade unique NFTs in our revolutionary gaming ecosystem. Join thousands of players worldwide in the ultimate digital asset experience.')
+
+// Features Data
+const features = ref([
   {
     id: 1,
-    title: 'Ancient Skeleton',
-    image: '/src/assets/images/nft1.jpg',
-    rarity: 'SSS',
-    rarityClass: 'bg-warning',
-    price: '3.29',
-    creator: {
-      name: 'Mutin Cap',
-      avatar: '/src/assets/images/clients-item2.jpg'
-    }
+    icon: 'fas fa-shield-alt',
+    title: 'Secure Trading',
+    description: 'Advanced blockchain security ensures safe transactions'
   },
   {
     id: 2,
-    title: 'Cyber Beam',
-    image: '/src/assets/images/nft2.jpg',
-    rarity: 'SSS',
-    rarityClass: 'bg-warning',
-    price: '5.40',
-    creator: {
-      name: 'Kelvin Glan',
-      avatar: '/src/assets/images/clients-item2.jpg'
-    }
+    icon: 'fas fa-rocket',
+    title: 'Fast Transactions',
+    description: 'Lightning-fast blockchain technology for instant trades'
   },
   {
     id: 3,
-    title: 'Volcanic Breath',
-    image: '/src/assets/images/nft3.jpg',
-    rarity: '★★★',
-    rarityClass: 'bg-success',
-    price: '1.22',
-    creator: {
-      name: 'Glam Lee',
-      avatar: '/src/assets/images/clients-item3.jpg'
-    }
+    icon: 'fas fa-chart-line',
+    title: 'Market Analytics',
+    description: 'Real-time market data and trading insights'
   },
   {
     id: 4,
-    title: 'Inferno Wrath',
-    image: '/src/assets/images/nft4.jpg',
-    rarity: '★★★★★',
-    rarityClass: 'bg-success',
-    price: '2.47',
-    creator: {
-      name: 'Kelvin Glan',
-      avatar: '/src/assets/images/clients-item2.jpg'
-    }
-  },
-  {
-    id: 5,
-    title: 'Frost Breath',
-    image: '/src/assets/images/nft5.jpg',
-    rarity: 'SSS',
-    rarityClass: 'bg-warning',
-    price: '9.82',
-    creator: {
-      name: 'Glam Lee',
-      avatar: '/src/assets/images/clients-item1.jpg'
-    }
-  },
-  {
-    id: 6,
-    title: 'Hard Breath',
-    image: '/src/assets/images/collection-item3.jpg',
-    rarity: '★★',
-    rarityClass: 'bg-secondary',
-    price: '0.22',
-    creator: {
-      name: 'Glam Lee',
-      avatar: '/src/assets/images/clients-item3.jpg'
-    }
+    icon: 'fas fa-users',
+    title: 'Community Driven',
+    description: 'Join our growing community of traders and gamers'
   }
 ])
 
@@ -777,27 +1232,35 @@ const nftItems = ref([
 const topCreators = ref([
   {
     id: 1,
-    name: 'Loura Chin',
-    avatar: '/src/assets/images/clients-item-lg1.jpg',
-    link: '/creators/loura-chin'
+    name: 'Alex Chen',
+    avatar: '/src/assets/images/creator1.jpg',
+    link: '/creator/alex-chen',
+    followers: '12.5K',
+    totalSales: '2.4K PPO'
   },
   {
     id: 2,
-    name: 'Kelvin Glan',
-    avatar: '/src/assets/images/clients-item-lg2.jpg',
-    link: '/creators/kelvin-glan'
+    name: 'Sarah Kim',
+    avatar: '/src/assets/images/creator2.jpg',
+    link: '/creator/sarah-kim',
+    followers: '8.9K',
+    totalSales: '1.8K PPO'
   },
   {
     id: 3,
-    name: 'Glam Lee',
-    avatar: '/src/assets/images/clients-item-lg3.jpg',
-    link: '/creators/glam-lee'
+    name: 'Mike Johnson',
+    avatar: '/src/assets/images/creator3.jpg',
+    link: '/creator/mike-johnson',
+    followers: '15.2K',
+    totalSales: '3.1K PPO'
   },
   {
     id: 4,
-    name: 'Alameda',
-    avatar: '/src/assets/images/clients-item-lg4.jpg',
-    link: '/creators/alameda'
+    name: 'Emma Wilson',
+    avatar: '/src/assets/images/creator4.jpg',
+    link: '/creator/emma-wilson',
+    followers: '9.7K',
+    totalSales: '2.0K PPO'
   }
 ])
 
@@ -805,29 +1268,229 @@ const topCreators = ref([
 const nftCollections = ref([
   {
     id: 1,
-    name: 'Broken Collection',
-    image: '/src/assets/images/blog1.jpg',
-    link: '/collection/broken'
+    name: 'Pixel Warriors',
+    image: '/src/assets/images/collection1.jpg',
+    link: '/collection/pixel-warriors',
+    items: '10,000',
+    floorPrice: '500 PPO'
   },
   {
     id: 2,
-    name: 'Broken Collection',
-    image: '/src/assets/images/blog2.jpg',
-    link: '/collection/broken-2'
+    name: 'Cyber Punks',
+    image: '/src/assets/images/collection2.jpg',
+    link: '/collection/cyber-punks',
+    items: '8,888',
+    floorPrice: '800 PPO'
   },
   {
     id: 3,
-    name: 'Broken Collection',
-    image: '/src/assets/images/blog3.jpg',
-    link: '/collection/broken-3'
+    name: 'Space Explorers',
+    image: '/src/assets/images/collection3.jpg',
+    link: '/collection/space-explorers',
+    items: '12,500',
+    floorPrice: '300 PPO'
   },
   {
     id: 4,
-    name: 'Broken Collection',
-    image: '/src/assets/images/blog4.jpg',
-    link: '/collection/broken-4'
+    name: 'Fantasy Creatures',
+    image: '/src/assets/images/collection4.jpg',
+    link: '/collection/fantasy-creatures',
+    items: '15,000',
+    floorPrice: '600 PPO'
   }
 ])
+
+// NFT Investment Data
+const investmentNFTs = ref([
+  {
+    id: 1,
+    title: 'Legendary Dragon',
+    image: '/src/assets/images/nft1.jpg',
+    rarity: 'SSS',
+    rarityClass: 'bg-danger',
+    price: '15,500',
+    usdPrice: '31,000',
+    roi: '+45%',
+    creator: 'Alex Chen',
+    description: 'Rare legendary dragon with fire breathing abilities',
+    stats: {
+      attack: 95,
+      defense: 88,
+      speed: 92
+    }
+  },
+  {
+    id: 2,
+    title: 'Epic Sword',
+    image: '/src/assets/images/nft2.jpg',
+    rarity: 'SS',
+    rarityClass: 'bg-warning',
+    price: '8,200',
+    usdPrice: '16,400',
+    roi: '+32%',
+    creator: 'Sarah Kim',
+    description: 'Epic weapon with unique enchantments',
+    stats: {
+      attack: 88,
+      defense: 75,
+      speed: 85
+    }
+  },
+  {
+    id: 3,
+    title: 'Rare Mount',
+    image: '/src/assets/images/nft4.jpg',
+    rarity: 'S',
+    rarityClass: 'bg-success',
+    price: '4,100',
+    usdPrice: '8,200',
+    roi: '+18%',
+    creator: 'Mike Johnson',
+    description: 'Rare mount with special movement abilities',
+    stats: {
+      attack: 65,
+      defense: 70,
+      speed: 95
+    }
+  },
+  {
+    id: 4,
+    title: 'Mythical Armor',
+    image: '/src/assets/images/nft3.jpg',
+    rarity: 'SSS',
+    rarityClass: 'bg-danger',
+    price: '22,800',
+    usdPrice: '45,600',
+    roi: '+67%',
+    creator: 'Emma Wilson',
+    description: 'Mythical armor with legendary protection',
+    stats: {
+      attack: 45,
+      defense: 98,
+      speed: 60
+    }
+  }
+])
+
+// NFT Purchase Data
+const purchaseNFTs = ref([
+  {
+    id: 1,
+    title: 'Warrior Character',
+    image: '/src/assets/images/nft-item1.jpg',
+    rarity: 'SSS',
+    rarityClass: 'bg-danger',
+    price: '12,500',
+    usdPrice: '25,000',
+    creator: 'Alex Chen',
+    description: 'Powerful warrior character with unique abilities',
+    stats: {
+      level: 85,
+      experience: '2.5M',
+      skills: 12
+    }
+  },
+  {
+    id: 2,
+    title: 'Magic Staff',
+    image: '/src/assets/images/nft-item2.jpg',
+    rarity: 'SS',
+    rarityClass: 'bg-warning',
+    price: '7,800',
+    usdPrice: '15,600',
+    creator: 'Sarah Kim',
+    description: 'Enchanted staff with powerful magic spells',
+    stats: {
+      magic: 92,
+      durability: 85,
+      enchantments: 8
+    }
+  },
+  {
+    id: 3,
+    title: 'Stealth Cloak',
+    image: '/src/assets/images/nft-item3.jpg',
+    rarity: 'S',
+    rarityClass: 'bg-success',
+    price: '3,200',
+    usdPrice: '6,400',
+    creator: 'Mike Johnson',
+    description: 'Invisibility cloak with stealth bonuses',
+    stats: {
+      stealth: 95,
+      defense: 60,
+      agility: 88
+    }
+  },
+  {
+    id: 4,
+    title: 'Ancient Relic',
+    image: '/src/assets/images/nft-item4.jpg',
+    rarity: 'SSS',
+    rarityClass: 'bg-danger',
+    price: '18,900',
+    usdPrice: '37,800',
+    creator: 'Emma Wilson',
+    description: 'Ancient relic with mysterious powers',
+    stats: {
+      power: 98,
+      rarity: 100,
+      mystery: 95
+    }
+  }
+])
+
+// Personal Game NFT Storage Data - conditional based on wallet connection
+const personalNFTs = computed(() => {
+  if (!isWalletConnected.value) {
+    return []
+  }
+  return [
+    {
+      id: 1,
+      title: 'My Dragon',
+      image: '/src/assets/images/nft1.jpg',
+      rarity: 'SSS',
+      rarityClass: 'bg-danger',
+      description: 'My personal legendary dragon companion',
+      acquiredDate: '2024-01-15',
+      currentValue: '18,450'
+    },
+    {
+      id: 2,
+      title: 'My Sword',
+      image: '/src/assets/images/nft2.jpg',
+      rarity: 'SSS',
+      rarityClass: 'bg-warning',
+      description: 'Epic weapon with unique enchantments',
+      acquiredDate: '2024-02-20',
+      currentValue: '8,750'
+    },
+    {
+      id: 3,
+      title: 'My Mount',
+      image: '/src/assets/images/nft4.jpg',
+      rarity: '★★★★★',
+      rarityClass: 'bg-success',
+      description: 'Rare mount with special movement abilities',
+      acquiredDate: '2024-03-10',
+      currentValue: '4,200'
+    }
+  ]
+})
+
+// Computed properties for personal game NFT storage - conditional based on wallet connection
+const totalValue = computed(() => {
+  return isWalletConnected.value ? '15,450' : '0'
+})
+
+const rareNFTs = computed(() => {
+  return isWalletConnected.value ? 2 : 0
+})
+
+const portfolioGrowth = computed(() => {
+  return isWalletConnected.value ? 25 : 0
+})
 
 // Blog Posts Data
 const blogPosts = ref([
@@ -861,10 +1524,116 @@ const blogPosts = ref([
   }
 ])
 
+// Methods for NFT actions
+const openBuyModal = (nft) => {
+  if (!isWalletConnected.value) {
+    showToastMessage('Please connect your wallet first to buy NFTs', 'error')
+    return
+  }
+  
+  selectedNFT.value = nft
+  buyAmount.value = nft.price
+  showBuyModal.value = true
+}
+
+const closeBuyModal = () => {
+  showBuyModal.value = false
+  selectedNFT.value = null
+  buyAmount.value = ''
+}
+
+const openDetailsModal = (nft) => {
+  selectedNFT.value = nft
+  showDetailsModal.value = true
+}
+
+const closeDetailsModal = () => {
+  showDetailsModal.value = false
+  selectedNFT.value = null
+}
+
+const confirmBuy = () => {
+  if (!isWalletConnected.value) {
+    showToastMessage('Please connect your wallet first', 'error')
+    return
+  }
+  
+  if (!buyAmount.value || parseFloat(buyAmount.value) <= 0) {
+    showToastMessage('Please enter a valid amount', 'error')
+    return
+  }
+  
+  // Simulate purchase
+  console.log('Buying NFT:', {
+    nft: selectedNFT.value.title,
+    amount: buyAmount.value,
+    wallet: walletAddress.value
+  })
+  
+  showToastMessage('NFT purchased successfully!', 'success')
+  closeBuyModal()
+}
+
+const showToastMessage = (message, type = 'success') => {
+  toastMessage.value = message
+  toastType.value = type
+  showToast.value = true
+  
+  setTimeout(() => {
+    showToast.value = false
+  }, 3000)
+}
+
+const closeToast = () => {
+  showToast.value = false
+}
+
 const subscribeNewsletter = () => {
   if (email.value) {
-    alert(`Thank you for subscribing with: ${email.value}`)
+    showToastMessage(`Thank you for subscribing with: ${email.value}`, 'success')
     email.value = ''
+  }
+}
+
+// Referral methods
+const copyReferralLink = async () => {
+  try {
+    await navigator.clipboard.writeText(userReferralLink.value)
+    showToastMessage('Referral link copied to clipboard!', 'success')
+  } catch (error) {
+    console.error('Failed to copy referral link:', error)
+    showToastMessage('Failed to copy referral link', 'error')
+  }
+}
+
+const copyReferralCode = async () => {
+  try {
+    await navigator.clipboard.writeText(userReferralCode.value)
+    showToastMessage('Referral code copied to clipboard!', 'success')
+  } catch (error) {
+    console.error('Failed to copy referral code:', error)
+    showToastMessage('Failed to copy referral code', 'error')
+  }
+}
+
+const initializeReferral = async () => {
+  if (isWalletConnected.value && currentUser.value) {
+    try {
+      const userData = await getUserData()
+      if (userData && userData.referralCode) {
+        userReferralCode.value = userData.referralCode
+        userReferralLink.value = generateReferralLink(userData.referralCode)
+        referralCount.value = userData.referralCount || 0
+      } else {
+        // Generate new referral code if user doesn't have one
+        const newCode = generateReferralCode()
+        userReferralCode.value = newCode
+        userReferralLink.value = generateReferralLink(newCode)
+        referralCount.value = 0
+      }
+    } catch (error) {
+      console.error('Error initializing referral:', error)
+    }
   }
 }
 
@@ -891,6 +1660,21 @@ onMounted(() => {
       },
     },
   })
+  
+  // Initialize referral when component mounts
+  initializeReferral()
+})
+
+// Watch for wallet connection changes to update referral
+watch(isWalletConnected, (newValue) => {
+  if (newValue) {
+    initializeReferral()
+  } else {
+    // Clear referral data when wallet disconnects
+    userReferralCode.value = ''
+    userReferralLink.value = ''
+    referralCount.value = 0
+  }
 })
 </script>
 
@@ -1621,6 +2405,36 @@ onMounted(() => {
   background: linear-gradient(135deg, #34d399, #10b981);
   border-radius: 3px;
   transition: width 0.3s ease;
+}
+
+/* Wallet Required State */
+.referral-section.wallet-required {
+  opacity: 0.7;
+}
+
+.referral-section.wallet-required .referral-content p {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.referral-connect {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.referral-connect .btn-primary {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.referral-connect .btn-primary:hover {
+  background: linear-gradient(135deg, #764ba2, #667eea);
+  transform: translateY(-2px);
 }
 
 /* Games Section */
@@ -2368,6 +3182,889 @@ onMounted(() => {
   .hero-section .container {
     max-width: 1200px;
     padding: 0 40px;
+  }
+}
+
+/* NFT Investment Section Styles */
+.nft-investment-section {
+  padding: 80px 0;
+  background: linear-gradient(135deg, #1a1a3a 0%, #2d1b69 100%);
+}
+
+.nft-investment-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.nft-investment-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(204, 0, 255, 0.2);
+}
+
+.nft-image {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+}
+
+.nft-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nft-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.nft-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nft-investment-card:hover .nft-overlay {
+  opacity: 1;
+}
+
+.btn-invest {
+  background: linear-gradient(45deg, #cc00ff, #d739ff);
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-invest:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(204, 0, 255, 0.3);
+}
+
+.nft-content {
+  padding: 20px;
+}
+
+.nft-content h4 {
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.nft-description {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.nft-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat .label {
+  display: block;
+  color: #b0b0b0;
+  font-size: 0.8rem;
+  margin-bottom: 5px;
+}
+
+.stat .value {
+  display: block;
+  color: #cc00ff;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.nft-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* NFT Purchase Section Styles */
+.nft-purchase-section {
+  padding: 80px 0;
+  background: linear-gradient(135deg, #2d1b69 0%, #1a1a3a 100%);
+}
+
+.nft-purchase-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.nft-purchase-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(204, 0, 255, 0.15);
+}
+
+.nft-purchase-card .nft-image {
+  height: 200px;
+}
+
+.nft-creator {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.nft-price {
+  margin-bottom: 15px;
+}
+
+.price {
+  display: block;
+  color: #cc00ff;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.usd-price {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+}
+
+/* NFT Trading Section Styles */
+.nft-trading-section {
+  padding: 80px 0;
+  background: linear-gradient(135deg, #1a1a3a 0%, #2d1b69 100%);
+}
+
+.trading-container {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 30px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.trading-chart {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  padding: 20px;
+  height: 400px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.chart-header h4 {
+  color: #ffffff;
+  margin: 0;
+}
+
+.chart-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.chart-placeholder {
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #b0b0b0;
+}
+
+.chart-placeholder i {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  color: #cc00ff;
+}
+
+.trading-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-book {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.order-book h5 {
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+.order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.order-item.buy {
+  background: rgba(0, 255, 0, 0.1);
+  color: #00ff00;
+}
+
+.order-item.sell {
+  background: rgba(255, 0, 0, 0.1);
+  color: #ff4444;
+}
+
+.trade-form {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.trade-form h5 {
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.form-control {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #ffffff;
+  padding: 10px 12px;
+}
+
+.form-control:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #cc00ff;
+  box-shadow: 0 0 0 0.2rem rgba(204, 0, 255, 0.25);
+  color: #ffffff;
+}
+
+.btn-group {
+  display: flex;
+  gap: 10px;
+}
+
+/* Personal NFT Storage Section Styles */
+.nft-storage-section {
+  padding: 80px 0;
+  background: linear-gradient(135deg, #2d1b69 0%, #1a1a3a 100%);
+}
+
+.storage-stats {
+  margin-bottom: 50px;
+}
+
+.storage-stats .stat-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 25px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.storage-stats .stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(204, 0, 255, 0.15);
+}
+
+.storage-stats .stat-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(45deg, #cc00ff, #d739ff);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.storage-stats .stat-content h3 {
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.storage-stats .stat-content span {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+}
+
+.personal-nft-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.personal-nft-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(204, 0, 255, 0.15);
+}
+
+.personal-nft-card .nft-image {
+  position: relative;
+  height: 200px;
+}
+
+.personal-nft-card .nft-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 5px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.personal-nft-card:hover .nft-actions {
+  opacity: 1;
+}
+
+.personal-nft-card .nft-content {
+  padding: 20px;
+}
+
+.personal-nft-card .nft-content h5 {
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.personal-nft-card .nft-description {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.nft-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+.acquisition-date {
+  color: #b0b0b0;
+}
+
+.current-value {
+  color: #cc00ff;
+  font-weight: 600;
+}
+
+/* Responsive adjustments for NFT sections */
+@media (max-width: 768px) {
+  .nft-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .nft-actions {
+    flex-direction: column;
+  }
+  
+  .trading-container {
+    padding: 20px;
+  }
+  
+  .chart-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .order-item {
+    font-size: 0.8rem;
+  }
+  
+  .storage-stats .stat-card {
+    margin-bottom: 20px;
+  }
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.buy-modal,
+.details-modal {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: fadeInUp 0.3s ease;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  padding: 25px;
+}
+
+/* Buy Modal Styles */
+.nft-preview {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 25px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+}
+
+.nft-preview .nft-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.nft-preview .nft-info h4 {
+  margin: 0 0 10px 0;
+  color: #ffffff;
+  font-size: 1.3rem;
+}
+
+.nft-preview .nft-description {
+  color: #b0b0b0;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.nft-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-label {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+}
+
+.stat-value {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.purchase-form {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  color: #ffffff;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-control::placeholder {
+  color: #b0b0b0;
+}
+
+.purchase-summary {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.summary-item:last-child {
+  border-bottom: none;
+}
+
+.summary-item.total {
+  font-weight: 600;
+  color: #667eea;
+  font-size: 1.1rem;
+}
+
+/* Details Modal Styles */
+.nft-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+.nft-image-large {
+  position: relative;
+}
+
+.nft-image-large img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.nft-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+}
+
+.nft-info-detailed h2 {
+  margin: 0 0 15px 0;
+  color: #ffffff;
+  font-size: 1.8rem;
+}
+
+.nft-description {
+  color: #b0b0b0;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.nft-meta {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.meta-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.meta-item:last-child {
+  border-bottom: none;
+}
+
+.meta-label {
+  color: #b0b0b0;
+  font-weight: 500;
+}
+
+.meta-value {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.nft-stats-detailed h4 {
+  color: #ffffff;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px;
+  color: white;
+  font-size: 1rem;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.stat-content .stat-label {
+  color: #b0b0b0;
+  font-size: 0.8rem;
+}
+
+.stat-content .stat-value {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.nft-actions-modal {
+  display: flex;
+  gap: 15px;
+}
+
+.btn-large {
+  padding: 15px 25px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Toast Notification */
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  padding: 15px 20px;
+  color: #ffffff;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 300px;
+  animation: slideInRight 0.3s ease;
+}
+
+.toast-notification.success {
+  border-left: 4px solid #10b981;
+}
+
+.toast-notification.error {
+  border-left: 4px solid #ef4444;
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.toast-content i {
+  font-size: 1.2rem;
+}
+
+.toast-notification.success .toast-content i {
+  color: #10b981;
+}
+
+.toast-content i {
+  font-size: 1.2rem;
+}
+
+.toast-notification.success .toast-content i {
+  color: #10b981;
+}
+
+.toast-notification.error .toast-content i {
+  color: #ef4444;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  color: #b0b0b0;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.toast-close:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive Design for Modals */
+@media (max-width: 768px) {
+  .buy-modal,
+  .details-modal {
+    margin: 10px;
+    max-width: calc(100% - 20px);
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+  
+  .nft-preview {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .nft-preview .nft-image {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+  }
+  
+  .nft-details {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .nft-image-large img {
+    height: 250px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .nft-actions-modal {
+    flex-direction: column;
+  }
+  
+  .toast-notification {
+    left: 20px;
+    right: 20px;
+    min-width: auto;
   }
 }
 </style>

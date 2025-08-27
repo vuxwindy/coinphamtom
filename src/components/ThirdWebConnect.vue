@@ -84,7 +84,7 @@ export default {
     const showModal = ref(false)
     const isConnecting = ref(false)
 
-    // Import state and methods from useWeb3 composable
+    // Import state and methods from Web3 composable
     const {
       isWalletConnected,
       walletAddress,

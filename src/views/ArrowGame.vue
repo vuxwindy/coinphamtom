@@ -186,6 +186,9 @@ import { useWeb3 } from '@/composables/useWeb3.js'
 export default {
   name: 'ArrowGame',
   setup() {
+    // Use Web3 composable
+    const { isWalletConnected } = useWeb3()
+
     // Game state
     const score = ref(0)
     const highScore = ref(0)

@@ -66,7 +66,7 @@ const nftItems = ref([
     id: 1,
     title: 'Ancient Skeleton',
     rarity: 'SSS',
-    price: '3.29',
+    price: '3,290',
     image: '/src/assets/images/nft1.jpg',
     creator: {
       name: 'Mutin Cap',
@@ -77,7 +77,7 @@ const nftItems = ref([
     id: 2,
     title: 'Cyber Beam',
     rarity: 'SSS',
-    price: '5.40',
+    price: '5,400',
     image: '/src/assets/images/nft2.jpg',
     creator: {
       name: 'Kelvin Glan',
@@ -88,7 +88,7 @@ const nftItems = ref([
     id: 3,
     title: 'Volcanic Breath',
     rarity: '★★★',
-    price: '1.22',
+    price: '1,220',
     image: '/src/assets/images/nft3.jpg',
     creator: {
       name: 'Glam Lee',
@@ -99,7 +99,7 @@ const nftItems = ref([
     id: 4,
     title: 'Inferno Wrath',
     rarity: '★★★★★',
-    price: '2.47',
+    price: '2,470',
     image: '/src/assets/images/nft4.jpg',
     creator: {
       name: 'Kelvin Glan',
@@ -110,7 +110,7 @@ const nftItems = ref([
     id: 5,
     title: 'Frost Breath',
     rarity: 'SSS',
-    price: '9.82',
+    price: '9,820',
     image: '/src/assets/images/nft5.jpg',
     creator: {
       name: 'Glam Lee',
@@ -121,7 +121,7 @@ const nftItems = ref([
     id: 6,
     title: 'Hard Breath',
     rarity: '★★',
-    price: '0.22',
+    price: '220',
     image: '/src/assets/images/collection-item3.jpg',
     creator: {
       name: 'Glam Lee',

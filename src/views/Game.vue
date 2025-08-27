@@ -1,650 +1,475 @@
 <template>
-  <div class="coming-soon-wrapper">
-    <Header />
-    <p class="coming-soon">Coming Soon</p>
-    <Footer />
-  </div>
-
-  <div class="game-page hidden">
+  <div class="game-page">
     <Header />
 
-    <!-- Game Hero Section -->
-    <!-- <section class="game-hero padding-large">
+    <!-- Hero Section -->
+    <section class="hero-section padding-large">
       <div class="container">
         <div class="row align-items-center">
-          <div class="col-md-6">
-            <div class="game-content">
-              <h1 class="game-title">Archery Challenge</h1>
-              <p class="game-description">
-                Test your archery skills in this exciting game! Hit targets to
-                earn $PPO tokens and climb the leaderboard. The more accurate
-                your shots, the higher your rewards!
-              </p>
-              <div class="game-stats">
-                <div class="stat-item">
-                  <i class="fas fa-bullseye"></i>
-                  <span>Hit Rate: <strong>0%</strong></span>
+          <div class="col-lg-6">
+            <h1 class="text-white display-4 fw-bold mb-4">Game Center</h1>
+            <p class="text-white-50 lead mb-4">Play exciting games, earn PPO tokens, and use your NFT cards to boost your performance!</p>
+            
+            <!-- User Stats Display -->
+            <div class="user-stats bg-dark border border-info rounded p-4 mb-4" id="userStatsContainer">
+              <div class="row text-center">
+                <div class="col-3">
+                  <div class="stat-number text-info" id="ppoBalance">0</div>
+                  <div class="stat-label text-white-50">PPO Balance</div>
                 </div>
-                <div class="stat-item">
-                  <i class="fas fa-trophy"></i>
-                  <span>Best Score: <strong>0</strong></span>
+                <div class="col-3">
+                  <div class="stat-number text-success" id="totalGames">0</div>
+                  <div class="stat-label text-white-50">Games Played</div>
                 </div>
-                <div class="stat-item">
-                  <i class="fas fa-coins"></i>
-                  <span>Earned: <strong>0 $PPO</strong></span>
+                <div class="col-3">
+                  <div class="stat-number text-warning" id="bestScore">0</div>
+                  <div class="stat-label text-white-50">Best Score</div>
+                </div>
+                <div class="col-3">
+                  <div class="stat-number text-primary" id="nftCardsCount">0</div>
+                  <div class="stat-label text-white-50">NFT Cards</div>
                 </div>
               </div>
-              <div class="game-controls">
-                <button class="btn btn-linear btn-large" @click="openGameFile">
-                  <i class="fas fa-play me-2"></i>Start Game
+            </div>
+            
+            <!-- NFT Cards Preview -->
+            <div class="nft-cards-preview bg-dark border border-success rounded p-4">
+              <h5 class="text-white mb-3">
+                <i class="fas fa-cards-blank me-2"></i>Your NFT Cards
+                <button class="btn btn-sm btn-outline-success float-end" @click="showCardSelection">
+                  <i class="fas fa-plus"></i> Select Card
                 </button>
-                <button
-                  class="btn btn-outline-linear btn-large"
-                  @click="showRules"
-                >
-                  <i class="fas fa-info-circle me-2"></i>How to Play
-                </button>
+              </h5>
+              <div class="row" id="nftCardsContainer">
+                <!-- NFT cards will be loaded here -->
               </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="game-canvas-container">
-              <canvas ref="gameCanvas" class="game-canvas"></canvas>
-              <div class="game-overlay" v-if="!gameStarted">
-                <div class="overlay-content">
-                  <h3>Ready to Shoot?</h3>
-                  <p>Click "Start Game" to begin your archery adventure!</p>
-                </div>
-              </div>
+          
+          <div class="col-lg-6">
+            <div class="game-features bg-dark border border-primary rounded p-4">
+              <h4 class="text-white mb-4">
+                <i class="fas fa-star me-2"></i>Game Features
+              </h4>
+              <ul class="text-white-50">
+                <li class="mb-2">
+                  <i class="fas fa-coins text-warning me-2"></i>
+                  Earn 1 PPO token per game point
+                </li>
+                <li class="mb-2">
+                  <i class="fas fa-cards-blank text-success me-2"></i>
+                  Use NFT cards to boost performance
+                </li>
+                <li class="mb-2">
+                  <i class="fas fa-trophy text-warning me-2"></i>
+                  Compete for high scores and rewards
+                </li>
+                <li class="mb-2">
+                  <i class="fas fa-chart-line text-info me-2"></i>
+                  Track your progress and statistics
+                </li>
+                <li class="mb-2">
+                  <i class="fas fa-gift text-danger me-2"></i>
+                  Daily rewards and special events
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
-    </section> -->
+    </section>
 
-    <!-- Game Rules Section -->
-    <!-- <section class="game-rules padding-large bg-dark">
+    <!-- Games Section -->
+    <section class="games-section padding-large">
       <div class="container">
-        <div class="row">
+        <div class="row mb-5">
           <div class="col-12">
-            <h2 class="section-title text-center">How to Play</h2>
-            <div class="rules-grid">
-              <div class="rule-item">
-                <div class="rule-icon">
-                  <i class="fas fa-mouse-pointer"></i>
-                </div>
-                <h4>1. Aim</h4>
-                <p>Click and drag to aim your bow at the target</p>
-              </div>
-              <div class="rule-item">
-                <div class="rule-icon">
-                  <i class="fas fa-bullseye"></i>
-                </div>
-                <h4>2. Shoot</h4>
-                <p>Release to shoot your arrow at the target</p>
-              </div>
-              <div class="rule-item">
-                <div class="rule-icon">
-                  <i class="fas fa-star"></i>
-                </div>
-                <h4>3. Score</h4>
-                <p>Hit the center for maximum points and $PPO rewards</p>
-              </div>
-              <div class="rule-item">
-                <div class="rule-icon">
-                  <i class="fas fa-trophy"></i>
-                </div>
-                <h4>4. Win</h4>
-                <p>Complete daily missions and climb the leaderboard</p>
-              </div>
-            </div>
+            <h2 class="text-white mb-4">
+              <i class="fas fa-gamepad me-2"></i>Available Games
+            </h2>
           </div>
         </div>
-      </div>
-    </section> -->
 
-    <!-- Daily Missions Section -->
-    <!-- <section class="daily-missions padding-large">
-      <div class="container">
         <div class="row">
-          <div class="col-12">
-            <h2 class="section-title text-center">Daily Missions</h2>
-            <div class="missions-grid">
-              <div
-                class="mission-item"
-                v-for="mission in dailyMissions"
-                :key="mission.id"
-              >
-                <div class="mission-header">
-                  <h4>{{ mission.title }}</h4>
-                  <span class="mission-reward">{{ mission.reward }} $PPO</span>
-                </div>
-                <div class="mission-progress">
-                  <div class="progress">
-                    <div
-                      class="progress-bar"
-                      :style="{ width: mission.progress + '%' }"
-                    ></div>
+          <!-- Arrow Game Classic -->
+          <div class="col-lg-6 col-md-12 mb-4">
+            <div class="game-card bg-dark border border-primary rounded overflow-hidden h-100">
+              <div class="game-image position-relative">
+                <img src="/src/assets/images/arrow-game-preview.png" alt="Arrow Game Classic" class="w-100" style="height: 250px; object-fit: cover;">
+                <div class="game-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                  <div class="text-center">
+                    <h3 class="text-black mb-3">Arrow Game Classic</h3>
+                    <h4 class="text-black mb-4 card-game">Classic archery challenge with NFT card integration</h4>
+                    <a href="/arrow-game" class="btn btn-primary btn-lg">
+                      <i class="fas fa-play me-2"></i>Play Now
+                    </a>
                   </div>
-                  <span class="progress-text"
-                    >{{ mission.current }}/{{ mission.target }}</span
-                  >
                 </div>
-                <div class="mission-status">
-                  <span :class="mission.completed ? 'completed' : 'incomplete'">
-                    {{ mission.completed ? "Completed" : "In Progress" }}
-                  </span>
+              </div>
+              <div class="game-info p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h5 class="text-white mb-0">Arrow Game Classic</h5>
+                  <span class="badge bg-primary">Active</span>
+                </div>
+                <p class="text-white-50 mb-3">Classic archery game with NFT card bonuses and PPO rewards.</p>
+                <div class="game-features">
+                  <div class="row text-center">
+                    <div class="col-4">
+                      <small class="text-white-50 d-block">Reward</small>
+                      <span class="text-primary fw-bold">1 PPO/Point</span>
+                    </div>
+                    <div class="col-4">
+                      <small class="text-white-50 d-block">Difficulty</small>
+                      <span class="text-warning fw-bold">Medium</span>
+                    </div>
+                    <div class="col-4">
+                      <small class="text-white-50 d-block">Players</small>
+                      <span class="text-info fw-bold" id="classicPlayers">0</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </section> -->
 
-    <!-- Leaderboard Preview -->
-    <!-- <section class="leaderboard-preview padding-large bg-dark">
-      <div class="container">
-        <div class="row">
-          <div class="col-12">
-            <div class="section-header text-center">
-              <h2 class="section-title">Top Players</h2>
-              <router-link to="/leaderboard" class="btn btn-linear btn-medium"
-                >View Full Leaderboard</router-link
-              >
-            </div>
-            <div class="leaderboard-table">
-              <div
-                class="leaderboard-item"
-                v-for="(player, index) in topPlayers"
-                :key="player.id"
-              >
-                <div class="rank">{{ index + 1 }}</div>
-                <div class="player-info">
-                  <img
-                    :src="player.avatar"
-                    :alt="player.name"
-                    class="player-avatar"
-                  />
-                  <span class="player-name">{{ player.name }}</span>
+          <!-- Arrow Game Modern -->
+          <div class="col-lg-6 col-md-12 mb-4">
+            <div class="game-card bg-dark border border-success rounded overflow-hidden h-100">
+              <div class="game-image position-relative">
+                <img src="/src/assets/images/arrow-game-modern-preview.png" alt="Arrow Game Modern" class="w-100" style="height: 250px; object-fit: cover;">
+                <div class="game-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                  <div class="text-center">
+                    <h3 class="text-black mb-3">Arrow Game Modern</h3>
+                    <h4 class="text-black mb-4 card-game">Enhanced archery experience with modern UI and effects</h4>
+                    <a href="/arrow-game-modern" class="btn btn-success btn-lg">
+                      <i class="fas fa-play me-2"></i>Play Now
+                    </a>
+                  </div>
                 </div>
-                <div class="player-score">{{ player.score }}</div>
-                <div class="player-reward">{{ player.reward }} $PPO</div>
+              </div>
+              <div class="game-info p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h5 class="text-white mb-0">Arrow Game Modern</h5>
+                  <span class="badge bg-success">Active</span>
+                </div>
+                <p class="text-white-50 mb-3">Modern version with enhanced graphics, character selection, and advanced scoring system.</p>
+                <div class="game-features">
+                  <div class="row text-center">
+                    <div class="col-4">
+                      <small class="text-white-50 d-block">Reward</small>
+                      <span class="text-success fw-bold">1 PPO/Point</span>
+                    </div>
+                    <div class="col-4">
+                      <small class="text-white-50 d-block">Difficulty</small>
+                      <span class="text-warning fw-bold">Hard</span>
+                    </div>
+                    <div class="col-4">
+                      <small class="text-white-50 d-block">Players</small>
+                      <span class="text-info fw-bold" id="modernPlayers">0</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coming Soon Games -->
+        <div class="row mt-5">
+          <div class="col-12">
+            <h2 class="text-white mb-4">
+              <i class="fas fa-clock me-2"></i>Coming Soon
+            </h2>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="game-card bg-dark border border-secondary rounded overflow-hidden h-100 opacity-50">
+              <div class="game-image position-relative">
+                <img src="/src/assets/images/plinko-preview.png" alt="Coming Soon" class="w-100" style="height: 200px; object-fit: cover;">
+                <div class="game-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                  <div class="text-center">
+                    <h3 class="text-white mb-3">Coming Soon</h3>
+                    <p class="text-white-50">New games are being developed</p>
+                  </div>
+                </div>
+              </div>
+              <div class="game-info p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h5 class="text-white mb-0">Plinko</h5>
+                  <span class="badge bg-secondary">Soon</span>
+                </div>
+                <p class="text-white-50 mb-3">Drop the ball and multiple bet</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="game-card bg-dark border border-secondary rounded overflow-hidden h-100 opacity-50">
+              <div class="game-image position-relative">
+                <img src="/src/assets/images/snake-preview.png" alt="Coming Soon" class="w-100" style="height: 200px; object-fit: cover;">
+                <div class="game-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                  <div class="text-center">
+                    <h3 class="text-white mb-3">Coming Soon</h3>
+                    <p class="text-white-50">New games are being developed</p>
+                  </div>
+                </div>
+              </div>
+              <div class="game-info p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h5 class="text-white mb-0">Snake</h5>
+                  <span class="badge bg-secondary">Soon</span>
+                </div>
+                <p class="text-white-50 mb-3">Origin snake and eat the $PPO!</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="game-card bg-dark border border-secondary rounded overflow-hidden h-100 opacity-50">
+              <div class="game-image position-relative">
+                <img src="/src/assets/images/fishing-preview.png" alt="Coming Soon" class="w-100" style="height: 200px; object-fit: cover;">
+                <div class="game-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                  <div class="text-center">
+                    <h3 class="text-white mb-3">Coming Soon</h3>
+                    <p class="text-white-50">New games are being developed</p>
+                  </div>
+                </div>
+              </div>
+              <div class="game-info p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h5 class="text-white mb-0">Fishing Coin</h5>
+                  <span class="badge bg-secondary">Soon</span>
+                </div>
+                <p class="text-white-50 mb-3">Fishing coin and earn $PPO!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Game Rules -->
+        <div class="row mt-5">
+          <div class="col-12">
+            <div class="game-rules bg-dark border border-info rounded p-4">
+              <h3 class="text-white mb-4">
+                <i class="fas fa-book me-2"></i>Game Rules & Rewards
+              </h3>
+              <div class="row">
+                <div class="col-md-6">
+                  <h5 class="text-info mb-3">
+                    <i class="fas fa-coins me-2"></i>How to Earn PPO
+                  </h5>
+                  <ul class="text-white-50">
+                    <li>Daily Check-in: 1 PPO per day</li>
+                    <li>Complete Daily Tasks: 1-5 PPO per task</li>
+                    <li>Game Points: 1 PPO per point scored</li>
+                    <li>NFT Card Bonuses: Extra points based on card rarity</li>
+                    <li>Deposit: Direct PPO transfer to platform</li>
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                  <h5 class="text-success mb-3">
+                    <i class="fas fa-cards-blank me-2"></i>NFT Card System
+                  </h5>
+                  <ul class="text-white-50">
+                    <li>Use NFT cards to boost game performance</li>
+                    <li>Rarity affects bonus points: Common (+5), Rare (+15), Epic (+30), Legendary (+50)</li>
+                    <li>Card attributes provide additional bonuses</li>
+                    <li>Cards can be purchased in the marketplace</li>
+                    <li>Collect rare cards for maximum rewards</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section> -->
+    </section>
 
     <Footer />
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import Header from "../components/Header.vue";
-import Footer from "../components/Footer.vue";
+<script>
+import Header from '../components/Header.vue'
+import Footer from '../components/Footer.vue'
 
-const router = useRouter();
-const gameCanvas = ref(null);
-const gameStarted = ref(false);
-
-// Daily Missions Data
-const dailyMissions = ref([
-  {
-    id: 1,
-    title: "Hit 10 Targets",
-    reward: 5,
-    current: 0,
-    target: 10,
-    progress: 0,
-    completed: false,
+export default {
+  name: 'Game',
+  components: {
+    Header,
+    Footer
   },
-  {
-    id: 2,
-    title: "Achieve 80% Accuracy",
-    reward: 10,
-    current: 0,
-    target: 80,
-    progress: 0,
-    completed: false,
+  data() {
+    return {
+      // Component data
+    }
   },
-  {
-    id: 3,
-    title: "Score 1000 Points",
-    reward: 15,
-    current: 0,
-    target: 1000,
-    progress: 0,
-    completed: false,
-  },
-  {
-    id: 4,
-    title: "Play 5 Games",
-    reward: 8,
-    current: 0,
-    target: 5,
-    progress: 0,
-    completed: false,
-  },
-]);
-
-// Top Players Data
-const topPlayers = ref([
-  {
-    id: 1,
-    name: "Loura Chin",
-    avatar: "/src/assets/images/clients-item-lg1.jpg",
-    score: 2500,
-    reward: 150,
-  },
-  {
-    id: 2,
-    name: "Kelvin Glan",
-    avatar: "/src/assets/images/clients-item-lg2.jpg",
-    score: 2200,
-    reward: 120,
-  },
-  {
-    id: 3,
-    name: "Glam Lee",
-    avatar: "/src/assets/images/clients-item-lg3.jpg",
-    score: 2000,
-    reward: 100,
-  },
-  {
-    id: 4,
-    name: "Alameda",
-    avatar: "/src/assets/images/clients-item-lg4.jpg",
-    score: 1800,
-    reward: 80,
-  },
-  {
-    id: 5,
-    name: "Mutin Cap",
-    avatar: "/src/assets/images/clients-item2.jpg",
-    score: 1600,
-    reward: 60,
-  },
-]);
-
-const startGame = () => {
-  gameStarted.value = true;
-  // Game logic would go here
-  console.log("Game started!");
-};
-
-const openGameFile = () => {
-  // Navigate to the classic archery game using Vue Router
-  router.push("/arrow-game");
-};
-
-const showRules = () => {
-  // Scroll to rules section
-  document.querySelector(".game-rules").scrollIntoView({ behavior: "smooth" });
-};
-
-onMounted(() => {
-  // Initialize game canvas
-  const canvas = gameCanvas.value;
-  if (canvas) {
-    const ctx = canvas.getContext("2d");
-    canvas.width = 400;
-    canvas.height = 300;
-
-    // Draw a simple target
-    ctx.fillStyle = "#333";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Draw target circles
-    ctx.beginPath();
-    ctx.arc(200, 150, 80, 0, 2 * Math.PI);
-    ctx.fillStyle = "#fff";
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.arc(200, 150, 60, 0, 2 * Math.PI);
-    ctx.fillStyle = "#ff6b6b";
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.arc(200, 150, 40, 0, 2 * Math.PI);
-    ctx.fillStyle = "#4ecdc4";
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.arc(200, 150, 20, 0, 2 * Math.PI);
-    ctx.fillStyle = "#45b7d1";
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.arc(200, 150, 10, 0, 2 * Math.PI);
-    ctx.fillStyle = "#96ceb4";
-    ctx.fill();
+  methods: {
+    addToWallet() {
+      // Add PPO to wallet logic
+      console.log('Adding PPO to wallet...')
+    },
+    showCardSelection() {
+      // Show card selection logic
+      console.log('Showing card selection...')
+    }
   }
-});
+}
 </script>
 
 <style scoped>
-.coming-soon-wrapper {
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-}
-
-.coming-soon {
-  font-size: 3.5rem;
-  font-weight: 900;
-  background: linear-gradient(45deg, #cc00ff, #d739ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-align: center;
-  padding: 200px 0;
-}
-
-.hidden {
-  display: none;
-}
-
 .game-page {
-  background: linear-gradient(135deg, #1a0033 0%, #330066 50%, #6600cc 100%);
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
   min-height: 100vh;
-  padding-top: 80px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #ffffff;
+  overflow-x: hidden;
 }
 
-.game-hero {
-  padding: 100px 0;
+/* Notification System */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  padding: 1rem;
+  max-width: 300px;
+  z-index: 9999;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
 }
 
-.game-title {
-  font-size: 3.5rem;
-  font-weight: 900;
-  background: linear-gradient(45deg, #cc00ff, #d739ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 20px;
+.notification.show {
+  transform: translateX(0);
 }
 
-.game-description {
-  color: #b0b0b0;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 30px;
-}
-
-.game-stats {
-  display: flex;
-  gap: 30px;
-  margin-bottom: 30px;
-}
-
-.stat-item {
+.notification-content {
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: #ffffff;
+  justify-content: space-between;
 }
 
-.stat-item i {
-  color: #cc00ff;
+.notification-message {
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.notification-close {
+  background: none;
+  border: none;
   font-size: 1.2rem;
+  cursor: pointer;
+  color: #6c757d;
 }
 
-.game-controls {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
+.notification-success {
+  border-left: 4px solid #28a745;
 }
 
-.btn-large {
-  padding: 15px 30px;
-  font-size: 1.1rem;
+.notification-error {
+  border-left: 4px solid #dc3545;
 }
 
-.game-canvas-container {
-  position: relative;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  padding: 20px;
-  backdrop-filter: blur(10px);
+.notification-warning {
+  border-left: 4px solid #ffc107;
 }
 
-.game-canvas {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  display: block;
+.notification-info {
+  border-left: 4px solid #17a2b8;
+}
+
+/* Network Status */
+.network-status {
+  padding: 0.5rem;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.network-status.connected {
+  background: rgba(40, 167, 69, 0.2);
+  color: #28a745;
+}
+
+.network-status.warning {
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+}
+
+.network-status.disconnected {
+  background: rgba(108, 117, 125, 0.2);
+  color: #6c757d;
+}
+
+/* Back Button */
+.back-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  transform: translateX(-5px);
+}
+
+.game-card {
+  transition: all 0.3s ease;
+}
+
+.game-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(204, 0, 255, 0.2);
 }
 
 .game-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.overlay-content {
-  text-align: center;
-  color: #ffffff;
+.game-card:hover .game-overlay {
+  opacity: 1;
 }
 
-.overlay-content h3 {
-  color: #cc00ff;
-  margin-bottom: 10px;
-}
-
-.rules-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
-  margin-top: 40px;
-}
-
-.rule-item {
-  text-align: center;
-  padding: 30px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-}
-
-.rule-icon {
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(45deg, #cc00ff, #d739ff);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 20px;
-}
-
-.rule-icon i {
+.stat-number {
   font-size: 2rem;
-  color: #ffffff;
+  font-weight: bold;
 }
 
-.rule-item h4 {
-  color: #ffffff;
-  margin-bottom: 15px;
-}
-
-.rule-item p {
-  color: #b0b0b0;
-}
-
-.missions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-  margin-top: 40px;
-}
-
-.mission-item {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  padding: 25px;
-  backdrop-filter: blur(10px);
-}
-
-.mission-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.mission-header h4 {
-  color: #ffffff;
-  margin: 0;
-}
-
-.mission-reward {
-  color: #cc00ff;
-  font-weight: 600;
-}
-
-.mission-progress {
-  margin-bottom: 15px;
-}
-
-.progress {
-  height: 8px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-  overflow: hidden;
-  margin-bottom: 10px;
-}
-
-.progress-bar {
-  height: 100%;
-  background: linear-gradient(45deg, #cc00ff, #d739ff);
-  transition: width 0.3s ease;
-}
-
-.progress-text {
-  color: #b0b0b0;
+.stat-label {
   font-size: 0.9rem;
 }
 
-.mission-status .completed {
-  color: #4ecdc4;
-  font-weight: 600;
+.game-rules {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
 }
 
-.mission-status .incomplete {
-  color: #ff6b6b;
-  font-weight: 600;
+.game-rules ul {
+  list-style: none;
+  padding-left: 0;
 }
 
-.leaderboard-table {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  overflow: hidden;
-  margin-top: 40px;
-}
-
-.leaderboard-item {
-  display: flex;
-  align-items: center;
-  padding: 20px;
+.game-rules li {
+  padding: 5px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.leaderboard-item:last-child {
+.game-rules li:last-child {
   border-bottom: none;
-}
-
-.rank {
-  width: 50px;
-  height: 50px;
-  background: linear-gradient(45deg, #cc00ff, #d739ff);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  font-weight: 700;
-  margin-right: 20px;
-}
-
-.player-info {
-  display: flex;
-  align-items: center;
-  flex: 1;
-}
-
-.player-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 15px;
-}
-
-.player-name {
-  color: #ffffff;
-  font-weight: 600;
-}
-
-.player-score {
-  color: #cc00ff;
-  font-weight: 700;
-  margin-right: 20px;
-}
-
-.player-reward {
-  color: #4ecdc4;
-  font-weight: 600;
-}
-
-.section-title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  background: linear-gradient(45deg, #cc00ff, #d739ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 20px;
-}
-
-@media (max-width: 768px) {
-  .game-title {
-    font-size: 2.5rem;
-  }
-
-  .game-stats {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .game-controls {
-    flex-direction: column;
-  }
-
-  .rules-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .missions-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .leaderboard-item {
-    flex-direction: column;
-    text-align: center;
-    gap: 15px;
-  }
-
-  .player-info {
-    flex-direction: column;
-  }
 }
 </style>

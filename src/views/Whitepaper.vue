@@ -169,7 +169,7 @@
                       </div>
                       <div class="detail">
                         <span class="label">Blockchain:</span>
-                        <span class="value">Ethereum (ERC-20)</span>
+                        <span class="value">Binance Smart Chain (BEP-20)</span>
                       </div>
                     </div>
                   </div>
@@ -223,7 +223,7 @@
                       <i class="fab fa-ethereum"></i>
                     </div>
                     <h4>Blockchain</h4>
-                    <p>Ethereum smart contracts for secure and transparent transactions</p>
+                    <p>Binance Smart Chain smart contracts for secure and transparent transactions</p>
                   </div>
                   <div class="tech-item">
                     <div class="tech-icon">

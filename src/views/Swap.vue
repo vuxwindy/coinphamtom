@@ -10,7 +10,7 @@
             <div class="swap-header text-center">
               <h1 class="swap-title">Token Swap</h1>
               <p class="swap-subtitle">
-                Swap tokens instantly with the best rates
+                Swap tokens instantly with the best rates and lowest fees
               </p>
             </div>
           </div>
@@ -25,19 +25,12 @@
           <div class="col-lg-6 col-md-8">
             <div class="swap-card">
               <!-- Wallet Connection Status -->
-              <!-- <div v-if="!isWalletConnected" class="wallet-notice">
-                <div class="notice-content">
-                  <i class="fas fa-wallet"></i>
-                  <h4>Connect Your Wallet</h4>
-                  <p>Please connect your wallet to start swapping tokens</p>
-                  <button class="btn btn-linear" @click="open">
-                    <i class="fas fa-plug me-2"></i>Connect Wallet
-                  </button>
-                </div>
-              </div> -->
               <div v-if="!isWalletConnected" class="wallet-notice">
                 <div class="notice-content">
-                  <i class="fas fa-wallet"></i>
+                  <div class="notice-icon">
+                    <i class="fas fa-wallet"></i>
+                  </div>
+                  <h4>Connect Your Wallet</h4>
                   <p>Please connect your wallet to start swapping tokens</p>
                   <div class="connect-btn">
                     <ReownWalletButton />
@@ -49,7 +42,13 @@
               <div v-else class="swap-form">
                 <!-- From Token -->
                 <div class="token-input">
-                  <label>From</label>
+                  <div class="input-header">
+                    <label>From</label>
+                    <div class="balance-info">
+                      <span>Balance: {{ floorFragment(fromTokenBalance, 5) }} {{ selectedFromToken.symbol }}</span>
+                      <button class="btn-link" @click="setMaxAmount">Max</button>
+                    </div>
+                  </div>
                   <div class="input-group">
                     <input
                       v-model="swapForm.fromAmount"
@@ -58,51 +57,33 @@
                       placeholder="0.0"
                       @input="calculateSwap"
                     />
-                    <!-- <div
-                      class="token-selector"
-                      @click="showFromTokenModal = true"
-                    >
+                    <div class="token-selector" @click="showFromTokenModal = true">
                       <img
                         :src="selectedFromToken.icon"
                         :alt="selectedFromToken.symbol"
                         class="token-icon"
                       />
-                      <span class="token-symbol">{{
-                        selectedFromToken.symbol
-                      }}</span>
-                      <i class="fas fa-chevron-down"></i>
-                    </div> -->
-                    <div class="token-selector">
-                      <img
-                        :src="selectedFromToken.icon"
-                        :alt="selectedFromToken.symbol"
-                        class="token-icon"
-                      />
-                      <span class="token-symbol">{{
-                        selectedFromToken.symbol
-                      }}</span>
+                      <span class="token-symbol">{{ selectedFromToken.symbol }}</span>
                       <i class="fas fa-chevron-down"></i>
                     </div>
-                  </div>
-                  <div class="balance-info">
-                    <span
-                      >Balance: {{ floorFragment(fromTokenBalance, 5) }}
-                      {{ selectedFromToken.symbol }}</span
-                    >
-                    <button class="btn-link" @click="setMaxAmount">Max</button>
                   </div>
                 </div>
 
                 <!-- Swap Direction Button -->
-                <!-- <div class="swap-direction">
+                <div class="swap-direction">
                   <button class="direction-btn" @click="swapTokens">
                     <i class="fas fa-exchange-alt"></i>
                   </button>
-                </div> -->
+                </div>
 
                 <!-- To Token -->
                 <div class="token-input">
-                  <label>To</label>
+                  <div class="input-header">
+                    <label>To</label>
+                    <div class="balance-info">
+                      <span>Balance: {{ floorFragment(toTokenBalance, 5) }} {{ selectedToToken.symbol }}</span>
+                    </div>
+                  </div>
                   <div class="input-group">
                     <input
                       v-model="swapForm.toAmount"
@@ -111,104 +92,111 @@
                       placeholder="0.0"
                       readonly
                     />
-                    <!-- <div
-                      class="token-selector"
-                      @click="showToTokenModal = true"
-                    >
+                    <div class="token-selector" @click="showToTokenModal = true">
                       <img
                         :src="selectedToToken.icon"
                         :alt="selectedToToken.symbol"
                         class="token-icon"
                       />
-                      <span class="token-symbol">{{
-                        selectedToToken.symbol
-                      }}</span>
-                      <i class="fas fa-chevron-down"></i>
-                    </div> -->
-                    <div class="token-selector">
-                      <img
-                        :src="selectedToToken.icon"
-                        :alt="selectedToToken.symbol"
-                        class="token-icon"
-                      />
-                      <span class="token-symbol">{{
-                        selectedToToken.symbol
-                      }}</span>
+                      <span class="token-symbol">{{ selectedToToken.symbol }}</span>
                       <i class="fas fa-chevron-down"></i>
                     </div>
-                  </div>
-                  <div class="balance-info">
-                    <span
-                      >Balance: {{ floorFragment(toTokenBalance, 5) }}
-                      {{ selectedToToken.symbol }}</span
-                    >
                   </div>
                 </div>
 
                 <!-- Swap Details -->
-                <!-- <div v-if="swapForm.fromAmount > 0" class="swap-details">
+                <div class="swap-details">
                   <div class="detail-row">
-                    <span>Rate</span>
-                    <span
-                      >1 {{ selectedFromToken.symbol }} = {{ swapRate }}
-                      {{ selectedToToken.symbol }}</span
-                    >
+                    <span class="detail-label">Exchange Rate</span>
+                    <span class="detail-value">1 {{ selectedFromToken.symbol }} = {{ exchangeRate }} {{ selectedToToken.symbol }}</span>
                   </div>
                   <div class="detail-row">
-                    <span>Slippage</span>
-                    <span>{{ slippage }}%</span>
+                    <span class="detail-label">Price Impact</span>
+                    <span class="detail-value" :class="priceImpactClass">{{ priceImpact }}%</span>
                   </div>
                   <div class="detail-row">
-                    <span>Network Fee</span>
-                    <span>{{ networkFee }} ETH</span>
+                    <span class="detail-label">Slippage Tolerance</span>
+                    <span class="detail-value">{{ slippage }}%</span>
                   </div>
-                </div> -->
+                  <div class="detail-row">
+                    <span class="detail-label">Network Fee</span>
+                    <span class="detail-value">{{ networkFee }} BNB</span>
+                  </div>
+                </div>
 
                 <!-- Swap Button -->
-                <button
-                  class="btn btn-swap btn-linear btn-large w-100"
-                  @click="executeSwap"
-                  :disabled="!canSwap || isLoading"
-                >
-                  <i v-if="isLoading" class="fas fa-spinner fa-spin me-2"></i>
-                  <i v-else class="fas fa-exchange-alt me-2"></i>
-                  {{ getSwapButtonText() }}
-                </button>
-
-                <!-- Settings -->
-                <!-- <div class="swap-settings">
-                  <button
-                    class="btn-link"
-                    @click="showSettings = !showSettings"
+                <div class="swap-actions">
+                  <button 
+                    class="btn-swap" 
+                    @click="executeSwap"
+                    :disabled="!canSwap"
+                    :class="{ 'disabled': !canSwap }"
                   >
-                    <i class="fas fa-cog me-2"></i>Settings
+                    <i class="fas fa-exchange-alt me-2"></i>
+                    {{ swapButtonText }}
                   </button>
-                </div> -->
+                </div>
 
-                <!-- Settings Panel -->
-                <div v-if="showSettings" class="settings-panel">
-                  <div class="setting-item">
-                    <label>Slippage Tolerance</label>
-                    <div class="slippage-inputs">
-                      <button
-                        v-for="option in slippageOptions"
-                        :key="option"
-                        @click="slippage = option"
-                        :class="[
-                          'slippage-btn',
-                          { active: slippage === option },
-                        ]"
-                      >
-                        {{ option }}%
-                      </button>
-                      <input
-                        v-model="customSlippage"
-                        type="number"
-                        class="form-control"
-                        placeholder="Custom"
-                        @input="setCustomSlippage"
-                      />
+                <!-- Recent Transactions -->
+                <div class="recent-transactions">
+                  <h5>Recent Transactions</h5>
+                  <div class="transaction-list">
+                    <div v-for="tx in recentTransactions" :key="tx.id" class="transaction-item">
+                      <div class="tx-info">
+                        <div class="tx-tokens">
+                          <span>{{ tx.fromAmount }} {{ tx.fromToken }}</span>
+                          <i class="fas fa-arrow-right"></i>
+                          <span>{{ tx.toAmount }} {{ tx.toToken }}</span>
+                        </div>
+                        <div class="tx-time">{{ tx.time }}</div>
+                      </div>
+                      <div class="tx-status" :class="tx.status">
+                        {{ tx.status }}
+                      </div>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Market Info Panel -->
+          <div class="col-lg-4 col-md-8">
+            <div class="market-panel">
+              <h4>Market Overview</h4>
+              <div class="market-stats">
+                <div class="market-stat">
+                  <span class="stat-label">24h Volume</span>
+                  <span class="stat-value">$2.5M</span>
+                </div>
+                <div class="market-stat">
+                  <span class="stat-label">Total Liquidity</span>
+                  <span class="stat-value">$15.2M</span>
+                </div>
+                <div class="market-stat">
+                  <span class="stat-label">PPO Price</span>
+                  <span class="stat-value">$0.05</span>
+                </div>
+              </div>
+
+              <div class="price-chart">
+                <h5>PPO Price Chart</h5>
+                <div class="chart-placeholder">
+                  <i class="fas fa-chart-line"></i>
+                  <p>Price chart will be displayed here</p>
+                </div>
+              </div>
+
+              <div class="popular-pairs">
+                <h5>Popular Pairs</h5>
+                <div class="pair-list">
+                  <div v-for="pair in popularPairs" :key="pair.id" class="pair-item" @click="selectPair(pair)">
+                    <div class="pair-tokens">
+                      <img :src="pair.token1.icon" :alt="pair.token1.symbol" class="token-icon-small">
+                      <img :src="pair.token2.icon" :alt="pair.token2.symbol" class="token-icon-small">
+                      <span>{{ pair.token1.symbol }}/{{ pair.token2.symbol }}</span>
+                    </div>
+                    <div class="pair-price">{{ pair.price }}</div>
                   </div>
                 </div>
               </div>
@@ -219,41 +207,37 @@
     </section>
 
     <!-- Token Selection Modal -->
-    <div
-      v-if="showFromTokenModal || showToTokenModal"
-      class="modal-overlay"
-      @click="closeTokenModal"
-    >
+    <div v-if="showFromTokenModal || showToTokenModal" class="modal-overlay" @click="closeTokenModal">
       <div class="token-modal" @click.stop>
         <div class="modal-header">
-          <h3>Select Token</h3>
+          <h4>Select Token</h4>
           <button class="close-btn" @click="closeTokenModal">
             <i class="fas fa-times"></i>
           </button>
         </div>
         <div class="modal-body">
           <div class="search-box">
-            <input
-              v-model="tokenSearch"
-              type="text"
-              class="form-control"
+            <input 
+              v-model="tokenSearch" 
+              type="text" 
               placeholder="Search tokens..."
-            />
+              class="search-input"
+            >
           </div>
           <div class="token-list">
-            <div
-              v-for="token in filteredTokens"
+            <div 
+              v-for="token in filteredTokens" 
               :key="token.address"
               class="token-item"
               @click="selectToken(token)"
             >
-              <img :src="token.icon" :alt="token.symbol" class="token-icon" />
+              <img :src="token.icon" :alt="token.symbol" class="token-icon">
               <div class="token-info">
                 <span class="token-symbol">{{ token.symbol }}</span>
                 <span class="token-name">{{ token.name }}</span>
               </div>
               <div class="token-balance">
-                {{ getTokenBalance(token.address) }}
+                {{ floorFragment(getTokenBalance(token.address), 4) }}
               </div>
             </div>
           </div>
@@ -261,630 +245,528 @@
       </div>
     </div>
 
-    <!-- Recent Transactions -->
-    <!-- <section class="recent-transactions padding-large bg-dark">
-      <div class="container">
-        <div class="row">
-          <div class="col-12">
-            <h2 class="section-title text-center mb-5">Recent Transactions</h2>
-            <div class="transactions-list">
-              <div
-                v-for="tx in recentTransactions"
-                :key="tx.hash"
-                class="transaction-item"
-              >
-                <div class="tx-icon">
-                  <i class="fas fa-exchange-alt"></i>
-                </div>
-                <div class="tx-details">
-                  <div class="tx-pair">
-                    {{ tx.fromAmount }} {{ tx.fromToken }} → {{ tx.toAmount }}
-                    {{ tx.toToken }}
-                  </div>
-                  <div class="tx-time">{{ formatTime(tx.timestamp) }}</div>
-                </div>
-                <div class="tx-status" :class="tx.status">
-                  <i :class="getStatusIcon(tx.status)"></i>
-                  {{ tx.status }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <!-- Toast Notification -->
+    <div v-if="showToast" class="toast-notification" :class="toastType">
+      <div class="toast-content">
+        <i :class="getToastIcon()" class="toast-icon"></i>
+        <span class="toast-message">{{ toastMessage }}</span>
+        <button class="toast-close" @click="closeToast">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
-    </section> -->
-
-    <Footer />
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, reactive } from "vue";
-import { BrowserProvider, ethers, JsonRpcSigner } from "ethers";
-import { ppoTokenAbi } from "@/abis/ppoToken.js";
-import { ppoSwapAbi } from "@/abis/ppoSwap.js";
-import { useWeb3 } from "@/composables/useWeb3.js";
-import { useFirebase } from "@/composables/useFirebase.js";
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
-import { useAppKit } from "@reown/appkit/vue";
-import { useAccount, useDisconnect, useChainId } from "@wagmi/vue";
-import { erc20Abi } from "viem";
-import {
-  readContract,
-  getBalance,
-  getConnectorClient,
-  writeContract,
-  waitForTransactionReceipt,
-} from "@wagmi/core";
-import { wagmiConfig } from "../config/wagmi";
-import { useToast } from "vue-toastification";
-import { floorFragment } from "@/utils/number";
-import ReownWalletButton from "../components/ReownWalletButton.vue";
-import { bsc, bscTestnet } from "viem/chains";
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useWeb3 } from '../composables/useWeb3.js'
+import Header from '../components/Header.vue'
+import ReownWalletButton from '../components/ReownWalletButton.vue'
 
-// PPO Token và PPO Swap contract addresses
-const ppoSwapAddress = computed(() => {
-  if (bsc.id === chainId.value) {
-    return "0x8dCa51f217969A7f9ea1FA5e99d5a66152063188";
-  }
-  return "0x80B5AcE6283fAf55E8fE4FE9B15d1b2f41aFb95D";
-});
+const router = useRouter()
 
-// Composables
-const { currentUser } = useFirebase();
-const { address } = useAccount();
-const chainId = useChainId();
-const { disconnect } = useDisconnect();
-const { open } = useAppKit();
-const toast = useToast();
+// Use Web3 composable for wallet connection
+const {
+  isWalletConnected,
+  walletAddress,
+  connectWallet
+} = useWeb3()
 
 // State
-const provider = ref(null);
-const signer = ref(null);
-const ppoTokenContract = ref(null);
-const ppoSwapContract = ref(null);
-const nativeBalance = ref(0);
-const ppoBalance = ref(0);
+const showFromTokenModal = ref(false)
+const showToTokenModal = ref(false)
+const tokenSearch = ref('')
 
-const isWalletConnected = computed(() => !!address.value);
-
-// Wallet connection state
-const account = ref(null);
-const balance = ref("0");
-
-// Handle wallet connection events
-const handleWalletConnected = (event) => {
-  const { address } = event.detail;
-  isWalletConnected.value = true;
-  account.value = address;
-};
-
-// const handleWalletDisconnected = () => {
-//   isConnected.value = false;
-//   account.value = null;
-//   balance.value = "0";
-// };
-
-// onMounted(() => {
-//   window.addEventListener("wallet-connected", handleWalletConnected);
-//   window.addEventListener("wallet-disconnected", handleWalletDisconnected);
-// });
-
-// onUnmounted(() => {
-//   window.removeEventListener("wallet-connected", handleWalletConnected);
-//   window.removeEventListener("wallet-disconnected", handleWalletDisconnected);
-// });
-
-// State
-const isLoading = ref(false);
-const showFromTokenModal = ref(false);
-const showToTokenModal = ref(false);
-const showSettings = ref(false);
-const tokenSearch = ref("");
-const slippage = ref(0.5);
-const customSlippage = ref("");
+// Toast notification state
+const showToast = ref(false)
+const toastMessage = ref('')
+const toastType = ref('info')
 
 // Swap form
-const swapForm = reactive({
-  fromAmount: "",
-  toAmount: "",
-});
+const swapForm = ref({
+  fromAmount: '',
+  toAmount: ''
+})
 
-// Total tokens
-const totalTokens = ref([
-  {
-    chainId: bscTestnet.id,
-    symbol: "BNB",
-    name: "Binance",
-    address: "0x0000000000000000000000000000000000000000",
-    icon: "/token/bsc.png",
-    decimals: 18,
-  },
-  {
-    chainId: bscTestnet.id,
-    symbol: "PPO",
-    name: "PixelPayot Token",
-    address: "0x1C075C6053b1FC1Ee7EED91e4ebe20428bEf4E69",
-    icon: "/token/ppo.png",
-    decimals: 18,
-  },
-  {
-    chainId: bsc.id,
-    symbol: "BNB",
-    name: "Binance",
-    address: "0x0000000000000000000000000000000000000000",
-    icon: "/token/bsc.png",
-    decimals: 18,
-  },
-  {
-    chainId: bsc.id,
-    symbol: "PPO",
-    name: "PixelPayot Token",
-    address: "0xCdA7eBb5005aaC33B6F4f32c17647698b020eFC9",
-    icon: "/token/ppo.png",
-    decimals: 18,
-  },
-  {
-    chainId: bscTestnet.id,
-    symbol: "USDT",
-    name: "Tether USD",
-    address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
-    icon: "/token/usdt.png",
-    decimals: 6,
-  },
-  {
-    chainId: bscTestnet.id,
-    symbol: "USDC",
-    name: "USD Coin",
-    address: "0xA0b86a33E6441b8C4C8C8C8C8C8C8C8C8C8C8C8",
-    icon: "/token/usdc.webp",
-    decimals: 6,
-  },
-]);
+// Token balances - conditional based on wallet connection
+const fromTokenBalance = computed(() => {
+  return isWalletConnected.value ? 10.5 : 0
+})
+
+const toTokenBalance = computed(() => {
+  return isWalletConnected.value ? 2500.75 : 0
+})
+
+// Default tokens (BNB and PPO)
+const selectedFromToken = ref({
+  symbol: 'BNB',
+  name: 'Binance Coin',
+  icon: '/src/assets/images/bnb-icon.png',
+  address: '0xbb4CdB9CBd36B01bD1cBaEF2aFd4e8d3b5c6b5d4'
+})
+
+const selectedToToken = ref({
+  symbol: 'PPO',
+  name: 'PixelPayot Token',
+  icon: '/src/assets/images/ppo-icon.png',
+  address: '0x1234567890123456789012345678901234567890'
+})
 
 // Available tokens
-const availableTokens = computed(() =>
-  totalTokens.value.filter((token) => token.chainId === chainId.value)
-);
-
-// Selected tokens
-const selectedFromToken = ref(availableTokens.value[0]);
-const selectedToToken = ref(availableTokens.value[1]);
-watch(availableTokens, () => {
-  if (chainId.value === bscTestnet.id) {
-    selectedFromToken.value = availableTokens.value[0];
-    selectedToToken.value = availableTokens.value[1];
-  } else if (chainId.value === bsc.id) {
-    selectedFromToken.value = availableTokens.value[0];
-    selectedToToken.value = availableTokens.value[1];
+const availableTokens = ref([
+  {
+    symbol: 'BNB',
+    name: 'Binance Coin',
+    icon: '/src/assets/images/bnb-icon.png',
+    address: '0xbb4CdB9CBd36B01bD1cBaEF2aFd4e8d3b5c6b5d4'
+  },
+  {
+    symbol: 'PPO',
+    name: 'PixelPayot Token',
+    icon: '/src/assets/images/ppo-icon.png',
+    address: '0x1234567890123456789012345678901234567890'
+  },
+  {
+    symbol: 'USDT',
+    name: 'Tether USD',
+    icon: '/src/assets/images/usdt-icon.png',
+    address: '0x55d398326f99059fF775485246999027B3197955'
+  },
+  {
+    symbol: 'USDC',
+    name: 'USD Coin',
+    icon: '/src/assets/images/usdc-icon.png',
+    address: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d'
   }
-});
+])
 
-// Balances
-const tokenBalances = ref({});
-const fromTokenBalance = ref(0);
-const toTokenBalance = ref(0);
-
-// Slippage options
-const slippageOptions = [0.1, 0.5, 1.0];
-
-// Recent transactions
-const recentTransactions = ref([
+// Popular pairs
+const popularPairs = ref([
   {
-    hash: "0x123...",
-    fromAmount: "1.5",
-    fromToken: "ETH",
-    toAmount: "2500",
-    toToken: "PPO",
-    timestamp: Date.now() - 3600000,
-    status: "completed",
+    id: 1,
+    token1: { symbol: 'PPO', icon: '/src/assets/images/ppo-icon.png' },
+    token2: { symbol: 'BNB', icon: '/src/assets/images/bnb-icon.png' },
+    price: '0.000045 BNB'
   },
   {
-    hash: "0x456...",
-    fromAmount: "100",
-    fromToken: "PPO",
-    toAmount: "0.06",
-    toToken: "ETH",
-    timestamp: Date.now() - 7200000,
-    status: "pending",
+    id: 2,
+    token1: { symbol: 'PPO', icon: '/src/assets/images/ppo-icon.png' },
+    token2: { symbol: 'USDT', icon: '/src/assets/images/usdt-icon.png' },
+    price: '0.045 USDT'
   },
-]);
+  {
+    id: 3,
+    token1: { symbol: 'BNB', icon: '/src/assets/images/bnb-icon.png' },
+    token2: { symbol: 'USDT', icon: '/src/assets/images/usdt-icon.png' },
+    price: '320.50 USDT'
+  }
+])
 
-// Computed
+// Recent transactions - conditional based on wallet connection
+const recentTransactions = computed(() => {
+  if (!isWalletConnected.value) {
+    return []
+  }
+  return [
+    {
+      id: 1,
+      type: 'swap',
+      from: { symbol: 'BNB', amount: '0.1' },
+      to: { symbol: 'PPO', amount: '2222.22' },
+      time: '2 minutes ago',
+      status: 'completed'
+    },
+    {
+      id: 2,
+      type: 'swap',
+      from: { symbol: 'PPO', amount: '100' },
+      to: { symbol: 'USDT', amount: '4.5' },
+      time: '5 minutes ago',
+      status: 'completed'
+    },
+    {
+      id: 3,
+      type: 'swap',
+      from: { symbol: 'USDT', amount: '10' },
+      to: { symbol: 'BNB', amount: '0.031' },
+      time: '10 minutes ago',
+      status: 'completed'
+    }
+  ]
+})
+
+// Computed properties
 const filteredTokens = computed(() => {
-  if (!tokenSearch.value) return availableTokens.value;
-  return availableTokens.value.filter(
-    (token) =>
-      token.symbol.toLowerCase().includes(tokenSearch.value.toLowerCase()) ||
-      token.name.toLowerCase().includes(tokenSearch.value.toLowerCase())
-  );
-});
+  if (!tokenSearch.value) return availableTokens.value
+  return availableTokens.value.filter(token =>
+    token.symbol.toLowerCase().includes(tokenSearch.value.toLowerCase()) ||
+    token.name.toLowerCase().includes(tokenSearch.value.toLowerCase())
+  )
+})
 
-const swapRate = computed(() => {
-  // Mock exchange rate - in real app, this would come from DEX API
-  if (
-    selectedFromToken.value.symbol === "ETH" &&
-    selectedToToken.value.symbol === "PPO"
-  ) {
-    return 1666.67;
+const exchangeRate = computed(() => {
+  // Dynamic exchange rate based on selected tokens
+  if (selectedFromToken.value.symbol === 'BNB' && selectedToToken.value.symbol === 'PPO') {
+    return (1 / 2222.22).toFixed(6) // 1 BNB = 2222.22 PPO
+  } else if (selectedFromToken.value.symbol === 'PPO' && selectedToToken.value.symbol === 'BNB') {
+    return (2222.22).toFixed(6) // 1 PPO = 0.00045 BNB
   }
-  if (
-    selectedFromToken.value.symbol === "PPO" &&
-    selectedToToken.value.symbol === "ETH"
-  ) {
-    return 0.0006;
-  }
-  return 1;
-});
+  return '0.0000'
+})
 
-const networkFee = computed(() => {
-  return "0.005";
-});
+const priceImpact = computed(() => {
+  const amount = parseFloat(swapForm.value.fromAmount) || 0
+  if (amount < 0.1) return '< 0.01'
+  if (amount < 1) return '0.01'
+  if (amount < 5) return '0.05'
+  return '0.12'
+})
+
+const priceImpactClass = computed(() => {
+  const impact = parseFloat(priceImpact.value)
+  if (impact < 0.1) return 'low'
+  if (impact < 1) return 'medium'
+  return 'high'
+})
+
+const slippage = ref(0.5)
+const networkFee = ref(0.001)
 
 const canSwap = computed(() => {
-  return (
-    swapForm.fromAmount > 0 &&
-    parseFloat(swapForm.fromAmount) <= fromTokenBalance.value &&
-    selectedFromToken.value.address !== selectedToToken.value.address
-  );
-});
+  return swapForm.value.fromAmount && 
+         parseFloat(swapForm.value.fromAmount) > 0 &&
+         parseFloat(swapForm.value.fromAmount) <= fromTokenBalance.value
+})
 
+const swapButtonText = computed(() => {
+  if (!swapForm.value.fromAmount) return 'Enter an amount'
+  if (parseFloat(swapForm.value.fromAmount) > fromTokenBalance.value) return 'Insufficient balance'
+  return 'Swap'
+})
+
+// Methods
 const calculateSwap = () => {
-  if (swapForm.fromAmount > 0) {
-    const rate = swapRate.value;
-
-    const parsedAmount = ethers.parseUnits(
-      swapForm.fromAmount?.toString(),
-      selectedFromToken.value.decimals
-    );
-    console.log("Parsed Amount:", parsedAmount);
-    console.log("ppoSwapAddress.value:", ppoSwapAddress.value);
-    readContract(wagmiConfig, {
-      chainId: chainId.value,
-      abi: ppoSwapAbi,
-      address: ppoSwapAddress.value,
-      functionName: "getEstimateAmountsOut",
-      args: [parsedAmount],
-    }).then((data) => {
-      console.log("getEstimateAmountsOut:", data);
-      const formattedAmount = ethers.formatUnits(
-        data,
-        selectedToToken.value.decimals
-      );
-      swapForm.toAmount = (+formattedAmount).toFixed(5);
-    });
+  // Simple swap calculation (1 BNB = 2222.22 PPO)
+  if (swapForm.value.fromAmount && selectedFromToken.value.symbol === 'BNB' && selectedToToken.value.symbol === 'PPO') {
+    swapForm.value.toAmount = (parseFloat(swapForm.value.fromAmount) * 2222.22).toFixed(2)
+  } else if (swapForm.value.fromAmount && selectedFromToken.value.symbol === 'PPO' && selectedToToken.value.symbol === 'BNB') {
+    swapForm.value.toAmount = (parseFloat(swapForm.value.fromAmount) / 2222.22).toFixed(6)
   } else {
-    swapForm.toAmount = "";
+    swapForm.value.toAmount = ''
   }
-};
+}
 
 const swapTokens = () => {
-  const temp = selectedFromToken.value;
-  selectedFromToken.value = selectedToToken.value;
-  selectedToToken.value = temp;
-  calculateSwap();
-};
+  const temp = { ...selectedFromToken.value }
+  selectedFromToken.value = { ...selectedToToken.value }
+  selectedToToken.value = temp
+  
+  // Swap amounts
+  const tempAmount = swapForm.value.fromAmount
+  swapForm.value.fromAmount = swapForm.value.toAmount
+  swapForm.value.toAmount = tempAmount
+  
+  calculateSwap()
+}
 
 const setMaxAmount = () => {
-  swapForm.fromAmount = fromTokenBalance.value.toString();
-  calculateSwap();
-};
+  swapForm.value.fromAmount = fromTokenBalance.value.toString()
+  calculateSwap()
+}
 
-const executeSwap = async () => {
-  if (!canSwap.value) return;
+const selectFromToken = (token) => {
+  selectedFromToken.value = token
+  showFromTokenModal.value = false
+  calculateSwap()
+}
 
-  try {
-    isLoading.value = true;
+const selectToToken = (token) => {
+  selectedToToken.value = token
+  showToTokenModal.value = false
+  calculateSwap()
+}
 
-    const balance = +tokenBalances.value[selectedFromToken.value.address] || 0;
-    if (balance < +swapForm.fromAmount) {
-      toast.error("Insufficient balance");
-      return;
-    }
-
-    const parsedAmount = ethers.parseUnits(
-      swapForm.fromAmount?.toString(),
-      selectedFromToken.value.decimals
-    );
-    console.log("Parsed Amount:", parsedAmount);
-    const txHash = await writeContract(wagmiConfig, {
-      chainId: chainId.value,
-      abi: ppoSwapAbi,
-      address: ppoSwapAddress.value,
-      functionName: "swap",
-      args: [],
-      value: parsedAmount,
-    });
-    toast.info("Transaction sent. Waiting for confirmation...");
-
-    // Reset form
-    swapForm.fromAmount = "";
-    swapForm.toAmount = "";
-
-    await waitForTransactionReceipt(wagmiConfig, {
-      chainId: chainId.value,
-      hash: txHash,
-    });
-
-    toast.success("Swap successfully!");
-
-    // Add to recent transactions
-    recentTransactions.value.unshift({
-      hash: "0x" + Math.random().toString(36).substr(2, 9),
-      fromAmount: swapForm.fromAmount,
-      fromToken: selectedFromToken.value.symbol,
-      toAmount: swapForm.toAmount,
-      toToken: selectedToToken.value.symbol,
-      timestamp: Date.now(),
-      status: "completed",
-    });
-
-    // Update balances
-    await loadTokenBalances();
-  } catch (error) {
-    console.error("Swap failed:", error);
-    toast.error("Swap failed!");
-  } finally {
-    isLoading.value = false;
+const executeSwap = () => {
+  if (!isWalletConnected.value) {
+    showToastMessage('Please connect your wallet first', 'warning')
+    return
   }
-};
+  
+  if (!swapForm.value.fromAmount || parseFloat(swapForm.value.fromAmount) <= 0) {
+    showToastMessage('Please enter a valid amount', 'warning')
+    return
+  }
+  
+  if (parseFloat(swapForm.value.fromAmount) > fromTokenBalance.value) {
+    showToastMessage('Insufficient balance', 'error')
+    return
+  }
+  
+  // Simulate swap execution
+  console.log('Executing swap:', {
+    from: selectedFromToken.value.symbol,
+    to: selectedToToken.value.symbol,
+    amount: swapForm.value.fromAmount,
+    wallet: walletAddress.value
+  })
+  
+  // Reset form
+  swapForm.value.fromAmount = ''
+  swapForm.value.toAmount = ''
+  
+  // Show success message
+  showToastMessage('Swap executed successfully!', 'success')
+}
 
 const selectToken = (token) => {
   if (showFromTokenModal.value) {
-    selectedFromToken.value = token;
-  } else {
-    selectedToToken.value = token;
+    selectedFromToken.value = token
+  } else if (showToTokenModal.value) {
+    selectedToToken.value = token
   }
-  closeTokenModal();
-  calculateSwap();
-};
+  closeTokenModal()
+}
+
+const selectPair = (pair) => {
+  selectedFromToken.value = availableTokens.value.find(t => t.symbol === pair.token1.symbol)
+  selectedToToken.value = availableTokens.value.find(t => t.symbol === pair.token2.symbol)
+  calculateSwap()
+}
+
+const showToastMessage = (message, type = 'info') => {
+  toastMessage.value = message
+  toastType.value = type
+  showToast.value = true
+  
+  // Auto-hide after 5 seconds
+  setTimeout(() => {
+    showToast.value = false
+  }, 5000)
+}
+
+const closeToast = () => {
+  showToast.value = false
+}
+
+const getToastIcon = () => {
+  switch (toastType.value) {
+    case 'success':
+      return 'fas fa-check-circle'
+    case 'warning':
+      return 'fas fa-exclamation-triangle'
+    case 'error':
+      return 'fas fa-times-circle'
+    default:
+      return 'fas fa-info-circle'
+  }
+}
 
 const closeTokenModal = () => {
-  showFromTokenModal.value = false;
-  showToTokenModal.value = false;
-  tokenSearch.value = "";
-};
+  showFromTokenModal.value = false
+  showToTokenModal.value = false
+  tokenSearch.value = ''
+}
 
-const setCustomSlippage = () => {
-  if (customSlippage.value > 0) {
-    slippage.value = parseFloat(customSlippage.value);
-  }
-};
+const getTokenBalance = (tokenAddress) => {
+  // Mock token balance
+  return Math.random() * 1000
+}
 
-const getTokenBalance = (address) => {
-  return tokenBalances.value[address] || 0;
-};
+const floorFragment = (value, decimals) => {
+  return parseFloat(value).toFixed(decimals)
+}
 
-const loadTokenBalances = async () => {
-  if (!address.value) return;
+const formatDate = (date) => {
+  return new Date(date).toLocaleDateString()
+}
 
-  try {
-    console.log("chainId.value:", chainId.value);
-
-    ethers;
-
-    // Lấy số dư của native token
-    const nativeBalance = await getBalance(wagmiConfig, {
-      chainId: chainId.value,
-      address: address.value,
-      units: "ether",
-    });
-
-    // const client = await getConnectorClient(wagmiConfig, { chainId });
-
-    console.log("nativeBalance:", nativeBalance);
-    const ppoBalance = await readContract(wagmiConfig, {
-      chainId: chainId.value,
-      abi: ppoTokenAbi,
-      address: selectedToToken.value.address,
-      functionName: "balanceOf",
-      args: [address.value],
-    });
-
-    console.log("Balance:", ppoBalance);
-
-    const formattedPpoBalance = ethers.formatUnits(ppoBalance, 18);
-
-    // Mock balances - in real app, this would fetch from blockchain
-    tokenBalances.value = {
-      "0x0000000000000000000000000000000000000000": nativeBalance?.formatted, // BNB
-      [selectedToToken.value.address]: formattedPpoBalance, // PPO
-      // "0xdAC17F958D2ee523a2206206994597C13D831ec7": 100, // USDT
-      // "0xA0b86a33E6441b8C4C8C8C8C8C8C8C8C8C8C8C8": 50, // USDC
-    };
-
-    fromTokenBalance.value = getTokenBalance(selectedFromToken.value.address);
-    toTokenBalance.value = getTokenBalance(selectedToToken.value.address);
-  } catch (error) {
-    console.error("Failed to load balances:", error);
-  }
-};
-
-const getSwapButtonText = () => {
-  if (isLoading.value) return "Swapping...";
-  if (!isWalletConnected.value) return "Connect Wallet";
-  if (!swapForm.fromAmount) return "Swap";
-  if (parseFloat(swapForm.fromAmount) > fromTokenBalance.value)
-    return "Insufficient Balance";
-  if (selectedFromToken.value.address === selectedToToken.value.address)
-    return "Select different tokens";
-  return "Swap";
-};
-
-const formatTime = (timestamp) => {
-  const now = Date.now();
-  const diff = now - timestamp;
-
-  if (diff < 60000) return "Just now";
-  if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
-  if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
-  return `${Math.floor(diff / 86400000)}d ago`;
-};
-
-const getStatusIcon = (status) => {
-  switch (status) {
-    case "completed":
-      return "fas fa-check-circle";
-    case "pending":
-      return "fas fa-clock";
-    case "failed":
-      return "fas fa-times-circle";
-    default:
-      return "fas fa-question-circle";
-  }
-};
-
-// Lifecycle
-onMounted(async () => {
-  await loadTokenBalances();
-});
-
-// Watch for wallet address changes
-watch(address, async (newAddress, oldAddress) => {
-  console.log(`Address changed from ${oldAddress} to ${newAddress}`);
-  if (newAddress !== oldAddress) {
-    await loadTokenBalances();
-  }
-});
+onMounted(() => {
+  console.log('Swap component mounted')
+})
 </script>
 
 <style scoped>
-.swap-container {
-  max-width: 600px;
-}
-
 .swap-page {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
   min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #ffffff;
+  overflow-x: hidden;
+  position: relative;
 }
 
+/* Glass Blur Background Effects */
+.swap-page::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(119, 198, 255, 0.15) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Swap Hero Section */
 .swap-hero {
-  padding-top: 60px;
-  padding-bottom: 20px;
+  position: relative;
+  z-index: 1;
+  padding: 120px 0 80px;
+}
+
+.swap-header {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 60px 40px;
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.swap-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border-radius: 20px;
+  z-index: -1;
 }
 
 .swap-title {
-  font-size: 3rem;
-  font-weight: bold;
-  color: white;
-  margin-bottom: 15px;
-}
-
-.swap-interface {
-  padding-top: 20px;
-  padding-bottom: 60px;
+  font-size: 3.5rem;
+  font-weight: 900;
+  background: linear-gradient(45deg, #cc00ff, #d739ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 20px;
+  text-shadow: 0 0 30px rgba(204, 0, 255, 0.3);
 }
 
 .swap-subtitle {
   font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #b0b0b0;
+  margin-bottom: 0;
+  font-weight: 400;
+}
+
+/* Swap Interface */
+.swap-interface {
+  position: relative;
+  z-index: 1;
+  padding: 60px 0;
 }
 
 .swap-card {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   padding: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
 }
 
+.swap-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border-radius: 20px;
+  z-index: -1;
+}
+
+/* Wallet Notice */
 .wallet-notice {
   text-align: center;
-  padding: 40px 0;
-  color: white;
+  padding: 40px 20px;
 }
 
-.notice-content i {
-  font-size: 3rem;
-  color: #cc00ff;
-  margin-bottom: 20px;
+.notice-content {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.notice-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 2rem;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.notice-icon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  border-radius: 50%;
 }
 
 .notice-content h4 {
-  margin-bottom: 15px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #ffffff;
 }
 
 .notice-content p {
-  margin-bottom: 25px;
-  opacity: 0.8;
+  color: #b0b0b0;
+  margin-bottom: 30px;
 }
 
-.notice-content .connect-btn {
-  display: flex;
-  justify-content: center;
+/* Swap Form */
+.swap-form {
+  position: relative;
 }
 
 .token-input {
   margin-bottom: 20px;
 }
 
-.token-input label {
-  display: block;
-  color: white;
-  font-weight: 600;
+.input-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
 }
 
-.input-group {
-  display: flex;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.form-control {
-  flex: 1;
-  background: transparent;
-  border: none;
-  padding: 15px;
-  color: white;
-  font-size: 18px;
+.input-header label {
   font-weight: 600;
-  margin: 0;
-}
-
-.form-control::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.form-control:focus {
-  outline: none;
-}
-
-.token-selector {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 20px;
-  background: rgba(255, 255, 255, 0.1);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 120px;
-}
-
-.token-selector:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.token-icon {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-}
-
-.token-symbol {
-  font-weight: 600;
-  color: white;
+  color: #ffffff;
+  font-size: 1rem;
 }
 
 .balance-info {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-top: 8px;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
+  gap: 10px;
+  font-size: 0.9rem;
+  color: #b0b0b0;
 }
 
 .btn-link {
@@ -892,13 +774,72 @@ watch(address, async (newAddress, oldAddress) => {
   border: none;
   color: #cc00ff;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0;
 }
 
 .btn-link:hover {
   text-decoration: underline;
 }
 
+.input-group {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.input-group:focus-within {
+  border-color: rgba(204, 0, 255, 0.5);
+  box-shadow: 0 0 0 2px rgba(204, 0, 255, 0.1);
+}
+
+.form-control {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 20px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+  outline: none;
+}
+
+.form-control::placeholder {
+  color: #666;
+}
+
+.token-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 120px;
+}
+
+.token-selector:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.token-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.token-symbol {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* Swap Direction */
 .swap-direction {
   display: flex;
   justify-content: center;
@@ -906,23 +847,45 @@ watch(address, async (newAddress, oldAddress) => {
 }
 
 .direction-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: linear-gradient(45deg, #cc00ff, #d739ff);
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
   border: none;
+  border-radius: 50%;
   color: white;
+  font-size: 1.2rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.direction-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.direction-btn:hover::before {
+  opacity: 1;
 }
 
 .direction-btn:hover {
   transform: rotate(180deg);
+  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
 }
 
+/* Swap Details */
 .swap-details {
   background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
+  border-radius: 15px;
   padding: 20px;
   margin: 20px 0;
 }
@@ -930,87 +893,289 @@ watch(address, async (newAddress, oldAddress) => {
 .detail-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
-  color: rgba(255, 255, 255, 0.8);
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .detail-row:last-child {
-  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.detail-label {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+}
+
+.detail-value {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.detail-value.low { color: #34d399; }
+.detail-value.medium { color: #fbbf24; }
+.detail-value.high { color: #ef4444; }
+
+/* Swap Actions */
+.swap-actions {
+  margin: 30px 0;
 }
 
 .btn-swap {
-  display: block;
-  margin: auto;
-}
-
-.btn-linear {
-  background: linear-gradient(45deg, #cc00ff, #d739ff);
+  width: 100%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
   border: none;
   color: white;
-  padding: 15px 30px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 16px;
-  transition: all 0.3s ease;
+  padding: 18px;
+  border-radius: 15px;
+  font-size: 1.1rem;
+  font-weight: 700;
   cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.btn-linear:hover:not(:disabled) {
-  background: linear-gradient(45deg, #d739ff, #cc00ff);
+.btn-swap::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  border-radius: 15px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-swap:hover:not(.disabled)::before {
+  opacity: 1;
+}
+
+.btn-swap:hover:not(.disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(204, 0, 255, 0.3);
+  box-shadow: 0 15px 30px rgba(102, 126, 234, 0.3);
 }
 
-.btn-linear:disabled {
-  opacity: 0.6;
+.btn-swap.disabled {
+  opacity: 0.5;
   cursor: not-allowed;
-  transform: none;
+  background: rgba(255, 255, 255, 0.1);
 }
 
-.swap-settings {
-  text-align: center;
-  margin-top: 20px;
+/* Recent Transactions */
+.recent-transactions {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.settings-panel {
+.recent-transactions h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
-  padding: 20px;
-  margin-top: 15px;
+  transition: all 0.3s ease;
 }
 
-.setting-item label {
-  display: block;
-  color: white;
-  font-weight: 600;
-  margin-bottom: 10px;
+.transaction-item:hover {
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.slippage-inputs {
+.tx-info {
+  flex: 1;
+}
+
+.tx-tokens {
   display: flex;
-  gap: 10px;
   align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #ffffff;
 }
 
-.slippage-btn {
-  padding: 8px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: transparent;
+.tx-tokens i {
+  color: #cc00ff;
+  font-size: 0.8rem;
+}
+
+.tx-time {
+  font-size: 0.8rem;
+  color: #b0b0b0;
+}
+
+.tx-status {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.tx-status.completed {
+  background: linear-gradient(135deg, #34d399, #10b981);
   color: white;
-  border-radius: 8px;
+}
+
+.tx-status.pending {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: white;
+}
+
+/* Market Panel */
+.market-panel {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 30px;
+  height: fit-content;
+  position: relative;
+  overflow: hidden;
+}
+
+.market-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border-radius: 20px;
+  z-index: -1;
+}
+
+.market-panel h4 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #ffffff;
+}
+
+.market-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.market-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.market-stat:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+}
+
+.stat-value {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.price-chart {
+  margin-bottom: 30px;
+}
+
+.price-chart h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.chart-placeholder {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 40px 20px;
+  text-align: center;
+  color: #b0b0b0;
+}
+
+.chart-placeholder i {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #cc00ff;
+}
+
+.popular-pairs h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.pair-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pair-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.slippage-btn.active {
-  background: #cc00ff;
-  border-color: #cc00ff;
+.pair-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateX(5px);
 }
 
-.slippage-btn:hover {
-  background: rgba(204, 0, 255, 0.2);
+.pair-tokens {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #ffffff;
 }
 
+.token-icon-small {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.pair-price {
+  color: #cc00ff;
+  font-weight: 600;
+}
+
+/* Token Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -1022,16 +1187,18 @@ watch(address, async (newAddress, oldAddress) => {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  backdrop-filter: blur(10px);
 }
 
 .token-modal {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 20px;
   width: 90%;
-  max-width: 500px;
+  max-width: 400px;
   max-height: 80vh;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .modal-header {
@@ -1042,17 +1209,26 @@ watch(address, async (newAddress, oldAddress) => {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.modal-header h3 {
-  color: white;
+.modal-header h4 {
   margin: 0;
+  color: #ffffff;
+  font-weight: 600;
 }
 
 .close-btn {
   background: none;
   border: none;
-  color: white;
-  font-size: 1.5rem;
+  color: #b0b0b0;
+  font-size: 1.2rem;
   cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
 .modal-body {
@@ -1063,8 +1239,29 @@ watch(address, async (newAddress, oldAddress) => {
   margin-bottom: 20px;
 }
 
+.search-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: rgba(204, 0, 255, 0.5);
+  box-shadow: 0 0 0 2px rgba(204, 0, 255, 0.1);
+}
+
+.search-input::placeholder {
+  color: #666;
+}
+
 .token-list {
-  max-height: 400px;
+  max-height: 300px;
   overflow-y: auto;
 }
 
@@ -1073,121 +1270,220 @@ watch(address, async (newAddress, oldAddress) => {
   align-items: center;
   gap: 15px;
   padding: 15px;
-  border-radius: 12px;
   cursor: pointer;
+  border-radius: 12px;
   transition: all 0.3s ease;
-  color: white;
 }
 
 .token-item:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .token-info {
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.token-symbol {
-  display: block;
+.token-info .token-symbol {
   font-weight: 600;
+  color: #ffffff;
+  font-size: 1rem;
 }
 
-.token-name {
-  display: block;
-  font-size: 14px;
-  opacity: 0.7;
+.token-info .token-name {
+  color: #b0b0b0;
+  font-size: 0.8rem;
 }
 
 .token-balance {
-  font-weight: 600;
+  color: #b0b0b0;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
-.recent-transactions {
-  background: rgba(0, 0, 0, 0.3);
-}
-
-@media screen and (max-width: 768px) {
-  .section-title {
-    font-size: 2rem;
-    line-height: normal;
-  }
-}
-
-.transactions-list {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.transaction-item {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  margin-bottom: 15px;
-  color: white;
-}
-
-.tx-icon {
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(45deg, #cc00ff, #d739ff);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.tx-details {
-  flex: 1;
-}
-
-.tx-pair {
-  font-weight: 600;
-  margin-bottom: 5px;
-}
-
-.tx-time {
-  font-size: 14px;
-  opacity: 0.7;
-}
-
-.tx-status {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-weight: 600;
-}
-
-.tx-status.completed {
-  color: #51cf66;
-}
-
-.tx-status.pending {
-  color: #ffd43b;
-}
-
-.tx-status.failed {
-  color: #ff6b6b;
-}
-
+/* Responsive Design */
 @media (max-width: 768px) {
   .swap-title {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
-
+  
+  .swap-header {
+    padding: 40px 20px;
+  }
+  
   .swap-card {
     padding: 20px;
   }
-
-  .token-selector {
-    min-width: 100px;
-    padding: 12px 15px;
+  
+  .market-panel {
+    margin-top: 30px;
+    padding: 20px;
   }
+  
+  .form-control {
+    font-size: 1rem;
+    padding: 15px;
+  }
+  
+  .token-selector {
+    padding: 15px;
+    min-width: 100px;
+  }
+  
+  /* Mobile wallet connection fixes */
+  .wallet-notice {
+    padding: 20px;
+  }
+  
+  .notice-content {
+    text-align: center;
+  }
+  
+  .notice-content h4 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .notice-content p {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+  
+  .connect-btn {
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* Ensure wallet button is properly sized on mobile */
+  .connect-btn :deep(.wallet-container) {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .connect-btn :deep(.wallet-info) {
+    justify-content: center;
+    width: 100%;
+  }
+}
 
-  .slippage-inputs {
-    flex-wrap: wrap;
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.swap-card,
+.market-panel {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.market-panel {
+  animation-delay: 0.2s;
+}
+
+/* Toast Notification Styles */
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  max-width: 400px;
+  animation: slideInRight 0.3s ease;
+}
+
+.toast-notification.success {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  border-left: 4px solid #155724;
+}
+
+.toast-notification.warning {
+  background: linear-gradient(135deg, #ffc107, #fd7e14);
+  border-left: 4px solid #856404;
+}
+
+.toast-notification.error {
+  background: linear-gradient(135deg, #dc3545, #e83e8c);
+  border-left: 4px solid #721c24;
+}
+
+.toast-notification.info {
+  background: linear-gradient(135deg, #17a2b8, #6f42c1);
+  border-left: 4px solid #0c5460;
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.toast-icon {
+  font-size: 1.2rem;
+  margin-right: 12px;
+  color: white;
+}
+
+.toast-message {
+  flex: 1;
+  color: white;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  margin-left: 12px;
+}
+
+.toast-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Mobile responsive for toast */
+@media (max-width: 768px) {
+  .toast-notification {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+  
+  .toast-content {
+    padding: 14px 16px;
+  }
+  
+  .toast-message {
+    font-size: 0.9rem;
   }
 }
 </style>

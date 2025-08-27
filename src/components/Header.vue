@@ -4,10 +4,10 @@
       <div class="nav-container">
         <!-- Logo -->
         <div class="nav-logo">
-          <router-link to="/" class="logo">
+          <div class="logo" @click="navigateTo('/')">
             <img src="../assets/images/header-icon.png" alt="PixelPayot" class="logo-img">
             <span class="logo-text">PixelPayot</span>
-          </router-link>
+          </div>
         </div>
 
         <!-- Desktop Menu -->
@@ -17,41 +17,38 @@
               <template v-if="item.submenu">
                 <!-- Dropdown Menu -->
                 <div class="nav-dropdown" @mouseenter="openDropdown(item.id)" @mouseleave="closeDropdown(item.id)">
-                  <a 
+                  <div 
                     class="nav-link dropdown-toggle" 
-                    href="#" 
-                    @click.prevent="handleDropdownClick(item.id)"
+                    @click="handleDropdownClick(item.id)"
                     :class="{ 'active': activeDropdown === item.id }"
                   >
                     <i :class="item.icon"></i>
                     <span>{{ item.name }}</span>
                     <i class="fas fa-chevron-down"></i>
-                  </a>
+                  </div>
                   <ul class="dropdown-menu" :class="{ 'show': activeDropdown === item.id }">
                     <li v-for="subItem in item.submenu" :key="subItem.id">
-                      <router-link 
-                        :to="subItem.url" 
+                      <div 
                         class="dropdown-item"
                         @click="handleMenuClick(subItem)"
                       >
                         <i :class="subItem.icon"></i>
                         <span>{{ subItem.name }}</span>
-                      </router-link>
+                      </div>
                     </li>
                   </ul>
                 </div>
               </template>
               <template v-else>
                 <!-- Regular Menu Item -->
-                <router-link 
-                  :to="item.url" 
+                <div 
                   class="nav-link"
                   @click="handleMenuClick(item)"
                   :class="{ 'active': $route.path === item.url }"
                 >
                   <i :class="item.icon"></i>
                   <span>{{ item.name }}</span>
-                </router-link>
+                </div>
               </template>
             </li>
           </ul>
@@ -73,102 +70,81 @@
             </div>
             <ul class="user-dropdown" :class="{ 'show': isUserMenuOpen }">
               <li>
-                <router-link to="/profile" @click="closeUserMenu">
+                <div @click="handleMenuClick({ url: '/profile', action: 'navigate' })">
                   <i class="fas fa-user"></i>
                   <span>Profile</span>
-                </router-link>
+                </div>
               </li>
               <li>
-                <router-link to="/dashboard" @click="closeUserMenu">
+                <div @click="handleMenuClick({ url: '/dashboard', action: 'navigate' })">
                   <i class="fas fa-chart-line"></i>
                   <span>Dashboard</span>
-                </router-link>
+                </div>
               </li>
               <li>
-                <a href="#" @click="handleLogout">
+                <div @click="handleLogout">
                   <i class="fas fa-sign-out-alt"></i>
                   <span>Logout</span>
-                </a>
+                </div>
               </li>
             </ul>
           </div>
-
-          <!-- Sign In Button -->
-          <!-- <router-link v-else to="/signup" class="btn-signin">
-            <i class="fas fa-sign-in-alt"></i>
-            <span>Sign In</span>
-          </router-link> -->
         </div>
 
         <!-- Mobile Menu Toggle -->
-        <button 
-          class="mobile-toggle" 
-          @click="toggleMobileMenu"
-          :class="{ 'active': isMobileMenuOpen }"
-          aria-label="Toggle navigation"
-        >
+        <div class="mobile-menu-toggle" :class="{ 'active': isMobileMenuOpen }" @click="toggleMobileMenu">
           <span></span>
           <span></span>
           <span></span>
-        </button>
+        </div>
       </div>
 
       <!-- Mobile Menu -->
       <div class="mobile-menu" :class="{ 'show': isMobileMenuOpen }">
-        <div class="mobile-menu-content">
-          <ul class="mobile-nav-list">
-            <li class="mobile-nav-item" v-for="item in menuItems" :key="item.id">
-              <template v-if="item.submenu">
-                <div class="mobile-dropdown">
-                  <a 
-                    class="mobile-nav-link" 
-                    href="#" 
-                    @click.prevent="handleDropdownClick(item.id)"
-                    :class="{ 'active': activeDropdown === item.id }"
-                  >
-                    <i :class="item.icon"></i>
-                    <span>{{ item.name }}</span>
-                    <i class="fas fa-chevron-down"></i>
-                  </a>
-                  <ul class="mobile-dropdown-menu" :class="{ 'show': activeDropdown === item.id }">
-                    <li v-for="subItem in item.submenu" :key="subItem.id">
-                      <router-link 
-                        :to="subItem.url" 
-                        class="mobile-dropdown-item"
-                        @click="handleMenuClick(subItem)"
-                      >
-                        <i :class="subItem.icon"></i>
-                        <span>{{ subItem.name }}</span>
-                      </router-link>
-                    </li>
-                  </ul>
-                </div>
-              </template>
-              <template v-else>
-                <router-link 
-                  :to="item.url" 
-                  class="mobile-nav-link"
-                  @click="handleMenuClick(item)"
-                  :class="{ 'active': $route.path === item.url }"
+        <ul class="mobile-nav-list">
+          <li class="mobile-nav-item" v-for="item in menuItems" :key="item.id">
+            <template v-if="item.submenu">
+              <div class="mobile-dropdown">
+                <div 
+                  class="mobile-nav-link" 
+                  @click="handleDropdownClick(item.id)"
+                  :class="{ 'active': activeDropdown === item.id }"
                 >
                   <i :class="item.icon"></i>
                   <span>{{ item.name }}</span>
-                </router-link>
-              </template>
-            </li>
-          </ul>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <ul class="mobile-dropdown-menu" :class="{ 'show': activeDropdown === item.id }">
+                  <li v-for="subItem in item.submenu" :key="subItem.id">
+                    <div 
+                      class="mobile-dropdown-item"
+                      @click="handleMenuClick(subItem)"
+                    >
+                      <i :class="subItem.icon"></i>
+                      <span>{{ subItem.name }}</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </template>
+            <template v-else>
+              <div 
+                class="mobile-nav-link"
+                @click="handleMenuClick(item)"
+                :class="{ 'active': $route.path === item.url }"
+              >
+                <i :class="item.icon"></i>
+                <span>{{ item.name }}</span>
+              </div>
+            </template>
+          </li>
+        </ul>
 
-          <!-- Mobile Actions -->
-          <div class="mobile-actions">
-            <div class="mobile-wallet-section">
-              <WalletStatus />
-              <ReownWalletButton />
-            </div>
-            
-            <!-- <router-link v-if="!currentUser" to="/signup" class="mobile-btn-signin">
-              <i class="fas fa-sign-in-alt"></i>
-              <span>Sign In</span>
-            </router-link> -->
+        <!-- Mobile Actions -->
+        <div class="mobile-actions">
+          <div class="mobile-wallet-section">
+            <WalletStatus />
+            <ReownWalletButton />
           </div>
         </div>
       </div>
@@ -192,7 +168,7 @@ const isMobileMenuOpen = ref(false)
 const activeDropdown = ref(null)
 const isUserMenuOpen = ref(false)
 
-// Use composables
+// Use Web3 composable
 const {
   isWeb3Ready,
   isWalletConnected,
@@ -208,12 +184,6 @@ const {
 
 // Menu items configuration
 const menuItems = ref([
-  // {
-  //   id: 'home',
-  //   name: 'Home',
-  //   url: '/',
-  //   icon: 'fas fa-home'
-  // },
   {
     id: 'game',
     name: 'Game',
@@ -317,6 +287,10 @@ const shortAddress = computed(() => {
 })
 
 // Methods
+const navigateTo = (url) => {
+  router.push(url)
+}
+
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value
   if (isMobileMenuOpen.value) {
@@ -366,6 +340,9 @@ const handleMenuClick = (item) => {
   // Handle special actions
   if (item.action === 'logout') {
     handleLogout()
+  } else if (item.url && item.url !== '#') {
+    // Navigate using router.push for better performance
+    router.push(item.url)
   }
 }
 
@@ -406,7 +383,6 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
   document.removeEventListener('click', handleClickOutside)
-  document.body.style.overflow = ''
 })
 </script>
 
@@ -672,33 +648,44 @@ onUnmounted(() => {
 }
 
 /* Mobile Toggle */
-.mobile-toggle {
+.mobile-menu-toggle {
   display: none;
   flex-direction: column;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 5px;
+  padding: 8px;
   gap: 4px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  z-index: 1002;
+  position: relative;
 }
 
-.mobile-toggle span {
+.mobile-menu-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu-toggle span {
   width: 25px;
   height: 3px;
   background: white;
   border-radius: 2px;
   transition: all 0.3s ease;
+  display: block;
+  transform-origin: center;
 }
 
-.mobile-toggle.active span:nth-child(1) {
+.mobile-menu-toggle.active span:nth-child(1) {
   transform: rotate(45deg) translate(6px, 6px);
 }
 
-.mobile-toggle.active span:nth-child(2) {
+.mobile-menu-toggle.active span:nth-child(2) {
   opacity: 0;
+  transform: scale(0);
 }
 
-.mobile-toggle.active span:nth-child(3) {
+.mobile-menu-toggle.active span:nth-child(3) {
   transform: rotate(-45deg) translate(6px, -6px);
 }
 
@@ -712,15 +699,19 @@ onUnmounted(() => {
   background: rgba(0, 0, 0, 0.98);
   backdrop-filter: blur(20px);
   transform: translateX(-100%);
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
   z-index: 1001;
   overflow-y: auto;
   visibility: hidden;
+  width: 100%;
+  height: calc(100vh - 70px);
+  opacity: 0;
 }
 
 .mobile-menu.show {
   transform: translateX(0);
   visibility: visible;
+  opacity: 1;
 }
 
 .mobile-menu-content {
@@ -829,12 +820,12 @@ onUnmounted(() => {
 }
 
 /* Responsive Design */
-@media (max-width: 1280px) {
+@media (max-width: 991px) {
   .desktop-menu {
     display: none !important;
   }
 
-  .mobile-toggle {
+  .mobile-menu-toggle {
     display: flex !important;
   }
 
@@ -859,7 +850,7 @@ onUnmounted(() => {
   }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
   .nav-container {
     padding: 0 15px;
   }
@@ -870,6 +861,39 @@ onUnmounted(() => {
 
   .nav-actions {
     gap: 8px;
+  }
+
+  .mobile-menu-toggle {
+    display: flex !important;
+    padding: 6px;
+  }
+
+  .mobile-menu-toggle span {
+    width: 22px;
+    height: 2px;
+  }
+}
+
+@media (max-width: 576px) {
+  .nav-container {
+    padding: 0 10px;
+  }
+
+  .logo-text {
+    display: none;
+  }
+
+  .nav-actions {
+    gap: 5px;
+  }
+
+  .mobile-menu-toggle {
+    padding: 5px;
+  }
+
+  .mobile-menu-toggle span {
+    width: 20px;
+    height: 2px;
   }
 }
 

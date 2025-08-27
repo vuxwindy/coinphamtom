@@ -1,0 +1,148 @@
+/* Icon Display Fixes */
+
+/* Ensure Font Awesome icons display properly */
+.fas, .far, .fab, .fa {
+  font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands', 'Font Awesome 6 Regular' !important;
+  font-weight: 900;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  display: inline-block;
+}
+
+/* Custom icon font fixes */
+[class^="icon-"], [class*=" icon-"] {
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
+}
+
+/* Specific icon fixes */
+.icon-facebook:before {
+  content: "\ea90";
+}
+
+.icon-twitter:before {
+  content: "\ea96";
+}
+
+.icon-youtube:before {
+  content: "\ea9d";
+}
+
+.icon-linkedin:before {
+  content: "\eaca";
+}
+
+.icon-bars:before {
+  content: "\f0c9";
+}
+
+.icon-instagram:before {
+  content: "\f16d";
+}
+
+/* Bootstrap icon compatibility */
+.bi {
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+}
+
+/* Ensure all icons are visible */
+i, .icon, [class*="icon-"] {
+  display: inline-block !important;
+  vertical-align: middle;
+}
+
+/* Fix for icon alignment in buttons */
+.btn i, .btn .fas, .btn .far, .btn .fab {
+  margin-right: 0.5rem;
+}
+
+/* Fix for icon alignment in navigation */
+.nav-link i, .nav-link .fas, .nav-link .far, .nav-link .fab {
+  margin-right: 0.5rem;
+}
+
+/* Responsive icon sizing */
+@media (max-width: 768px) {
+  .fas, .far, .fab, .fa, [class^="icon-"], [class*=" icon-"] {
+    font-size: 1rem;
+  }
+}
+
+/* Animation for icons */
+.icon-spin {
+  animation: icon-spin 2s linear infinite;
+}
+
+@keyframes icon-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Hover effects for icons */
+.icon-hover:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+/* Loading spinner icon */
+.icon-loading {
+  animation: icon-spin 1s linear infinite;
+}
+
+/* Success icon color */
+.icon-success {
+  color: #28a745;
+}
+
+/* Error icon color */
+.icon-error {
+  color: #dc3545;
+}
+
+/* Warning icon color */
+.icon-warning {
+  color: #ffc107;
+}
+
+/* Info icon color */
+.icon-info {
+  color: #17a2b8;
+}
+
+/* Primary icon color */
+.icon-primary {
+  color: #007bff;
+}
+
+/* Secondary icon color */
+.icon-secondary {
+  color: #6c757d;
+}
+
+/* Light icon color */
+.icon-light {
+  color: #f8f9fa;
+}
+
+/* Dark icon color */
+.icon-dark {
+  color: #343a40;
+}

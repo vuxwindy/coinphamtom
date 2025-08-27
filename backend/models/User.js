@@ -321,7 +321,7 @@ UserSchema.virtual('fullName').get(function() {
 
 // Virtual for referral link
 UserSchema.virtual('referralLink').get(function() {
-  return `${process.env.FRONTEND_URL || 'http://localhost:5173'}/signup?ref=${this.referralCode}`
+  return `https://pixelpayot.com/signup?ref=${this.referralCode}`
 })
 
 // Indexes

@@ -317,12 +317,27 @@ const showForgotPassword = () => {
   alert('Forgot password functionality will be implemented here')
 }
 
+// Check for referral code in URL on page load
+const checkReferralFromURL = () => {
+  const urlParams = new URLSearchParams(window.location.search)
+  const refCode = urlParams.get('ref')
+  if (refCode) {
+    signupForm.referralCode = refCode
+    console.log('Referral code detected from URL:', refCode)
+  }
+}
+
 // Watch for Firebase errors
-import { watch } from 'vue'
+import { watch, onMounted } from 'vue'
 watch(firebaseError, (newError) => {
   if (newError) {
     error.value = newError
   }
+})
+
+// Lifecycle
+onMounted(() => {
+  checkReferralFromURL()
 })
 </script>
 

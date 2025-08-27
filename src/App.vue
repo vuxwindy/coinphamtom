@@ -46,6 +46,12 @@ const modal = createAppKit({
 </template>
 
 <style>
+/* Import Font Awesome */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+/* Import custom icon font */
+@import url('./assets/fonts/icomoon.css');
+
 /* Global styles */
 * {
   margin: 0;
@@ -61,5 +67,32 @@ body {
 
 #app {
   min-height: 100vh;
+}
+
+/* Ensure icons display properly */
+[class^="icon-"], [class*=" icon-"] {
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Font Awesome fallback */
+.fas, .far, .fab {
+  font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands', 'Font Awesome 6 Regular' !important;
+}
+
+/* Ensure proper icon rendering */
+i {
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
 }
 </style>
