@@ -331,19 +331,19 @@
                     <button
                       class="btn btn-task"
                       :class="{
-                        completed: tasks.find((t) => t.id === 'telegramGroup')
+                        completed: tasks.find((t) => t.id === 'joinTelegram')
                           ?.completed,
                       }"
-                      @click="claimTaskReward('telegramGroup')"
+                      @click="claimTaskReward('joinTelegram')"
                       :disabled="
                         !isConnected ||
-                        tasks.find((t) => t.id === 'telegramGroup')?.completed
+                        tasks.find((t) => t.id === 'joinTelegram')?.completed
                       "
                     >
                       <i
                         class="fas fa-check-circle"
                         v-if="
-                          tasks.find((t) => t.id === 'telegramGroup')?.completed
+                          tasks.find((t) => t.id === 'joinTelegram')?.completed
                         "
                       ></i>
                       <i
@@ -405,20 +405,18 @@
                     <button
                       class="btn btn-task"
                       :class="{
-                        completed: tasks.find((t) => t.id === 'twitterFollow')
+                        completed: tasks.find((t) => t.id === 'joinX')
                           ?.completed,
                       }"
-                      @click="claimTaskReward('twitterFollow')"
+                      @click="claimTaskReward('joinX')"
                       :disabled="
                         !isConnected ||
-                        tasks.find((t) => t.id === 'twitterFollow')?.completed
+                        tasks.find((t) => t.id === 'joinX')?.completed
                       "
                     >
                       <i
                         class="fas fa-check-circle"
-                        v-if="
-                          tasks.find((t) => t.id === 'twitterFollow')?.completed
-                        "
+                        v-if="tasks.find((t) => t.id === 'joinX')?.completed"
                       ></i>
                       <i
                         class="fas fa-user-plus"
@@ -440,19 +438,19 @@
                     <button
                       class="btn btn-task"
                       :class="{
-                        completed: tasks.find((t) => t.id === 'socialShare')
+                        completed: tasks.find((t) => t.id === 'joinYoutube')
                           ?.completed,
                       }"
-                      @click="claimTaskReward('socialShare')"
+                      @click="claimTaskReward('joinYoutube')"
                       :disabled="
                         !isConnected ||
-                        tasks.find((t) => t.id === 'socialShare')?.completed
+                        tasks.find((t) => t.id === 'joinYoutube')?.completed
                       "
                     >
                       <i
                         class="fas fa-check-circle"
                         v-if="
-                          tasks.find((t) => t.id === 'socialShare')?.completed
+                          tasks.find((t) => t.id === 'joinYoutube')?.completed
                         "
                       ></i>
                       <i
@@ -471,12 +469,12 @@
                     <div class="rewards-content">
                       <h4>Available Rewards</h4>
                       <span class="rewards-amount"
-                        >{{ earnedRewards }} PPO</span
+                        >{{ availableRewards }} PPO</span
                       >
                     </div>
                     <button
                       class="btn btn-claim-rewards"
-                      :disabled="earnedRewards <= 0"
+                      :disabled="availableRewards < 200"
                     >
                       <i class="fas fa-download"></i>
                       Claim
@@ -1627,6 +1625,7 @@ import { useAccount, useBalance, useConnect } from '@wagmi/vue'
 import { useContractAddress } from '../composables/useContractAddress.js'
 import ReownWalletButton from '../components/ReownWalletButton.vue'
 import { useExchangePlatform } from '../composables/useExchangePlatform.js'
+import { useToast } from 'vue-toastification'
 
 const router = useRouter()
 const { chainId, address, isConnected } = useAccount()
@@ -1657,7 +1656,7 @@ const {
 } = useTaskSystem()
 
 // Use Toast composable
-// const { success, error: showError, warning, info } = useToast()
+const { success, error: showError, warning, info } = useToast()
 const { ppoTokenAddress } = useContractAddress()
 
 // State for modals
@@ -2211,8 +2210,8 @@ const claimTaskReward = async (taskType) => {
 
     const result = await completeTask(taskType)
     if (result.success) {
-      availableRewards.value = earnedRewards.value
-      success(`Task completed! You earned ${result.reward} PPO`)
+      availableRewards.value = result.newBalance
+      success(`Task completed!`)
 
       // Update user balance display
       if (result.newBalance !== undefined) {
@@ -2226,6 +2225,10 @@ const claimTaskReward = async (taskType) => {
     showError('Failed to claim task reward')
   }
 }
+
+watch(currentUser, () => {
+  initializeReferral()
+})
 
 // Watch for wallet connection changes to update referral
 watch(isConnected, (newValue) => {

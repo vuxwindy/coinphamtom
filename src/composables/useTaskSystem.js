@@ -12,43 +12,43 @@ const tasks = ref([
     completed: false,
     cooldown: 24 * 60 * 60 * 1000, // 24 hours in milliseconds
     lastCompleted: null,
-    icon: 'fas fa-calendar-check'
+    icon: 'fas fa-calendar-check',
   },
   {
     id: 'joinTelegram',
     name: 'Join Telegram Channel',
     description: 'Join our official Telegram channel',
-    reward: 2,
+    reward: 0,
     type: 'one-time',
     completed: false,
     cooldown: 0,
     lastCompleted: null,
     icon: 'fab fa-telegram',
-    href: 'https://t.me/PixelpayotChannels'
+    href: 'https://t.me/PixelpayotChannels',
   },
   {
     id: 'joinX',
     name: 'Follow on X',
     description: 'Follow us on X (Twitter)',
-    reward: 2,
+    reward: 0,
     type: 'one-time',
     completed: false,
     cooldown: 0,
     lastCompleted: null,
     icon: 'fab fa-twitter',
-    href: 'https://x.com/TetMinh46256'
+    href: 'https://x.com/TetMinh46256',
   },
   {
     id: 'joinYoutube',
     name: 'Watch YouTube Video',
     description: 'Watch our YouTube video',
-    reward: 2,
+    reward: 0,
     type: 'one-time',
     completed: false,
     cooldown: 0,
     lastCompleted: null,
     icon: 'fab fa-youtube',
-    href: 'https://www.youtube.com/@minhtet-q2r9o'
+    href: 'https://www.youtube.com/@minhtet-q2r9o',
   },
 ])
 
@@ -131,17 +131,20 @@ const completeTask = async (taskId) => {
       throw new Error('Task already completed')
     }
 
+    let userData = await getUserData()
+
     // Check cooldown for daily tasks
-    if (task.type === 'daily' && task.lastCompleted) {
-      const timeSinceLastCompletion = Date.now() - task.lastCompleted
-      if (timeSinceLastCompletion < task.cooldown) {
-        const remainingTime = task.cooldown - timeSinceLastCompletion
-        const hours = Math.floor(remainingTime / (1000 * 60 * 60))
-        const minutes = Math.floor(
-          (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
-        )
-        throw new Error(`Task available in ${hours}h ${minutes}m`)
-      }
+
+    const lastCheckIn = userData.data.lastCheckIn
+    console.log('lastCheckIn:', lastCheckIn)
+    const timeSinceLastCompletion = Date.now() - lastCheckIn
+    if (timeSinceLastCompletion < 24 * 60 * 60 * 1000) {
+      const remainingTime = 24 * 60 * 60 * 1000 - timeSinceLastCompletion
+      const hours = Math.floor(remainingTime / (1000 * 60 * 60))
+      const minutes = Math.floor(
+        (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
+      )
+      throw new Error(`Task available in ${hours}h ${minutes}m`)
     }
 
     // For tasks with href links, open the link first
@@ -154,43 +157,38 @@ const completeTask = async (taskId) => {
     task.lastCompleted = Date.now()
 
     // For daily check-in only, save the date
-    if (taskId === 'checkIn') {
-      const currentDate = new Date().toDateString()
-      localStorage.setItem('lastCheckInDate', currentDate)
-      console.log(`📅 Daily check-in completed on: ${currentDate}`)
-    }
+    // if (taskId === 'checkIn') {
+    //   const currentDate = new Date().toDateString()
+    //   localStorage.setItem('lastCheckInDate', currentDate)
+    //   console.log(`📅 Daily check-in completed on: ${currentDate}`)
+    // }
 
+    const checkAllTasks = tasks.value.every((t) => t.completed)
+    console.log('All tasks completed:', checkAllTasks)
     // Update user data in Firebase
-    if (currentUser.value) {
+    if (currentUser.value && checkAllTasks) {
       try {
+        const newTimeComplete = Date.now()
+        const newEarnedRewards = userData.data.totalEarned + 1
+        console.log('newEarnedRewards', newEarnedRewards)
         await updateUserData({
-          completedTasks: tasks.value
-            .filter((t) => t.completed)
-            .map((t) => t.id),
-          lastTaskCompletion: Date.now(),
+          completedTasks: [...userData.data.completedTasks, newTimeComplete],
+          totalEarned: newEarnedRewards,
+          lastCheckIn: Date.now(),
         })
+
+        userData = await getUserData()
       } catch (err) {
         // Continue even if Firebase update fails
         console.warn('Failed to update user data:', err.message)
       }
     }
 
-    // Claim reward
-    try {
-      await claimTaskReward(taskId, task.reward)
-    } catch (err) {
-      // Continue even if reward claiming fails
-      console.warn('Failed to claim reward:', err.message)
-    }
-
-    // Update user balance
-    userBalance.value += task.reward
-
     return {
       success: true,
       reward: task.reward,
       task: task,
-      newBalance: userBalance.value,
+      newBalance: userData.data.totalEarned,
     }
   } catch (err) {
     error.value = err.message
@@ -200,7 +198,7 @@ const completeTask = async (taskId) => {
 
 const resetDailyTasks = () => {
   console.log('🔄 Resetting daily check-in task...')
-  const checkInTask = tasks.value.find(task => task.id === 'checkIn')
+  const checkInTask = tasks.value.find((task) => task.id === 'checkIn')
   if (checkInTask) {
     checkInTask.completed = false
     checkInTask.lastCompleted = null
@@ -211,10 +209,10 @@ const resetDailyTasks = () => {
 
 const saveTasksToLocalStorage = () => {
   try {
-    const tasksData = tasks.value.map(task => ({
+    const tasksData = tasks.value.map((task) => ({
       id: task.id,
       completed: task.completed,
-      lastCompleted: task.lastCompleted
+      lastCompleted: task.lastCompleted,
     }))
     localStorage.setItem('userTasks', JSON.stringify(tasksData))
     console.log('💾 Tasks saved to localStorage')
@@ -228,8 +226,8 @@ const loadTasksFromLocalStorage = () => {
     const savedTasks = localStorage.getItem('userTasks')
     if (savedTasks) {
       const tasksData = JSON.parse(savedTasks)
-      tasksData.forEach(savedTask => {
-        const task = tasks.value.find(t => t.id === savedTask.id)
+      tasksData.forEach((savedTask) => {
+        const task = tasks.value.find((t) => t.id === savedTask.id)
         if (task) {
           task.completed = savedTask.completed
           task.lastCompleted = savedTask.lastCompleted
@@ -247,10 +245,10 @@ const loadUserTasks = async () => {
 
   try {
     isLoading.value = true
-    
+
     // Load from localStorage first
     loadTasksFromLocalStorage()
-    
+
     const userData = await getUserData()
 
     if (userData) {
@@ -258,7 +256,7 @@ const loadUserTasks = async () => {
 
       // Load daily tasks from Firebase
       if (userData.dailyTasks) {
-        const checkInTask = tasks.value.find(task => task.id === 'checkIn')
+        const checkInTask = tasks.value.find((task) => task.id === 'checkIn')
         if (checkInTask && userData.dailyTasks.checkIn) {
           checkInTask.completed = true
         }
@@ -272,7 +270,7 @@ const loadUserTasks = async () => {
         }
       })
     }
-    
+
     // Save to localStorage after loading from Firebase
     saveTasksToLocalStorage()
   } catch (err) {
