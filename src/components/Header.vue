@@ -237,7 +237,7 @@
           <div class="mobile-actions mt-6">
             <div class="mobile-wallet-section mb-4">
               <WalletStatus />
-              <!-- <ReownWalletButton /> -->
+              <ReownWalletButton />
             </div>
             
             <!-- Mobile Sign Up Button -->
@@ -295,24 +295,30 @@ const menuItems = ref([
     url: '/game',
     icon: 'fas fa-gamepad',
   },
-  {
-    id: 'marketplace',
-    name: 'Marketplace',
-    url: '/marketplace',
-    icon: 'fas fa-store',
-  },
-  {
-    id: 'collection',
-    name: 'Collection',
-    url: '/collection',
-    icon: 'fas fa-images',
-  },
+  // {
+  //   id: 'marketplace',
+  //   name: 'Marketplace',
+  //   url: '/marketplace',
+  //   icon: 'fas fa-store',
+  // },
+  // {
+  //   id: 'collection',
+  //   name: 'Collection',
+  //   url: '/collection',
+  //   icon: 'fas fa-images',
+  // },
   {
     id: 'investment',
     name: 'Investment',
     url: '/investment',
     icon: 'fas fa-chart-pie',
   },
+  {
+        id: 'swap',
+        name: 'Swap',
+        url: '/swap',
+        icon: 'fas fa-exchange-alt',
+      },
   {
     id: 'profile',
     name: 'Profile',
@@ -325,24 +331,24 @@ const menuItems = ref([
         url: '/profile',
         icon: 'fas fa-user-circle',
       },
-      {
-        id: 'dashboard',
-        name: 'Dashboard',
-        url: '/dashboard',
-        icon: 'fas fa-chart-line',
-      },
-      {
-        id: 'tasks',
-        name: 'Daily Tasks',
-        url: '/tasks',
-        icon: 'fas fa-tasks',
-      },
-      {
-        id: 'wallet-test',
-        name: 'Wallet Test',
-        url: '/wallet-test',
-        icon: 'fas fa-wallet',
-      },
+      // {
+      //   id: 'dashboard',
+      //   name: 'Dashboard',
+      //   url: '/dashboard',
+      //   icon: 'fas fa-chart-line',
+      // },
+      // {
+      //   id: 'tasks',
+      //   name: 'Daily Tasks',
+      //   url: '/tasks',
+      //   icon: 'fas fa-tasks',
+      // },
+      // {
+      //   id: 'wallet-test',
+      //   name: 'Wallet Test',
+      //   url: '/wallet-test',
+      //   icon: 'fas fa-wallet',
+      // },
       {
         id: 'referral',
         name: 'Referral',
@@ -357,24 +363,19 @@ const menuItems = ref([
     url: '#',
     icon: 'fas fa-ellipsis-h',
     submenu: [
-      {
-        id: 'blindbox',
-        name: 'Blindbox',
-        url: '/blindbox',
-        icon: 'fas fa-box-open',
-      },
-      {
-        id: 'swap',
-        name: 'Swap',
-        url: '/swap',
-        icon: 'fas fa-exchange-alt',
-      },
-      {
-        id: 'creators',
-        name: 'Creators',
-        url: '/creators',
-        icon: 'fas fa-palette',
-      },
+      // {
+      //   id: 'blindbox',
+      //   name: 'Blindbox',
+      //   url: '/blindbox',
+      //   icon: 'fas fa-box-open',
+      // },
+      
+      // {
+      //   id: 'creators',
+      //   name: 'Creators',
+      //   url: '/creators',
+      //   icon: 'fas fa-palette',
+      // },
       {
         id: 'whitepaper',
         name: 'Whitepaper',
