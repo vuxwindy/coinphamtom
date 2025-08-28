@@ -319,7 +319,6 @@ const menuItems = ref([
     url: '/game',
     icon: 'fas fa-gamepad',
   },
-<<<<<<< HEAD
   // {
   //   id: 'marketplace',
   //   name: 'Marketplace',
@@ -332,8 +331,6 @@ const menuItems = ref([
   //   url: '/collection',
   //   icon: 'fas fa-images',
   // },
-=======
->>>>>>> 627ee0a90d9cb1752659f13de5331beebd4a365f
   {
     id: 'investment',
     name: 'Investment',
@@ -408,11 +405,6 @@ const menuItems = ref([
       //   url: '/blindbox',
       //   icon: 'fas fa-box-open',
       // },
-<<<<<<< HEAD
-      
-=======
-
->>>>>>> 627ee0a90d9cb1752659f13de5331beebd4a365f
       // {
       //   id: 'creators',
       //   name: 'Creators',
