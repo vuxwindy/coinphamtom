@@ -293,9 +293,12 @@
                     </div>
                     <div class="task-content">
                       <h5>Daily Check-in</h5>
-                      <p class="task-reward">+1 PPO</p>
+                      <!-- <p class="task-reward">+1 PPO</p> -->
                     </div>
-                    <button class="btn btn-task completed">
+                    <button
+                      class="btn btn-task completed"
+                      @click="claimTaskReward('checkIn')"
+                    >
                       <i class="fas fa-check-circle"></i>
                     </button>
                   </div>
@@ -307,11 +310,12 @@
                     </div>
                     <div class="task-content">
                       <h5>Join Telegram Group</h5>
-                      <p class="task-reward">+2 PPO</p>
+                      <!-- <p class="task-reward">+2 PPO</p> -->
                     </div>
                     <button
                       class="btn btn-task"
                       data-task="telegramGroup"
+                      @click="claimTaskReward('telegramGroup')"
                     >
                       <i class="fas fa-users"></i>
                     </button>
@@ -324,11 +328,12 @@
                     </div>
                     <div class="task-content">
                       <h5>Subscribe Channel</h5>
-                      <p class="task-reward">+2 PPO</p>
+                      <!-- <p class="task-reward">+2 PPO</p> -->
                     </div>
                     <button
                       class="btn btn-task"
                       data-task="telegramChannel"
+                      @click="claimTaskReward('telegramChannel')"
                     >
                       <i class="fas fa-bell"></i>
                     </button>
@@ -341,11 +346,12 @@
                     </div>
                     <div class="task-content">
                       <h5>Like Facebook Page</h5>
-                      <p class="task-reward">+2 PPO</p>
+                      <!-- <p class="task-reward">+2 PPO</p> -->
                     </div>
                     <button
                       class="btn btn-task"
                       data-task="facebookPage"
+                      @click="claimTaskReward('facebookPage')"
                     >
                       <i class="fas fa-thumbs-up"></i>
                     </button>
@@ -358,11 +364,12 @@
                     </div>
                     <div class="task-content">
                       <h5>Follow on X</h5>
-                      <p class="task-reward">+2 PPO</p>
+                      <!-- <p class="task-reward">+2 PPO</p> -->
                     </div>
                     <button
                       class="btn btn-task"
                       data-task="twitterFollow"
+                      @click="claimTaskReward('twitterFollow')"
                     >
                       <i class="fas fa-user-plus"></i>
                     </button>
@@ -375,12 +382,13 @@
                     </div>
                     <div class="task-content">
                       <h5>Share & Earn</h5>
-                      <p class="task-reward">+3 PPO</p>
+                      <!-- <p class="task-reward">+3 PPO</p> -->
                       <small class="task-note">Share about PixelPayot</small>
                     </div>
                     <button
                       class="btn btn-task"
                       data-task="socialShare"
+                      @click="claimTaskReward('socialShare')"
                     >
                       <i class="fas fa-share"></i>
                     </button>
@@ -394,11 +402,13 @@
                     </div>
                     <div class="rewards-content">
                       <h4>Available Rewards</h4>
-                      <span class="rewards-amount">0 PPO</span>
+                      <span class="rewards-amount"
+                        >{{ availableRewards }} PPO</span
+                      >
                     </div>
                     <button
                       class="btn btn-claim-rewards"
-                      disabled
+                      :disabled="availableRewards <= 200"
                     >
                       <i class="fas fa-download"></i>
                       Claim
@@ -419,7 +429,7 @@
                   <p>Track your progress and earnings</p>
                 </div>
                 <div class="level-badge">
-                  <span class="level-text">Level F0</span>
+                  <span class="level-text">Level 0</span>
                 </div>
               </div>
 
@@ -430,12 +440,13 @@
                       <i class="fas fa-wallet"></i>
                     </div>
                     <div class="stat-content">
-                      <span class="stat-value">0</span>
+                      <!-- {{ TODO: ppoBalance.data.value.formatted }} -->
+                      <span class="stat-value">{{ ppoBalanceFormatted }}</span>
                       <span class="stat-label">PPO Balance</span>
                     </div>
                   </div>
 
-                  <div class="stat-item">
+                  <!-- <div class="stat-item">
                     <div class="stat-icon nft">
                       <i class="fas fa-images"></i>
                     </div>
@@ -453,21 +464,21 @@
                       <span class="stat-value">0</span>
                       <span class="stat-label">Total Earned</span>
                     </div>
-                  </div>
+                  </div> -->
 
                   <div class="stat-item">
                     <div class="stat-icon referral">
                       <i class="fas fa-users"></i>
                     </div>
                     <div class="stat-content">
-                      <span class="stat-value">0</span>
+                      <span class="stat-value">{{ userLevel }}</span>
                       <span class="stat-label">Referrals</span>
                     </div>
                   </div>
                 </div>
 
                 <div
-                  v-if="isWalletConnected"
+                  v-if="isConnected"
                   class="referral-section"
                 >
                   <div class="referral-header">
@@ -554,13 +565,14 @@
                   </div>
 
                   <div class="referral-connect">
-                    <button
+                    <ReownWalletButton />
+                    <!-- <button
                       class="btn btn-primary"
                       @click="connectWallet"
                     >
                       <i class="fas fa-wallet me-2"></i>
                       Connect Wallet
-                    </button>
+                    </button> -->
                   </div>
                 </div>
               </div>
@@ -716,8 +728,19 @@
         <img src="../assets/images/pattern-blur-left.png" />
       </div>
       <div class="container">
-        <div class="row justify-content-between">
-          <img
+        <div class="grid grid-cols-5 gap-4">
+          <div
+            v-for="exchange in exchanges"
+            :key="exchange.id"
+            class="flex items-center justify-center"
+          >
+            <img
+              :src="exchange.logo"
+              :alt="exchange.name"
+              class="img-fluid w-[120px]"
+            />
+          </div>
+          <!-- <img
             src="../assets/images/association-brand1.png"
             alt="brand"
             class="col-md-2 img-fluid"
@@ -741,7 +764,7 @@
             src="../assets/images/association-brand5.png"
             alt="brand"
             class="col-md-2 img-fluid"
-          />
+          /> -->
         </div>
       </div>
     </section>
@@ -969,7 +992,13 @@
           </p>
         </div>
 
-        <div class="row g-4">
+        <div class="w-full flex items-center justify-center">
+          <img
+            src="/image-removebg-preview.png"
+            alt="comming soon"
+          />
+        </div>
+        <!-- <div class="row g-4">
           <div
             class="col-lg-4 col-md-6"
             v-for="nft in investmentNFTs"
@@ -1026,12 +1055,12 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </section>
 
     <!-- NFT Purchase Section -->
-    <section class="nft-purchase-section">
+    <!-- <section class="nft-purchase-section">
       <div class="container">
         <div class="section-header text-center mb-5">
           <div class="section-badge">
@@ -1082,10 +1111,10 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- NFT Game Trading Section -->
-    <section class="nft-trading-section">
+    <!-- <section class="nft-trading-section">
       <div class="container">
         <div class="section-header text-center mb-5">
           <div class="section-badge">
@@ -1170,10 +1199,10 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- Personal NFT Game Storage Section -->
-    <section class="nft-storage-section">
+    <!-- <section class="nft-storage-section">
       <div class="container">
         <div class="section-header text-center mb-5">
           <div class="section-badge">
@@ -1283,10 +1312,10 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- Buy NFT Modal -->
-    <div
+    <!-- <div
       v-if="showBuyModal"
       class="modal-overlay"
       @click="closeBuyModal"
@@ -1373,10 +1402,10 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- NFT Details Modal -->
-    <div
+    <!-- <div
       v-if="showDetailsModal"
       class="modal-overlay"
       @click="closeDetailsModal"
@@ -1483,7 +1512,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- Toast Notification -->
     <div
@@ -1522,15 +1551,29 @@ import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
 import Swiper from 'swiper'
 import { Navigation, Pagination } from 'swiper/modules'
+import { wagmiConfig } from '../config/wagmi.js'
+import { useAccount, useBalance, useConnect } from '@wagmi/vue'
+import { useContractAddress } from '../composables/useContractAddress.js'
+import ReownWalletButton from '../components/ReownWalletButton.vue'
+import { useExchangePlatform } from '../composables/useExchangePlatform.js'
 
 const router = useRouter()
+const { chainId, address, isConnected } = useAccount()
+const { connect, disconnect } = useConnect()
+const { exchanges } = useExchangePlatform()
 
 // Use Web3 composable for wallet connection
-const { isWalletConnected, walletAddress, connectWallet } = useWeb3()
+// const { isWalletConnected, walletAddress, connectWallet } = useWeb3()
 
 // Use Firebase composable for referral functionality
-const { currentUser, getUserData, generateReferralCode, generateReferralLink } =
-  useFirebase()
+const {
+  currentUser,
+  getUserData,
+  generateReferralCode,
+  generateReferralLink,
+  claimTaskReward,
+} = useFirebase()
+const { ppoTokenAddress } = useContractAddress()
 
 // State for modals
 const showBuyModal = ref(false)
@@ -1541,6 +1584,20 @@ const showToast = ref(false)
 const toastMessage = ref('')
 const toastType = ref('success')
 
+const ppoBalance = useBalance({
+  chainId: chainId.value,
+  address: address.value,
+  token: ppoTokenAddress.value,
+})
+const ppoBalanceFormatted = computed(() => {
+  const data = ppoBalance.data.value
+  return new Intl.NumberFormat('en-US', {
+    notation: 'compact',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(data?.formatted || 0)
+})
+
 // Email for newsletter
 const email = ref('')
 
@@ -1548,6 +1605,10 @@ const email = ref('')
 const userReferralCode = ref('')
 const userReferralLink = ref('')
 const referralCount = ref(0)
+
+// User data
+const userLevel = ref('0')
+const availableRewards = ref(0)
 
 // Hero Section Data
 const heroTitle = ref('Welcome to TOKENPPO')
@@ -1798,7 +1859,7 @@ const purchaseNFTs = ref([
 
 // Personal Game NFT Storage Data - conditional based on wallet connection
 const personalNFTs = computed(() => {
-  if (!isWalletConnected.value) {
+  if (!isConnected.value) {
     return []
   }
   return [
@@ -1836,17 +1897,17 @@ const personalNFTs = computed(() => {
 })
 
 // Computed properties for personal game NFT storage - conditional based on wallet connection
-const totalValue = computed(() => {
-  return isWalletConnected.value ? '15,450' : '0'
-})
+// const totalValue = computed(() => {
+//   return isWalletConnected.value ? '15,450' : '0'
+// })
 
-const rareNFTs = computed(() => {
-  return isWalletConnected.value ? 2 : 0
-})
+// const rareNFTs = computed(() => {
+//   return isWalletConnected.value ? 2 : 0
+// })
 
-const portfolioGrowth = computed(() => {
-  return isWalletConnected.value ? 25 : 0
-})
+// const portfolioGrowth = computed(() => {
+//   return isWalletConnected.value ? 25 : 0
+// })
 
 // Blog Posts Data
 const blogPosts = ref([
@@ -1881,16 +1942,16 @@ const blogPosts = ref([
 ])
 
 // Methods for NFT actions
-const openBuyModal = (nft) => {
-  if (!isWalletConnected.value) {
-    showToastMessage('Please connect your wallet first to buy NFTs', 'error')
-    return
-  }
+// const openBuyModal = (nft) => {
+//   if (!isWalletConnected.value) {
+//     showToastMessage('Please connect your wallet first to buy NFTs', 'error')
+//     return
+//   }
 
-  selectedNFT.value = nft
-  buyAmount.value = nft.price
-  showBuyModal.value = true
-}
+//   selectedNFT.value = nft
+//   buyAmount.value = nft.price
+//   showBuyModal.value = true
+// }
 
 const closeBuyModal = () => {
   showBuyModal.value = false
@@ -1908,27 +1969,27 @@ const closeDetailsModal = () => {
   selectedNFT.value = null
 }
 
-const confirmBuy = () => {
-  if (!isWalletConnected.value) {
-    showToastMessage('Please connect your wallet first', 'error')
-    return
-  }
+// const confirmBuy = () => {
+//   if (!isWalletConnected.value) {
+//     showToastMessage('Please connect your wallet first', 'error')
+//     return
+//   }
 
-  if (!buyAmount.value || parseFloat(buyAmount.value) <= 0) {
-    showToastMessage('Please enter a valid amount', 'error')
-    return
-  }
+//   if (!buyAmount.value || parseFloat(buyAmount.value) <= 0) {
+//     showToastMessage('Please enter a valid amount', 'error')
+//     return
+//   }
 
-  // Simulate purchase
-  console.log('Buying NFT:', {
-    nft: selectedNFT.value.title,
-    amount: buyAmount.value,
-    wallet: walletAddress.value,
-  })
+//   // Simulate purchase
+//   console.log('Buying NFT:', {
+//     nft: selectedNFT.value.title,
+//     amount: buyAmount.value,
+//     wallet: walletAddress.value,
+//   })
 
-  showToastMessage('NFT purchased successfully!', 'success')
-  closeBuyModal()
-}
+//   showToastMessage('NFT purchased successfully!', 'success')
+//   closeBuyModal()
+// }
 
 const showToastMessage = (message, type = 'success') => {
   toastMessage.value = message
@@ -1975,14 +2036,24 @@ const copyReferralCode = async () => {
   }
 }
 
+const getLevel = (referralCount) => {
+  if (referralCount >= 45) return '3'
+  if (referralCount >= 35) return '2'
+  if (referralCount >= 15) return '1'
+  return '0'
+}
+
 const initializeReferral = async () => {
-  if (isWalletConnected.value && currentUser.value) {
+  if (isConnected.value && currentUser.value) {
     try {
       const userData = await getUserData()
+      console.log('User data loaded:', userData)
       if (userData && userData.referralCode) {
-        userReferralCode.value = userData.referralCode
+        userReferralCode.value = userData.data.referralCode
         userReferralLink.value = generateReferralLink(userData.referralCode)
-        referralCount.value = userData.referralCount || 0
+        referralCount.value = userData.data.referralCount || 0
+        userLevel.value = getLevel(referralCount.value)
+        availableRewards.value = userData.data.totalEarned || 0
       } else {
         // Generate new referral code if user doesn't have one
         const newCode = generateReferralCode()
@@ -2025,7 +2096,7 @@ onMounted(() => {
 })
 
 // Watch for wallet connection changes to update referral
-watch(isWalletConnected, (newValue) => {
+watch(isConnected, (newValue) => {
   if (newValue) {
     initializeReferral()
   } else {
@@ -3433,7 +3504,7 @@ watch(isWalletConnected, (newValue) => {
 
 .container {
   position: relative;
-  z-index: 2;
+  /* z-index: 2; */
 }
 
 .section-title {
