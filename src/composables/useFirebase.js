@@ -106,6 +106,11 @@ const createUserDocument = async (userId) => {
       completedTasks: [], // Track one-time completed tasks
       lastCheckIn: null,
       transactions: [],
+      // Accumulated rewards system
+      accumulatedRewards: 0, // Total rewards earned from tasks
+      claimedRewards: 0, // Total rewards claimed
+      pendingRewards: 0, // Rewards waiting to be claimed (accumulatedRewards - claimedRewards)
+      lastClaimDate: null,
     }
 
     await setDoc(doc(db, 'users', userId), userData)
@@ -256,18 +261,26 @@ const claimTaskReward = async (taskType) => {
     const userData = userDoc.data()
     const taskRewards = {
       checkIn: 1,
-      joinTelegram: 2,
-      joinX: 2,
-      joinYoutube: 2,
+      telegramGroup: 2,
+      telegramChannel: 2,
+      facebookPage: 2,
+      twitterFollow: 2,
+      socialShare: 2,
       connect_wallet: 5,
     }
 
     const reward = taskRewards[taskType] || 0
-    const newBalance = userData.tokenBalance + reward
+    
+    // Update accumulated rewards instead of directly adding to balance
+    const currentAccumulated = userData.accumulatedRewards || 0
+    const newAccumulated = currentAccumulated + reward
+    const currentPending = userData.pendingRewards || 0
+    const newPending = currentPending + reward
 
     // Update data based on task type
     const updateData = {
-      tokenBalance: newBalance,
+      accumulatedRewards: newAccumulated,
+      pendingRewards: newPending,
       totalEarned: userData.totalEarned + reward,
       updatedAt: new Date(),
     }
@@ -278,7 +291,7 @@ const claimTaskReward = async (taskType) => {
       updateData.lastCheckIn = new Date()
       console.log('📅 Updated daily check-in data')
     } else {
-      // For one-time tasks (Telegram, X, YouTube), add to completedTasks array
+      // For one-time tasks, add to completedTasks array
       const completedTasks = userData.completedTasks || []
       if (!completedTasks.includes(taskType)) {
         updateData.completedTasks = [...completedTasks, taskType]
@@ -290,9 +303,79 @@ const claimTaskReward = async (taskType) => {
 
     await updateDoc(userRef, updateData)
 
-    return { success: true, reward, newBalance }
+    return { 
+      success: true, 
+      reward, 
+      newAccumulated,
+      newPending,
+      canClaim: newPending >= 220 // Check if can claim (220 PPO minimum)
+    }
   } catch (error) {
     console.error('❌ Failed to claim task reward:', error)
+    return { success: false, error: error.message }
+  }
+}
+
+// Claim accumulated rewards (minimum 220 PPO)
+const claimAccumulatedRewards = async () => {
+  try {
+    if (!currentUser.value) {
+      throw new Error('No user logged in')
+    }
+
+    const userRef = doc(db, 'users', currentUser.value.uid)
+    const userDoc = await getDoc(userRef)
+
+    if (!userDoc.exists()) {
+      throw new Error('User document not found')
+    }
+
+    const userData = userDoc.data()
+    const pendingRewards = userData.pendingRewards || 0
+
+    // Check if user has enough rewards to claim (minimum 220 PPO)
+    if (pendingRewards < 220) {
+      throw new Error(`Need at least 220 PPO to claim. Current pending: ${pendingRewards} PPO`)
+    }
+
+    // Calculate new balances
+    const currentBalance = userData.tokenBalance || 0
+    const newBalance = currentBalance + pendingRewards
+    const currentClaimed = userData.claimedRewards || 0
+    const newClaimed = currentClaimed + pendingRewards
+
+    // Update user data
+    const updateData = {
+      tokenBalance: newBalance,
+      claimedRewards: newClaimed,
+      pendingRewards: 0, // Reset pending rewards
+      lastClaimDate: new Date(),
+      updatedAt: new Date(),
+    }
+
+    // Add transaction record
+    const transaction = {
+      type: 'reward_claim',
+      amount: pendingRewards,
+      timestamp: new Date(),
+      description: `Claimed ${pendingRewards} PPO from accumulated rewards`,
+    }
+
+    const transactions = userData.transactions || []
+    updateData.transactions = [...transactions, transaction]
+
+    await updateDoc(userRef, updateData)
+
+    console.log(`💰 Successfully claimed ${pendingRewards} PPO`)
+
+    return { 
+      success: true, 
+      claimedAmount: pendingRewards,
+      newBalance,
+      newClaimed
+    }
+  } catch (error) {
+    console.error('❌ Failed to claim accumulated rewards:', error)
     return { success: false, error: error.message }
   }
 }
@@ -437,6 +520,7 @@ export function useFirebase() {
     updateUserData,
     getUserData,
     claimTaskReward,
+    claimAccumulatedRewards,
     addReferral,
     generateReferralCode,
     generateReferralLink,

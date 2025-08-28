@@ -457,11 +457,15 @@ const loadReferralData = async () => {
     const { getUserData } = useFirebase()
     const result = await getUserData()
     
+    console.log('🔥 Referral - Firebase user data result:', result)
+    
     if (result.success) {
       const userData = result.data
+      console.log('🔥 Referral - User data from Firebase:', userData)
       
       // Use referral code from Firebase, don't generate new one
       userReferralCode.value = userData.referralCode || ''
+      console.log('🔥 Referral - Using referral code:', userReferralCode.value)
       
       // Load real referral stats
       await loadReferralStats(userData)
@@ -472,6 +476,7 @@ const loadReferralData = async () => {
       // Load top referrers
       await loadTopReferrers()
     } else {
+      console.log('🔥 Referral - Firebase getUserData failed:', result.error)
       // Fallback to empty code if no user data
       userReferralCode.value = ''
       await loadReferralStats()
@@ -479,7 +484,7 @@ const loadReferralData = async () => {
       await loadTopReferrers()
     }
   } catch (error) {
-    console.error('Failed to load referral data:', error)
+    console.error('🔥 Referral - Failed to load referral data:', error)
     // Fallback to empty code
     userReferralCode.value = ''
     await loadReferralStats()

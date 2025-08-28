@@ -15,9 +15,9 @@ const tasks = ref([
     icon: 'fas fa-calendar-check'
   },
   {
-    id: 'joinTelegram',
-    name: 'Join Telegram Channel',
-    description: 'Join our official Telegram channel',
+    id: 'telegramGroup',
+    name: 'Join Telegram Group',
+    description: 'Join our official Telegram group',
     reward: 2,
     type: 'one-time',
     completed: false,
@@ -27,9 +27,33 @@ const tasks = ref([
     href: 'https://t.me/PixelpayotChannels'
   },
   {
-    id: 'joinX',
-    name: 'Follow on X',
-    description: 'Follow us on X (Twitter)',
+    id: 'telegramChannel',
+    name: 'Subscribe Channel',
+    description: 'Subscribe to our Telegram channel',
+    reward: 2,
+    type: 'one-time',
+    completed: false,
+    cooldown: 0,
+    lastCompleted: null,
+    icon: 'fab fa-telegram',
+    href: 'https://t.me/PixelpayotChannels'
+  },
+  {
+    id: 'facebookPage',
+    name: 'Like Facebook Page',
+    description: 'Like our Facebook page',
+    reward: 2,
+    type: 'one-time',
+    completed: false,
+    cooldown: 0,
+    lastCompleted: null,
+    icon: 'fab fa-facebook',
+    href: 'https://facebook.com/Pixelpayot'
+  },
+  {
+    id: 'twitterFollow',
+    name: 'Follow on Twitter',
+    description: 'Follow us on Twitter',
     reward: 2,
     type: 'one-time',
     completed: false,
@@ -39,17 +63,28 @@ const tasks = ref([
     href: 'https://x.com/TetMinh46256'
   },
   {
-    id: 'joinYoutube',
-    name: 'Watch YouTube Video',
-    description: 'Watch our YouTube video',
+    id: 'socialShare',
+    name: 'Share on Social Media',
+    description: 'Share our platform on social media',
     reward: 2,
     type: 'one-time',
     completed: false,
     cooldown: 0,
     lastCompleted: null,
-    icon: 'fab fa-youtube',
-    href: 'https://www.youtube.com/@minhtet-q2r9o'
+    icon: 'fas fa-share',
+    href: null // Will be handled in completeTask function
   },
+  {
+    id: 'connect_wallet',
+    name: 'Connect Wallet',
+    description: 'Connect your wallet to the platform',
+    reward: 5,
+    type: 'one-time',
+    completed: false,
+    cooldown: 0,
+    lastCompleted: null,
+    icon: 'fas fa-wallet'
+  }
 ])
 
 const userBalance = ref(0)
@@ -57,12 +92,18 @@ const userTasks = ref([])
 const isLoading = ref(false)
 const error = ref(null)
 
+// Accumulated rewards state
+const accumulatedRewards = ref(0)
+const claimedRewards = ref(0)
+const pendingRewards = ref(0)
+const canClaimRewards = ref(false)
+
 // Wallet connection state
 const isWalletConnected = ref(false)
 const walletAddress = ref(null)
 
 // Use existing composables
-const { currentUser, updateUserData, getUserData, claimTaskReward } =
+const { currentUser, updateUserData, getUserData, claimTaskReward, claimAccumulatedRewards } =
   useFirebase()
 
 // Handle wallet connection events
@@ -120,6 +161,7 @@ const progressPercentage = computed(() => {
 // Methods
 const completeTask = async (taskId) => {
   console.log('🎯 Completing task:', taskId)
+  console.log('🎯 Available tasks:', tasks.value.map(t => ({ id: t.id, completed: t.completed })))
   try {
     const task = tasks.value.find((t) => t.id === taskId)
     if (!task) {
@@ -147,6 +189,12 @@ const completeTask = async (taskId) => {
     // For tasks with href links, open the link first
     if (task.href) {
       window.open(task.href, '_blank')
+    }
+    
+    // Special handling for social share task
+    if (taskId === 'socialShare') {
+      const shareText = `Exciting news! Join me on PPO NFT Challenge! 🎯\n\nEarn rewards by completing daily tasks and collecting legendary bow parts! 🏹\n\nJoin now: ${window.location.origin}/?ref=${walletAddress.value || 'user'}\n\n#ArcherNFT #NFTGame #PlayToEarn`
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`, '_blank')
     }
 
     // Mark task as completed
@@ -183,14 +231,18 @@ const completeTask = async (taskId) => {
       console.warn('Failed to claim reward:', err.message)
     }
 
-    // Update user balance
-    userBalance.value += task.reward
+    // Update accumulated rewards instead of direct balance
+    accumulatedRewards.value += task.reward
+    pendingRewards.value += task.reward
+    canClaimRewards.value = pendingRewards.value >= 220
 
     return {
       success: true,
       reward: task.reward,
       task: task,
-      newBalance: userBalance.value,
+      newAccumulated: accumulatedRewards.value,
+      newPending: pendingRewards.value,
+      canClaim: canClaimRewards.value,
     }
   } catch (err) {
     error.value = err.message
@@ -207,6 +259,40 @@ const resetDailyTasks = () => {
     console.log('✅ Reset daily check-in task')
   }
   saveTasksToLocalStorage()
+}
+
+// Claim accumulated rewards
+const claimRewards = async () => {
+  try {
+    console.log('💰 Claiming accumulated rewards...')
+    
+    if (!currentUser.value) {
+      throw new Error('User not logged in')
+    }
+
+    const result = await claimAccumulatedRewards()
+    
+    if (result.success) {
+      console.log(`💰 Successfully claimed ${result.claimedAmount} PPO`)
+      
+      // Update local state
+      userBalance.value = result.newBalance
+      claimedRewards.value = result.newClaimed
+      pendingRewards.value = 0
+      canClaimRewards.value = false
+      
+      return {
+        success: true,
+        claimedAmount: result.claimedAmount,
+        newBalance: result.newBalance
+      }
+    } else {
+      throw new Error(result.error)
+    }
+  } catch (error) {
+    console.error('❌ Failed to claim rewards:', error)
+    return { success: false, error: error.message }
+  }
 }
 
 const saveTasksToLocalStorage = () => {
@@ -226,16 +312,25 @@ const saveTasksToLocalStorage = () => {
 const loadTasksFromLocalStorage = () => {
   try {
     const savedTasks = localStorage.getItem('userTasks')
+    console.log('🔄 Saved tasks from localStorage:', savedTasks)
+    
     if (savedTasks) {
       const tasksData = JSON.parse(savedTasks)
+      console.log('🔄 Parsed tasks data:', tasksData)
+      
       tasksData.forEach(savedTask => {
         const task = tasks.value.find(t => t.id === savedTask.id)
         if (task) {
           task.completed = savedTask.completed
           task.lastCompleted = savedTask.lastCompleted
+          console.log(`🔄 Updated task ${savedTask.id}: completed=${savedTask.completed}`)
+        } else {
+          console.warn(`🔄 Task ${savedTask.id} not found in current tasks`)
         }
       })
       console.log('📂 Tasks loaded from localStorage')
+    } else {
+      console.log('🔄 No saved tasks found in localStorage')
     }
   } catch (err) {
     console.warn('Failed to load tasks from localStorage:', err)
@@ -243,39 +338,67 @@ const loadTasksFromLocalStorage = () => {
 }
 
 const loadUserTasks = async () => {
-  if (!currentUser.value) return
+  console.log('🔄 Loading user tasks...')
+  console.log('🔄 Current user:', currentUser.value)
+  
+  if (!currentUser.value) {
+    console.log('🔄 No current user, loading from localStorage only')
+    loadTasksFromLocalStorage()
+    return
+  }
 
   try {
     isLoading.value = true
     
     // Load from localStorage first
     loadTasksFromLocalStorage()
+    console.log('🔄 Tasks after localStorage load:', tasks.value.map(t => ({ id: t.id, completed: t.completed })))
     
     const userData = await getUserData()
+    console.log('🔄 User data from Firebase:', userData)
 
     if (userData) {
-      userBalance.value = userData.balance || 0
+      userBalance.value = userData.tokenBalance || 0
+
+      // Load accumulated rewards data
+      accumulatedRewards.value = userData.accumulatedRewards || 0
+      claimedRewards.value = userData.claimedRewards || 0
+      pendingRewards.value = userData.pendingRewards || 0
+      canClaimRewards.value = (userData.pendingRewards || 0) >= 220
+      
+      console.log('🔄 Loaded accumulated rewards data:', {
+        accumulated: accumulatedRewards.value,
+        claimed: claimedRewards.value,
+        pending: pendingRewards.value,
+        canClaim: canClaimRewards.value
+      })
 
       // Load daily tasks from Firebase
       if (userData.dailyTasks) {
         const checkInTask = tasks.value.find(task => task.id === 'checkIn')
         if (checkInTask && userData.dailyTasks.checkIn) {
           checkInTask.completed = true
+          console.log('🔄 Marked checkIn task as completed from Firebase')
         }
       }
 
       // Load completed one-time tasks from Firebase
       const completedTaskIds = userData.completedTasks || []
+      console.log('🔄 Completed task IDs from Firebase:', completedTaskIds)
+      
       tasks.value.forEach((task) => {
         if (task.type === 'one-time' && completedTaskIds.includes(task.id)) {
           task.completed = true
+          console.log(`🔄 Marked ${task.id} as completed from Firebase`)
         }
       })
     }
     
     // Save to localStorage after loading from Firebase
     saveTasksToLocalStorage()
+    console.log('🔄 Final tasks state:', tasks.value.map(t => ({ id: t.id, completed: t.completed })))
   } catch (err) {
+    console.error('🔄 Error loading user tasks:', err)
     error.value = err.message
   } finally {
     isLoading.value = false
@@ -321,6 +444,12 @@ export function useTaskSystem() {
     isWalletConnected,
     walletAddress,
 
+    // Accumulated rewards state
+    accumulatedRewards,
+    claimedRewards,
+    pendingRewards,
+    canClaimRewards,
+
     // Computed
     totalRewards,
     earnedRewards,
@@ -330,6 +459,7 @@ export function useTaskSystem() {
 
     // Methods
     completeTask,
+    claimRewards,
     resetDailyTasks,
     loadUserTasks,
     saveTasksToLocalStorage,

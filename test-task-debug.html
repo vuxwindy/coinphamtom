@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task System Debug</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #1a1a3a;
+            color: white;
+        }
+        .debug-section {
+            background: #2d1b69;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .task-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .task-button:hover {
+            background: #45a049;
+        }
+        .task-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        .log {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Task System Debug</h1>
+    
+    <div class="debug-section">
+        <h2>Test Task Buttons</h2>
+        <button class="task-button" onclick="testTask('checkIn')">Daily Check-in</button>
+        <button class="task-button" onclick="testTask('telegramGroup')">Join Telegram Group</button>
+        <button class="task-button" onclick="testTask('telegramChannel')">Subscribe Channel</button>
+        <button class="task-button" onclick="testTask('facebookPage')">Like Facebook Page</button>
+        <button class="task-button" onclick="testTask('twitterFollow')">Follow on Twitter</button>
+        <button class="task-button" onclick="testTask('socialShare')">Share on Social Media</button>
+        <button class="task-button" onclick="testTask('connect_wallet')">Connect Wallet</button>
+    </div>
+
+    <div class="debug-section">
+        <h2>Console Logs</h2>
+        <div id="log" class="log"></div>
+    </div>
+
+    <div class="debug-section">
+        <h2>LocalStorage Check</h2>
+        <button onclick="checkLocalStorage()">Check LocalStorage</button>
+        <div id="localStorageInfo"></div>
+    </div>
+
+    <script>
+        // Mock task system for testing
+        const tasks = [
+            { id: 'checkIn', name: 'Daily Check-in', completed: false },
+            { id: 'telegramGroup', name: 'Join Telegram Group', completed: false },
+            { id: 'telegramChannel', name: 'Subscribe Channel', completed: false },
+            { id: 'facebookPage', name: 'Like Facebook Page', completed: false },
+            { id: 'twitterFollow', name: 'Follow on Twitter', completed: false },
+            { id: 'socialShare', name: 'Share on Social Media', completed: false },
+            { id: 'connect_wallet', name: 'Connect Wallet', completed: false }
+        ];
+
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `[${timestamp}] ${message}\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+
+        function testTask(taskId) {
+            log(`🎯 Testing task: ${taskId}`);
+            
+            // Check if task exists
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) {
+                log(`❌ Task ${taskId} not found`);
+                return;
+            }
+
+            // Check if already completed
+            if (task.completed) {
+                log(`⚠️ Task ${taskId} already completed`);
+                return;
+            }
+
+            // Simulate task completion
+            task.completed = true;
+            log(`✅ Task ${taskId} completed successfully`);
+            
+            // Save to localStorage
+            try {
+                const tasksData = tasks.map(task => ({
+                    id: task.id,
+                    completed: task.completed,
+                    lastCompleted: task.completed ? Date.now() : null
+                }));
+                localStorage.setItem('userTasks', JSON.stringify(tasksData));
+                log(`💾 Tasks saved to localStorage`);
+            } catch (err) {
+                log(`❌ Failed to save to localStorage: ${err.message}`);
+            }
+        }
+
+        function checkLocalStorage() {
+            const infoDiv = document.getElementById('localStorageInfo');
+            try {
+                const savedTasks = localStorage.getItem('userTasks');
+                if (savedTasks) {
+                    const tasksData = JSON.parse(savedTasks);
+                    infoDiv.innerHTML = `<pre>${JSON.stringify(tasksData, null, 2)}</pre>`;
+                    log(`📂 LocalStorage data loaded: ${savedTasks}`);
+                } else {
+                    infoDiv.innerHTML = '<p>No tasks found in localStorage</p>';
+                    log(`📂 No tasks found in localStorage`);
+                }
+            } catch (err) {
+                infoDiv.innerHTML = `<p>Error: ${err.message}</p>`;
+                log(`❌ Error reading localStorage: ${err.message}`);
+            }
+        }
+
+        // Load tasks from localStorage on page load
+        window.addEventListener('load', () => {
+            log('🔄 Page loaded, checking localStorage...');
+            checkLocalStorage();
+        });
+    </script>
+</body>
+</html>

@@ -417,16 +417,35 @@
                     <div class="rewards-content">
                       <h4>Available Rewards</h4>
                       <span class="rewards-amount"
-                        >{{ earnedRewards }} PPO</span
+                        >{{ pendingRewards }} PPO</span
                       >
+                      <small class="rewards-info">
+                        {{ canClaimRewards ? '✅ Ready to claim!' : `⏳ Need ${220 - pendingRewards} more PPO` }}
+                      </small>
                     </div>
                     <button
                       class="btn btn-claim-rewards"
-                      :disabled="earnedRewards <= 0"
+                      :disabled="!canClaimRewards || !isUserReady"
+                      @click="claimAccumulatedRewards"
                     >
                       <i class="fas fa-download"></i>
                       Claim
                     </button>
+                  </div>
+                  
+                  <div class="rewards-details">
+                    <div class="reward-stat">
+                      <span class="stat-label">Total Earned:</span>
+                      <span class="stat-value">{{ accumulatedRewards }} PPO</span>
+                    </div>
+                    <div class="reward-stat">
+                      <span class="stat-label">Already Claimed:</span>
+                      <span class="stat-value">{{ claimedRewards }} PPO</span>
+                    </div>
+                    <div class="reward-stat">
+                      <span class="stat-label">Pending:</span>
+                      <span class="stat-value">{{ pendingRewards }} PPO</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -485,7 +504,7 @@
                       <i class="fas fa-users"></i>
                     </div>
                     <div class="stat-content">
-                      <span class="stat-value">{{ userLevel }}</span>
+                      <span class="stat-value">{{ referralCount }}</span>
                       <span class="stat-label">Referrals</span>
                     </div>
                   </div>
@@ -1601,8 +1620,12 @@ const {
   completedTasksCount,
   totalTasksCount,
   progressPercentage,
-  isUserReady,
+  accumulatedRewards,
+  claimedRewards,
+  pendingRewards,
+  canClaimRewards,
   completeTask,
+  claimRewards,
   resetDailyTasks,
 } = useTaskSystem()
 
@@ -1644,6 +1667,11 @@ const referralCount = ref(0)
 // User data
 const userLevel = ref('0')
 const availableRewards = ref(0)
+
+// Check if user is ready (wallet connected and signed in)
+const isUserReady = computed(() => {
+  return isConnected.value && currentUser.value
+})
 
 // Hero Section Data
 const heroTitle = ref('Welcome to TOKENPPO')
@@ -2154,26 +2182,73 @@ onMounted(() => {
 // Task reward claiming function
 const claimTaskReward = async (taskType) => {
   try {
+    console.log('🎯 Claiming task reward for:', taskType)
+    console.log('🎯 isUserReady:', isUserReady.value)
+    
     if (!isUserReady.value) {
-      showError('Please connect your wallet and sign in first!')
+      console.error('❌ User not ready - wallet not connected or not signed in')
+      alert('Please connect your wallet and sign in first!')
       return
     }
 
+    console.log('🎯 Calling completeTask...')
     const result = await completeTask(taskType)
+    console.log('🎯 completeTask result:', result)
+    
     if (result.success) {
-      availableRewards.value = earnedRewards.value
-      success(`Task completed! You earned ${result.reward} PPO`)
+      // Update available rewards display
+      availableRewards.value = pendingRewards.value
       
-      // Update user balance display
-      if (result.newBalance !== undefined) {
-        userBalance.value = result.newBalance
+      const message = `Task completed! You earned ${result.reward} PPO\n\n` +
+                     `Total accumulated: ${result.newAccumulated} PPO\n` +
+                     `Pending rewards: ${result.newPending} PPO\n` +
+                     `${result.canClaim ? '✅ You can now claim your rewards!' : `⏳ Need ${220 - result.newPending} more PPO to claim`}`
+      
+      alert(message)
+      
+      // Show claim button if eligible
+      if (result.canClaim) {
+        console.log('🎉 User can now claim rewards!')
       }
     } else {
-      showError(`Failed to complete task: ${result.error}`)
+      console.error('❌ Task completion failed:', result.error)
+      alert(`Failed to complete task: ${result.error}`)
     }
   } catch (error) {
-    console.error('Error claiming task reward:', error)
-    showError('Failed to claim task reward')
+    console.error('❌ Error claiming task reward:', error)
+    alert('Failed to claim task reward')
+  }
+}
+
+// Claim accumulated rewards function
+const claimAccumulatedRewards = async () => {
+  try {
+    console.log('💰 Claiming accumulated rewards...')
+    
+    if (!isUserReady.value) {
+      alert('Please connect your wallet and sign in first!')
+      return
+    }
+
+    if (!canClaimRewards.value) {
+      alert(`You need at least 220 PPO to claim. Current pending: ${pendingRewards.value} PPO`)
+      return
+    }
+
+    const result = await claimRewards()
+    
+    if (result.success) {
+      alert(`🎉 Successfully claimed ${result.claimedAmount} PPO!\n\nNew balance: ${result.newBalance} PPO`)
+      
+      // Update display
+      availableRewards.value = pendingRewards.value
+      userBalance.value = result.newBalance
+    } else {
+      alert(`Failed to claim rewards: ${result.error}`)
+    }
+  } catch (error) {
+    console.error('❌ Error claiming rewards:', error)
+    alert('Failed to claim rewards')
   }
 }
 
@@ -2857,6 +2932,43 @@ watch(isConnected, (newValue) => {
 .btn-claim-rewards:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.rewards-info {
+  display: block;
+  font-size: 0.8rem;
+  color: #e0e0e0;
+  margin-top: 5px;
+}
+
+.rewards-details {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 10px;
+}
+
+.reward-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.reward-stat:last-child {
+  border-bottom: none;
+}
+
+.reward-stat .stat-label {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+}
+
+.reward-stat .stat-value {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
 /* Stats Grid */

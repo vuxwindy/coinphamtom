@@ -349,7 +349,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
@@ -548,13 +548,18 @@ const loadUserProfile = async () => {
       const { getUserData } = useFirebase()
       const result = await getUserData()
       
+      console.log('🔥 Firebase user data result:', result)
+      
       if (result.success) {
         const userData = result.data
+        console.log('🔥 User data from Firebase:', userData)
         
         // Calculate days active based on createdAt
         const createdAt = userData.createdAt ? new Date(userData.createdAt.toDate()) : new Date()
         const now = new Date()
         const daysActive = Math.floor((now - createdAt) / (1000 * 60 * 60 * 24))
+        
+        console.log('🔥 Calculated days active:', daysActive)
         
         userProfile.value = {
           displayName: userData.displayName || currentUser.value.displayName || '',
@@ -572,7 +577,10 @@ const loadUserProfile = async () => {
           daysActive: daysActive,
           createdAt: createdAt
         }
+        
+        console.log('🔥 Updated userProfile:', userProfile.value)
       } else {
+        console.log('🔥 Firebase getUserData failed:', result.error)
         // Fallback to basic data if Firebase fails
         userProfile.value = {
           displayName: currentUser.value.displayName || '',
@@ -592,7 +600,7 @@ const loadUserProfile = async () => {
         }
       }
     } catch (error) {
-      console.error('Failed to load user profile:', error)
+      console.error('🔥 Failed to load user profile:', error)
       // Fallback to basic data
       userProfile.value = {
         displayName: currentUser.value.displayName || '',
