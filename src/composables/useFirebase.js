@@ -82,6 +82,9 @@ const createUserDocument = async (userId) => {
     const user = auth.currentUser
     if (!user) return
 
+    // Generate unique referral code
+    const referralCode = generateReferralCode()
+    
     const userData = {
       uid: userId,
       email: user.email,
@@ -94,7 +97,7 @@ const createUserDocument = async (userId) => {
       nftBalance: 0,
       totalEarned: 0,
       referralEarnings: 0,
-      referralCode: generateReferralCode(),
+      referralCode: referralCode,
       referralCount: 0,
       level: 'F0',
       dailyTasks: {
@@ -106,6 +109,7 @@ const createUserDocument = async (userId) => {
     }
 
     await setDoc(doc(db, 'users', userId), userData)
+    console.log('✅ User document created with referral code:', referralCode)
   } catch (error) {
     console.error('❌ Failed to create user document:', error)
   }
@@ -379,6 +383,40 @@ const addTransaction = async (transaction) => {
   }
 }
 
+// Get platform statistics
+const getPlatformStats = async () => {
+  try {
+    const usersRef = collection(db, 'users')
+    const usersSnapshot = await getDocs(usersRef)
+    
+    let totalUsers = 0
+    let totalReferrals = 0
+    let totalEarnings = 0
+    let totalTransactions = 0
+    
+    usersSnapshot.forEach((doc) => {
+      const userData = doc.data()
+      totalUsers++
+      totalReferrals += userData.referralCount || 0
+      totalEarnings += userData.totalEarned || 0
+      totalTransactions += userData.transactions?.length || 0
+    })
+    
+    return {
+      success: true,
+      data: {
+        totalUsers,
+        totalReferrals,
+        totalEarnings,
+        totalTransactions
+      }
+    }
+  } catch (error) {
+    console.error('❌ Failed to get platform stats:', error)
+    return { success: false, error: error.message }
+  }
+}
+
 export function useFirebase() {
   return {
     // State
@@ -403,5 +441,6 @@ export function useFirebase() {
     generateReferralCode,
     generateReferralLink,
     addTransaction,
+    getPlatformStats,
   }
 }

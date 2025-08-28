@@ -182,7 +182,7 @@
               </div>
 
               <!-- Referral Tab -->
-              <div v-if="activeTab === 'referral'" class="tab-panel">
+              <!-- <div v-if="activeTab === 'referral'" class="tab-panel">
                 <h2 class="tab-title">Referral Program</h2>
                 <div class="referral-section">
                   <div class="referral-stats">
@@ -207,10 +207,10 @@
                       <button class="btn btn-primary" @click="copyReferralCode">
                         <i class="fas fa-copy"></i> Copy Code
                       </button>
-                    </div>
+                    </div> -->
                     
                     <!-- Referral Link Section -->
-                    <div class="referral-link-section">
+                    <!-- <div class="referral-link-section">
                       <h5>Your Referral Link</h5>
                       <div class="referral-link">
                         <input 
@@ -242,7 +242,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
               <!-- Activity Tab -->
               <div v-if="activeTab === 'activity'" class="tab-panel">
@@ -366,7 +366,7 @@ const showChangePassword = ref(false)
 const profileTabs = ref([
   { id: 'personal', name: 'Personal Info', icon: 'fas fa-user' },
   { id: 'security', name: 'Security', icon: 'fas fa-shield-alt' },
-  { id: 'referral', name: 'Referrals', icon: 'fas fa-users' },
+  // { id: 'referral', name: 'Referrals', icon: 'fas fa-users' },
   { id: 'activity', name: 'Activity', icon: 'fas fa-history' },
   { id: 'settings', name: 'Settings', icon: 'fas fa-cog' }
 ])
@@ -385,7 +385,8 @@ const userProfile = ref({
   referralCount: 0,
   referralEarnings: 0,
   referralCode: '',
-  daysActive: 0
+  daysActive: 0,
+  createdAt: null
 })
 
 // Settings
@@ -403,32 +404,48 @@ const passwordForm = ref({
 })
 
 // Recent activities
-const recentActivities = ref([
-  {
-    id: 1,
-    title: 'Daily Check-in',
-    description: 'Completed daily check-in task',
-    amount: 1,
-    icon: 'fas fa-calendar-check',
-    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000)
-  },
-  {
-    id: 2,
-    title: 'Game Reward',
-    description: 'Earned from archery game',
-    amount: 5,
-    icon: 'fas fa-gamepad',
-    timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000)
-  },
-  {
-    id: 3,
-    title: 'Referral Bonus',
-    description: 'New user joined with your code',
-    amount: 5,
-    icon: 'fas fa-users',
-    timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000)
+const recentActivities = ref([])
+
+// Load recent activities from Firebase
+const loadRecentActivities = async () => {
+  if (currentUser.value) {
+    try {
+      const { getUserData } = useFirebase()
+      const result = await getUserData()
+      
+      if (result.success && result.data.transactions) {
+        // Convert transactions to activities format
+        recentActivities.value = result.data.transactions.slice(0, 10).map((tx, index) => ({
+          id: index + 1,
+          title: tx.type || 'Transaction',
+          description: tx.description || `${tx.fromToken} to ${tx.toToken}`,
+          amount: tx.amount || 0,
+          icon: getActivityIcon(tx.type),
+          timestamp: tx.timestamp ? new Date(tx.timestamp) : new Date()
+        }))
+      } else {
+        // Fallback to empty array
+        recentActivities.value = []
+      }
+    } catch (error) {
+      console.error('Failed to load recent activities:', error)
+      recentActivities.value = []
+    }
   }
-])
+}
+
+// Helper function to get icon based on activity type
+const getActivityIcon = (type) => {
+  const iconMap = {
+    'swap': 'fas fa-exchange-alt',
+    'referral': 'fas fa-users',
+    'task': 'fas fa-tasks',
+    'game': 'fas fa-gamepad',
+    'checkin': 'fas fa-calendar-check',
+    'default': 'fas fa-circle'
+  }
+  return iconMap[type] || iconMap.default
+}
 
 // Methods
 const editAvatar = () => {
@@ -526,27 +543,108 @@ const formatTime = (timestamp) => {
 
 const loadUserProfile = async () => {
   if (currentUser.value) {
-    userProfile.value = {
-      displayName: currentUser.value.displayName || '',
-      email: currentUser.value.email || '',
-      avatar: currentUser.value.photoURL || '',
-      bio: '',
-      location: '',
-      level: 'F0',
-      experience: 250,
-      tokenBalance: 150,
-      totalEarned: 500,
-      referralCount: 3,
-      referralEarnings: 15,
-      referralCode: 'ABC12345',
-      daysActive: 15
+    try {
+      // Load real user data from Firebase
+      const { getUserData } = useFirebase()
+      const result = await getUserData()
+      
+      if (result.success) {
+        const userData = result.data
+        
+        // Calculate days active based on createdAt
+        const createdAt = userData.createdAt ? new Date(userData.createdAt.toDate()) : new Date()
+        const now = new Date()
+        const daysActive = Math.floor((now - createdAt) / (1000 * 60 * 60 * 24))
+        
+        userProfile.value = {
+          displayName: userData.displayName || currentUser.value.displayName || '',
+          email: userData.email || currentUser.value.email || '',
+          avatar: userData.photoURL || currentUser.value.photoURL || '',
+          bio: userData.bio || '',
+          location: userData.location || '',
+          level: userData.level || 'F0',
+          experience: userData.experience || 0,
+          tokenBalance: userData.tokenBalance || 0,
+          totalEarned: userData.totalEarned || 0,
+          referralCount: userData.referralCount || 0,
+          referralEarnings: userData.referralEarnings || 0,
+          referralCode: userData.referralCode || '',
+          daysActive: daysActive,
+          createdAt: createdAt
+        }
+      } else {
+        // Fallback to basic data if Firebase fails
+        userProfile.value = {
+          displayName: currentUser.value.displayName || '',
+          email: currentUser.value.email || '',
+          avatar: currentUser.value.photoURL || '',
+          bio: '',
+          location: '',
+          level: 'F0',
+          experience: 0,
+          tokenBalance: 0,
+          totalEarned: 0,
+          referralCount: 0,
+          referralEarnings: 0,
+          referralCode: '',
+          daysActive: 0,
+          createdAt: new Date()
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load user profile:', error)
+      // Fallback to basic data
+      userProfile.value = {
+        displayName: currentUser.value.displayName || '',
+        email: currentUser.value.email || '',
+        avatar: currentUser.value.photoURL || '',
+        bio: '',
+        location: '',
+        level: 'F0',
+        experience: 0,
+        tokenBalance: 0,
+        totalEarned: 0,
+        referralCount: 0,
+        referralEarnings: 0,
+        referralCode: '',
+        daysActive: 0,
+        createdAt: new Date()
+      }
     }
   }
 }
 
 // Lifecycle
-onMounted(() => {
-  loadUserProfile()
+onMounted(async () => {
+  await loadUserProfile()
+  await loadRecentActivities()
+})
+
+// Watch for user changes
+watch(currentUser, async (newUser) => {
+  if (newUser) {
+    await loadUserProfile()
+    await loadRecentActivities()
+  } else {
+    // Reset data when user logs out
+    userProfile.value = {
+      displayName: '',
+      email: '',
+      avatar: '',
+      bio: '',
+      location: '',
+      level: 'F0',
+      experience: 0,
+      tokenBalance: 0,
+      totalEarned: 0,
+      referralCount: 0,
+      referralEarnings: 0,
+      referralCode: '',
+      daysActive: 0,
+      createdAt: null
+    }
+    recentActivities.value = []
+  }
 })
 </script>
 

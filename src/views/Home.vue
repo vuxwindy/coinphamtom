@@ -2081,23 +2081,44 @@ const getLevel = (referralCount) => {
 const initializeReferral = async () => {
   if (isConnected.value && currentUser.value) {
     try {
-      const userData = await getUserData()
-      console.log('User data loaded:', userData)
-      if (userData && userData.referralCode) {
-        userReferralCode.value = userData.data.referralCode
-        userReferralLink.value = generateReferralLink(userData.referralCode)
-        referralCount.value = userData.data.referralCount || 0
-        userLevel.value = getLevel(referralCount.value)
-        availableRewards.value = userData.data.totalEarned || 0
+      const result = await getUserData()
+      
+      if (result.success) {
+        const userData = result.data
+        console.log('User data loaded:', userData)
+        
+        if (userData && userData.referralCode) {
+          // Use existing referral code from Firebase
+          userReferralCode.value = userData.referralCode
+          userReferralLink.value = generateReferralLink(userData.referralCode)
+          referralCount.value = userData.referralCount || 0
+          userLevel.value = getLevel(referralCount.value)
+          availableRewards.value = userData.totalEarned || 0
+        } else {
+          // Don't generate new code, wait for Firebase to create one
+          userReferralCode.value = ''
+          userReferralLink.value = ''
+          referralCount.value = 0
+          userLevel.value = '0'
+          availableRewards.value = 0
+        }
       } else {
-        // Generate new referral code if user doesn't have one
-        const newCode = generateReferralCode()
-        userReferralCode.value = newCode
-        userReferralLink.value = generateReferralLink(newCode)
+        console.error('Failed to load user data:', result.error)
+        // Don't generate fallback code
+        userReferralCode.value = ''
+        userReferralLink.value = ''
         referralCount.value = 0
+        userLevel.value = '0'
+        availableRewards.value = 0
       }
     } catch (error) {
       console.error('Error initializing referral:', error)
+      // Don't generate fallback code
+      userReferralCode.value = ''
+      userReferralLink.value = ''
+      referralCount.value = 0
+      userLevel.value = '0'
+      availableRewards.value = 0
     }
   }
 }

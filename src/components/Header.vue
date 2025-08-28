@@ -79,7 +79,7 @@
         <div class="nav-actions">
           <!-- Wallet Section -->
           <div class="wallet-section">
-            <WalletStatus />
+            <!-- <WalletStatus /> -->
             <ReownWalletButton />
           </div>
 
@@ -243,14 +243,14 @@
           </ul>
 
           <!-- Mobile Actions -->
-          <!-- <div class="mobile-actions">
+          <div class="mobile-actions">
           <div class="mobile-wallet-section">
-            <WalletStatus />
-            <ReownWalletButton /> -->
+            <!-- <WalletStatus /> -->
+            <ReownWalletButton />
           <!-- Mobile Actions -->
-          <div class="mobile-actions mt-6">
+          <!-- <div class="mobile-actions mt-6">
             <div class="mobile-wallet-section mb-4">
-              <WalletStatus />
+              <WalletStatus /> -->
               <!-- <ReownWalletButton /> -->
             </div>
             
@@ -259,6 +259,7 @@
               class="mobile-signup-section"
               v-if="!currentUser"
             >
+                
               <router-link
                 to="/signup"
                 class="mobile-btn-signup"

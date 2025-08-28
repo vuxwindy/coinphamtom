@@ -143,6 +143,10 @@
                       {{ selectedToToken.symbol }}</span
                     >
                   </div>
+                  <div class="detail-row" v-if="swapUsdValue > 0">
+                    <span class="detail-label">USD Value</span>
+                    <span class="detail-value">${{ swapUsdValue.toFixed(2) }}</span>
+                  </div>
                   <div class="detail-row">
                     <span class="detail-label">Price Impact</span>
                     <span
@@ -239,8 +243,15 @@
                   <span class="stat-value">$15.2M</span>
                 </div>
                 <div class="market-stat">
+                  <span class="stat-label">BNB Price</span>
+                  <span class="stat-value">
+                    <i v-if="isPriceLoading" class="fas fa-spinner fa-spin me-2"></i>
+                    ${{ tokenPrices.BNB ? tokenPrices.BNB.toFixed(2) : '0.00' }}
+                  </span>
+                </div>
+                <div class="market-stat">
                   <span class="stat-label">PPO Price</span>
-                  <span class="stat-value">$0.05</span>
+                  <span class="stat-value">${{ tokenPrices.PPO.toFixed(2) }}</span>
                 </div>
               </div>
 
@@ -276,7 +287,10 @@
                         >{{ pair.token1.symbol }}/{{ pair.token2.symbol }}</span
                       >
                     </div>
-                    <div class="pair-price">{{ pair.price }}</div>
+                    <div class="pair-price">
+                      <i v-if="isPriceLoading" class="fas fa-spinner fa-spin me-1"></i>
+                      {{ pair.price }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -408,6 +422,15 @@ const showFromTokenModal = ref(false)
 const showToTokenModal = ref(false)
 const tokenSearch = ref('')
 
+// Token prices state
+const tokenPrices = ref({
+  BNB: 0,
+  PPO: 0.05, // Fixed PPO price at $0.05
+  USDT: 1,
+  USDC: 1,
+})
+const isPriceLoading = ref(false)
+
 // Toast notification state
 const showToast = ref(false)
 const toastMessage = ref('')
@@ -431,8 +454,9 @@ const recentTransactions = ref([])
 const selectedFromToken = ref({
   symbol: 'BNB',
   name: 'Binance Coin',
-    icon: bnbIcon,
-    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+  icon: bnbIcon,
+  address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+  decimals: 18,
 })
 
 const selectedToToken = ref({
@@ -440,6 +464,7 @@ const selectedToToken = ref({
   name: 'PixelPayot Token',
   icon: ppoIcon,
   address: '0xCdA7eBb5005aaC33B6F4f32c17647698b020eFC9',
+  decimals: 18,
 })
 
 // Available tokens
@@ -448,47 +473,51 @@ const availableTokens = ref([
     symbol: 'BNB',
     name: 'Binance Coin',
     icon: bnbIcon,
-    address: '0xbb4CdB9CBd36B01bD1cBaEF2aFd4e8d3b5c6b5d4',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    decimals: 18,
   },
   {
     symbol: 'PPO',
     name: 'PixelPayot Token',
     icon: ppoIcon,
-    address: '0x1234567890123456789012345678901234567890',
+    address: '0xCdA7eBb5005aaC33B6F4f32c17647698b020eFC9',
+    decimals: 18,
   },
   {
     symbol: 'USDT',
     name: 'Tether USD',
     icon: usdtIcon,
     address: '0x55d398326f99059fF775485246999027B3197955',
+    decimals: 18,
   },
   {
     symbol: 'USDC',
     name: 'USD Coin',
     icon: usdcIcon,
     address: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
+    decimals: 18,
   },
 ])
 
-// Popular pairs
-const popularPairs = ref([
+// Popular pairs with live prices
+const popularPairs = computed(() => [
   {
     id: 1,
     token1: { symbol: 'PPO', icon: ppoIcon },
     token2: { symbol: 'BNB', icon: bnbIcon },
-    price: '0.000045 BNB',
+    price: `${(tokenPrices.value.PPO / tokenPrices.value.BNB).toFixed(6)} BNB`,
   },
   {
     id: 2,
     token1: { symbol: 'PPO', icon: ppoIcon },
     token2: { symbol: 'USDT', icon: usdtIcon },
-    price: '0.045 USDT',
+    price: `$${tokenPrices.value.PPO.toFixed(2)} USDT`,
   },
   {
     id: 3,
     token1: { symbol: 'BNB', icon: bnbIcon },
     token2: { symbol: 'USDT', icon: usdtIcon },
-    price: '320.50 USDT',
+    price: `$${tokenPrices.value.BNB.toFixed(2)} USDT`,
   },
 ])
 
@@ -536,18 +565,31 @@ const filteredTokens = computed(() => {
 })
 
 const exchangeRate = computed(() => {
-  // Dynamic exchange rate based on selected tokens
-  if (
-    selectedFromToken.value.symbol === 'BNB' &&
-    selectedToToken.value.symbol === 'PPO'
-  ) {
-    return (1 / 2222.22).toFixed(6) // 1 BNB = 2222.22 PPO
-  } else if (
-    selectedFromToken.value.symbol === 'PPO' &&
-    selectedToToken.value.symbol === 'BNB'
-  ) {
-    return (2222.22).toFixed(6) // 1 PPO = 0.00045 BNB
+  // Dynamic exchange rate based on live token prices
+  const fromToken = selectedFromToken.value.symbol
+  const toToken = selectedToToken.value.symbol
+  
+  const fromPrice = tokenPrices.value[fromToken] || 0
+  const toPrice = tokenPrices.value[toToken] || 0
+  
+  if (fromPrice > 0 && toPrice > 0) {
+    // Calculate exchange rate based on USD prices
+    // If 1 BNB = $320 and 1 PPO = $0.05, then 1 BNB = 320/0.05 = 6400 PPO
+    const rate = fromPrice / toPrice
+    return rate.toFixed(6)
   }
+  
+  // Fallback rates for specific pairs
+  if (fromToken === 'BNB' && toToken === 'PPO') {
+    const bnbPrice = tokenPrices.value.BNB || 320
+    const ppoPrice = 0.05
+    return (bnbPrice / ppoPrice).toFixed(6)
+  } else if (fromToken === 'PPO' && toToken === 'BNB') {
+    const bnbPrice = tokenPrices.value.BNB || 320
+    const ppoPrice = 0.05
+    return (ppoPrice / bnbPrice).toFixed(6)
+  }
+  
   return '0.0000'
 })
 
@@ -569,6 +611,16 @@ const priceImpactClass = computed(() => {
 const slippage = ref(0.5)
 const networkFee = ref(0.001)
 
+// Computed property for USD value of swap
+const swapUsdValue = computed(() => {
+  if (!swapForm.fromAmount || parseFloat(swapForm.fromAmount) <= 0) return 0
+  
+  const fromToken = selectedFromToken.value.symbol
+  const fromPrice = tokenPrices.value[fromToken] || 0
+  
+  return parseFloat(swapForm.fromAmount) * fromPrice
+})
+
 const getSwapButtonText = () => {
   if (isLoading.value) return 'Swapping...'
   if (!isWalletConnected.value) return 'Connect Wallet'
@@ -589,54 +641,80 @@ const canSwap = computed(() => {
 })
 
 const swapButtonText = computed(() => {
-  if (!swapForm.value.fromAmount) return 'Enter an amount'
-  if (parseFloat(swapForm.value.fromAmount) > fromTokenBalance.value)
+  if (!swapForm.fromAmount) return 'Enter an amount'
+  if (parseFloat(swapForm.fromAmount) > fromTokenBalance.value)
     return 'Insufficient balance'
   return 'Swap'
 })
 
 const swapRate = computed(() => {
-  // Mock exchange rate - in real app, this would come from DEX API
-  if (
-    selectedFromToken.value.symbol === 'ETH' &&
-    selectedToToken.value.symbol === 'PPO'
-  ) {
-    return 1666.67
+  // Exchange rate based on live token prices
+  const fromToken = selectedFromToken.value.symbol
+  const toToken = selectedToToken.value.symbol
+  
+  const fromPrice = tokenPrices.value[fromToken] || 0
+  const toPrice = tokenPrices.value[toToken] || 0
+  
+  if (fromPrice > 0 && toPrice > 0) {
+    // Calculate exchange rate based on USD prices
+    return fromPrice / toPrice
   }
-  if (
-    selectedFromToken.value.symbol === 'PPO' &&
-    selectedToToken.value.symbol === 'ETH'
-  ) {
-    return 0.0006
+  
+  // Fallback rates for specific pairs
+  if (fromToken === 'BNB' && toToken === 'PPO') {
+    const bnbPrice = tokenPrices.value.BNB || 320
+    const ppoPrice = 0.05
+    return bnbPrice / ppoPrice
+  } else if (fromToken === 'PPO' && toToken === 'BNB') {
+    const bnbPrice = tokenPrices.value.BNB || 320
+    const ppoPrice = 0.05
+    return ppoPrice / bnbPrice
   }
+  
   return 1
 })
 
 // Methods
 const calculateSwap = () => {
   if (swapForm.fromAmount > 0) {
-    const rate = swapRate.value
+    try {
+      const fromDecimals = selectedFromToken.value.decimals || 18
+      const toDecimals = selectedToToken.value.decimals || 18
 
-    const parsedAmount = ethers.parseUnits(
-      swapForm.fromAmount?.toString(),
-      selectedFromToken.value.decimals
-    )
-    console.log('Parsed Amount:', parsedAmount)
-    console.log('ppoSwapAddress.value:', ppoSwapAddress.value)
-    readContract(wagmiConfig, {
-      chainId: chainId.value,
-      abi: ppoSwapAbi,
-      address: ppoSwapAddress.value,
-      functionName: 'getEstimateAmountsOut',
-      args: [parsedAmount],
-    }).then((data) => {
-      console.log('getEstimateAmountsOut:', data)
-      const formattedAmount = ethers.formatUnits(
-        data,
-        selectedToToken.value.decimals
+      const parsedAmount = ethers.parseUnits(
+        swapForm.fromAmount?.toString(),
+        fromDecimals
       )
-      swapForm.toAmount = (+formattedAmount).toFixed(5)
-    })
+      console.log('Parsed Amount:', parsedAmount)
+      console.log('ppoSwapAddress.value:', ppoSwapAddress.value)
+      
+      readContract(wagmiConfig, {
+        chainId: chainId.value,
+        abi: ppoSwapAbi,
+        address: ppoSwapAddress.value,
+        functionName: 'getEstimateAmountsOut',
+        args: [parsedAmount],
+      }).then((data) => {
+        console.log('getEstimateAmountsOut:', data)
+        const formattedAmount = ethers.formatUnits(
+          data,
+          toDecimals
+        )
+        swapForm.toAmount = (+formattedAmount).toFixed(5)
+      }).catch((error) => {
+        console.error('Error calculating swap:', error)
+        // Fallback to simple calculation if contract call fails
+        const rate = swapRate.value
+        const calculatedAmount = parseFloat(swapForm.fromAmount) * rate
+        swapForm.toAmount = calculatedAmount.toFixed(5)
+      })
+    } catch (error) {
+      console.error('Error in calculateSwap:', error)
+      // Fallback to simple calculation
+      const rate = swapRate.value
+      const calculatedAmount = parseFloat(swapForm.fromAmount) * rate
+      swapForm.toAmount = calculatedAmount.toFixed(5)
+    }
   } else {
     swapForm.toAmount = ''
   }
@@ -647,15 +725,19 @@ const swapTokens = () => {
   selectedToToken.value = temp
 
   // Swap amounts
-  const tempAmount = swapForm.value.fromAmount
-  swapForm.value.fromAmount = swapForm.value.toAmount
-  swapForm.value.toAmount = tempAmount
+  const tempAmount = swapForm.fromAmount
+  swapForm.fromAmount = swapForm.toAmount
+  swapForm.toAmount = tempAmount
+
+  // Update balances for swapped tokens
+  fromTokenBalance.value = getTokenBalance(selectedFromToken.value.address)
+  toTokenBalance.value = getTokenBalance(selectedToToken.value.address)
 
   calculateSwap()
 }
 
 const setMaxAmount = () => {
-  swapForm.value.fromAmount = fromTokenBalance.value.toString()
+  swapForm.fromAmount = fromTokenBalance.value.toString()
   calculateSwap()
 }
 
@@ -677,48 +759,42 @@ const loadTokenBalances = async () => {
   try {
     console.log('chainId.value:', chainId.value)
 
-    // Lấy số dư của native token
+    // Lấy số dư của native token (BNB)
     const nativeBalance = await getBalance(wagmiConfig, {
       chainId: chainId.value,
       address: address.value,
       units: 'ether',
     })
 
-    // const client = await getConnectorClient(wagmiConfig, { chainId });
-
     console.log('nativeBalance:', nativeBalance)
-    console.log('params', {
-      chainId: chainId.value,
-      address: address.value,
-      token: selectedToToken.value.address,
-    })
-    // const ppoBalance = await readContract(wagmiConfig, {
-    //   chainId: chainId.value,
-    //   abi: ppoTokenAbi,
-    //   address: selectedToToken.value.address,
-    //   functionName: 'balanceOf',
-    //   args: [address.value],
-    // })
 
-    const ppoBalance = await getBalance(wagmiConfig, {
-      chainId: chainId.value,
-      address: address.value,
-      token: selectedToToken.value.address,
-    })
-
-    console.log('Balance:', ppoBalance)
-
-    const formattedPpoBalance = ethers.formatUnits(ppoBalance.value, 18)
-    console.log('selectFromToken', selectedFromToken.value.address)
-
-    // Mock balances - in real app, this would fetch from blockchain
-    tokenBalances.value = {
-      [selectedFromToken.value.address]: nativeBalance?.formatted, // BNB
-      [selectedToToken.value.address]: formattedPpoBalance, // PPO
-      // "0xdAC17F958D2ee523a2206206994597C13D831ec7": 100, // USDT
-      // "0xA0b86a33E6441b8C4C8C8C8C8C8C8C8C8C8C8C8": 50, // USDC
+    // Load balances for all available tokens
+    const balances = {}
+    
+    // Add native token balance
+    balances['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] = nativeBalance?.formatted || '0'
+    
+    // Load balances for other tokens
+    for (const token of availableTokens.value) {
+      if (token.address !== '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
+        try {
+          const tokenBalance = await getBalance(wagmiConfig, {
+            chainId: chainId.value,
+            address: address.value,
+            token: token.address,
+          })
+          const formattedBalance = ethers.formatUnits(tokenBalance.value, token.decimals || 18)
+          balances[token.address] = formattedBalance
+        } catch (error) {
+          console.error(`Failed to load balance for ${token.symbol}:`, error)
+          balances[token.address] = '0'
+        }
+      }
     }
 
+    tokenBalances.value = balances
+
+    // Update balances for current selected tokens
     fromTokenBalance.value = getTokenBalance(selectedFromToken.value.address)
     toTokenBalance.value = getTokenBalance(selectedToToken.value.address)
   } catch (error) {
@@ -738,15 +814,16 @@ const executeSwap = async () => {
       return
     }
 
+    const fromDecimals = selectedFromToken.value.decimals || 18
     console.log(
       'params',
       swapForm.fromAmount?.toString(),
-      selectedFromToken.value.decimals
+      fromDecimals
     )
 
     const parsedAmount = ethers.parseUnits(
       swapForm.fromAmount?.toString(),
-      selectedFromToken.value.decimals
+      fromDecimals
     )
     console.log('Parsed Amount:', parsedAmount)
     const txHash = await writeContract(wagmiConfig, {
@@ -804,20 +881,33 @@ const executeSwap = async () => {
 const selectToken = (token) => {
   if (showFromTokenModal.value) {
     selectedFromToken.value = token
+    fromTokenBalance.value = getTokenBalance(token.address)
   } else if (showToTokenModal.value) {
     selectedToToken.value = token
+    toTokenBalance.value = getTokenBalance(token.address)
   }
   closeTokenModal()
+  calculateSwap()
 }
 
 const selectPair = (pair) => {
-  selectedFromToken.value = availableTokens.value.find(
+  const fromToken = availableTokens.value.find(
     (t) => t.symbol === pair.token1.symbol
   )
-  selectedToToken.value = availableTokens.value.find(
+  const toToken = availableTokens.value.find(
     (t) => t.symbol === pair.token2.symbol
   )
-  calculateSwap()
+  
+  if (fromToken && toToken) {
+    selectedFromToken.value = fromToken
+    selectedToToken.value = toToken
+    
+    // Update balances
+    fromTokenBalance.value = getTokenBalance(fromToken.address)
+    toTokenBalance.value = getTokenBalance(toToken.address)
+    
+    calculateSwap()
+  }
 }
 
 const showToastMessage = (message, type = 'info') => {
@@ -863,6 +953,62 @@ const floorFragment = (value, decimals) => {
   return parseFloat(value).toFixed(decimals)
 }
 
+// Fetch live token prices from CoinGecko
+const fetchTokenPrices = async () => {
+  try {
+    isPriceLoading.value = true
+    
+    // Fetch BNB price from CoinGecko with timeout
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 5000) // 5 second timeout
+    
+    const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd', {
+      signal: controller.signal
+    })
+    
+    clearTimeout(timeoutId)
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    
+    const data = await response.json()
+    
+    if (data.binancecoin && data.binancecoin.usd) {
+      const newBnbPrice = data.binancecoin.usd
+      // Only update if price is reasonable (between $1 and $1000)
+      if (newBnbPrice > 1 && newBnbPrice < 1000) {
+        tokenPrices.value.BNB = newBnbPrice
+        console.log('BNB price updated:', tokenPrices.value.BNB)
+      } else {
+        console.warn('BNB price seems unreasonable:', newBnbPrice)
+      }
+    }
+    
+    // PPO price is fixed at $0.05
+    tokenPrices.value.PPO = 0.05
+    
+    // USDT and USDC are stablecoins, should be close to $1
+    tokenPrices.value.USDT = 1
+    tokenPrices.value.USDC = 1
+    
+  } catch (error) {
+    console.error('Failed to fetch token prices:', error)
+    
+    // Only set fallback if we don't have any price yet
+    if (tokenPrices.value.BNB === 0) {
+      tokenPrices.value.BNB = 320 // Fallback BNB price
+      console.log('Using fallback BNB price:', tokenPrices.value.BNB)
+    }
+    
+    tokenPrices.value.PPO = 0.05
+    tokenPrices.value.USDT = 1
+    tokenPrices.value.USDC = 1
+  } finally {
+    isPriceLoading.value = false
+  }
+}
+
 const formatDate = (date) => {
   return new Date(date).toLocaleDateString()
 }
@@ -887,6 +1033,12 @@ watch(currentUser, async (newUser, oldUser) => {
 onMounted(async () => {
   await loadUserData()
   await loadTokenBalances()
+  await fetchTokenPrices()
+  
+  // Update prices every 30 seconds
+  setInterval(async () => {
+    await fetchTokenPrices()
+  }, 30000)
 })
 
 // Watch for wallet address changes
@@ -894,6 +1046,16 @@ watch(address, async (newAddress, oldAddress) => {
   console.log(`Address changed from ${oldAddress} to ${newAddress}`)
   if (newAddress !== oldAddress) {
     await loadTokenBalances()
+  }
+})
+
+// Watch for selected token changes to update balances
+watch([selectedFromToken, selectedToToken], async ([newFromToken, newToToken], [oldFromToken, oldToToken]) => {
+  if (newFromToken?.address !== oldFromToken?.address) {
+    fromTokenBalance.value = getTokenBalance(newFromToken?.address)
+  }
+  if (newToToken?.address !== oldToToken?.address) {
+    toTokenBalance.value = getTokenBalance(newToToken?.address)
   }
 })
 

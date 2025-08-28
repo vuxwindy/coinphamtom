@@ -376,44 +376,63 @@ const referralStats = ref({
 // Referrals list
 const referrals = ref([])
 
-// Top referrers
-const topReferrers = ref([
-  {
-    id: 1,
-    name: 'CryptoKing',
-    avatar: '/src/assets/images/clients-item1.jpg',
-    referrals: 25,
-    totalEarnings: 125,
-  },
-  {
-    id: 2,
-    name: 'NFTQueen',
-    avatar: '/src/assets/images/clients-item2.jpg',
-    referrals: 18,
-    totalEarnings: 90,
-  },
-  {
-    id: 3,
-    name: 'BlockchainPro',
-    avatar: '/src/assets/images/clients-item3.jpg',
-    referrals: 15,
-    totalEarnings: 75,
-  },
-  {
-    id: 4,
-    name: 'DeFiMaster',
-    avatar: '/src/assets/images/clients-item4.jpg',
-    referrals: 12,
-    totalEarnings: 60,
-  },
-  {
-    id: 5,
-    name: 'Web3Wizard',
-    avatar: '/src/assets/images/clients-item1.jpg',
-    referrals: 10,
-    totalEarnings: 50,
-  },
-])
+// Top referrers - will be loaded from Firebase
+const topReferrers = ref([])
+
+// Load top referrers from Firebase
+const loadTopReferrers = async () => {
+  try {
+    // Query Firebase for top referrers
+    const { getFirestore, collection, query, orderBy, limit, getDocs } = await import('firebase/firestore')
+    const db = getFirestore()
+    
+    const usersRef = collection(db, 'users')
+    const q = query(usersRef, orderBy('referralCount', 'desc'), limit(10))
+    const querySnapshot = await getDocs(q)
+    
+    const topReferrersList = []
+    querySnapshot.forEach((doc) => {
+      const userData = doc.data()
+      if (userData.referralCount > 0) {
+        topReferrersList.push({
+          id: doc.id,
+          name: userData.displayName || 'Anonymous User',
+          avatar: userData.photoURL || '/src/assets/images/default-avatar.png',
+          referrals: userData.referralCount || 0,
+          totalEarnings: userData.referralEarnings || 0,
+        })
+      }
+    })
+    
+    // If no real data, show placeholder
+    if (topReferrersList.length === 0) {
+      topReferrers.value = [
+        {
+          id: 1,
+          name: 'No Top Referrers Yet',
+          avatar: '/src/assets/images/default-avatar.png',
+          referrals: 0,
+          totalEarnings: 0,
+          note: 'Top referrers will appear here once users start referring others.'
+        }
+      ]
+    } else {
+      topReferrers.value = topReferrersList
+    }
+  } catch (error) {
+    console.error('Failed to load top referrers:', error)
+    topReferrers.value = [
+      {
+        id: 1,
+        name: 'Loading Error',
+        avatar: '/src/assets/images/default-avatar.png',
+        referrals: 0,
+        totalEarnings: 0,
+        note: 'Failed to load top referrers data.'
+      }
+    ]
+  }
+}
 
 // Methods
 const generateReferralCode = (address) => {
@@ -434,78 +453,154 @@ const loadReferralData = async () => {
   try {
     isLoading.value = true
 
-    // Generate referral code if not exists
-    if (!userReferralCode.value) {
-      userReferralCode.value = generateReferralCode(address.value)
+    // Load user data from Firebase
+    const { getUserData } = useFirebase()
+    const result = await getUserData()
+    
+    if (result.success) {
+      const userData = result.data
+      
+      // Use referral code from Firebase, don't generate new one
+      userReferralCode.value = userData.referralCode || ''
+      
+      // Load real referral stats
+      await loadReferralStats(userData)
+      
+      // Load real referrals list
+      await loadReferralsList(userData)
+      
+      // Load top referrers
+      await loadTopReferrers()
+    } else {
+      // Fallback to empty code if no user data
+      userReferralCode.value = ''
+      await loadReferralStats()
+      await loadReferralsList()
+      await loadTopReferrers()
     }
-
-    // Load referral stats from blockchain or API
-    await loadReferralStats()
-
-    // Load referrals list
-    await loadReferralsList()
   } catch (error) {
     console.error('Failed to load referral data:', error)
-    toast.error('Failed to load referral data')
+    // Fallback to empty code
+    userReferralCode.value = ''
+    await loadReferralStats()
+    await loadReferralsList()
+    await loadTopReferrers()
   } finally {
     isLoading.value = false
   }
 }
 
-const loadReferralStats = async () => {
+const loadReferralStats = async (userData = null) => {
   try {
-    // Simulate API call to get referral stats
-    // In real implementation, this would call your smart contract or API
-    const mockStats = {
-      totalReferrals: Math.floor(Math.random() * 20) + 1,
-      totalEarnings: Math.floor(Math.random() * 100) + 10,
-      activeReferrals: Math.floor(Math.random() * 15) + 1,
-      conversionRate: Math.floor(Math.random() * 30) + 50,
+    let stats = {
+      totalReferrals: 0,
+      totalEarnings: 0,
+      activeReferrals: 0,
+      conversionRate: 0,
     }
 
-    referralStats.value = mockStats
+    if (userData) {
+      // Use real data from Firebase
+      stats = {
+        totalReferrals: userData.referralCount || 0,
+        totalEarnings: userData.referralEarnings || 0,
+        activeReferrals: userData.referralCount || 0, // Assuming all referrals are active
+        conversionRate: userData.referralCount > 0 ? 85 : 0, // Mock conversion rate
+      }
+    } else {
+      // Fallback to mock data
+      stats = {
+        totalReferrals: 0,
+        totalEarnings: 0,
+        activeReferrals: 0,
+        conversionRate: 0,
+      }
+    }
+
+    referralStats.value = stats
   } catch (error) {
     console.error('Failed to load referral stats:', error)
+    referralStats.value = {
+      totalReferrals: 0,
+      totalEarnings: 0,
+      activeReferrals: 0,
+      conversionRate: 0,
+    }
   }
 }
 
-const loadReferralsList = async () => {
+const loadReferralsList = async (userData = null) => {
   try {
-    // Simulate API call to get referrals list
-    // In real implementation, this would call your smart contract or API
-    const mockReferrals = [
-      {
-        id: 1,
-        name: 'John Doe',
-        email: 'john@example.com',
-        avatar: '/src/assets/images/clients-item1.jpg',
-        joinedDate: new Date('2024-01-15'),
-        status: 'active',
-        reward: 5,
-      },
-      {
-        id: 2,
-        name: 'Jane Smith',
-        email: 'jane@example.com',
-        avatar: '/src/assets/images/clients-item2.jpg',
-        joinedDate: new Date('2024-01-12'),
-        status: 'active',
-        reward: 5,
-      },
-      {
-        id: 3,
-        name: 'Mike Johnson',
-        email: 'mike@example.com',
-        avatar: '/src/assets/images/clients-item3.jpg',
-        joinedDate: new Date('2024-01-10'),
-        status: 'pending',
-        reward: 0,
-      },
-    ]
+    let referralsList = []
 
-    referrals.value = mockReferrals
+    if (userData && userData.referralCount > 0) {
+      // Query Firebase for actual referrals
+      const { getFirestore, collection, query, where, getDocs } = await import('firebase/firestore')
+      const db = getFirestore()
+      
+      const usersRef = collection(db, 'users')
+      const q = query(usersRef, where('referredBy', '==', userData.referralCode))
+      const querySnapshot = await getDocs(q)
+      
+      querySnapshot.forEach((doc) => {
+        const referredUserData = doc.data()
+        referralsList.push({
+          id: doc.id,
+          name: referredUserData.displayName || 'Anonymous User',
+          email: referredUserData.email || 'No email',
+          avatar: referredUserData.photoURL || '/src/assets/images/default-avatar.png',
+          joinedDate: referredUserData.createdAt ? new Date(referredUserData.createdAt.toDate()) : new Date(),
+          status: 'active',
+          reward: 5,
+        })
+      })
+      
+      // If no referrals found but referralCount > 0, show placeholder
+      if (referralsList.length === 0) {
+        referralsList = [
+          {
+            id: 1,
+            name: 'Referral Data Loading',
+            email: 'loading@example.com',
+            avatar: '/src/assets/images/default-avatar.png',
+            joinedDate: new Date(),
+            status: 'active',
+            reward: 5,
+            note: `You have ${userData.referralCount} referral(s). Referral details will be displayed here.`
+          }
+        ]
+      }
+    } else {
+      // No referrals yet
+      referralsList = [
+        {
+          id: 1,
+          name: 'No Referrals Yet',
+          email: 'noreferrals@example.com',
+          avatar: '/src/assets/images/default-avatar.png',
+          joinedDate: new Date(),
+          status: 'pending',
+          reward: 0,
+          note: 'Share your referral code to start earning rewards!'
+        }
+      ]
+    }
+
+    referrals.value = referralsList
   } catch (error) {
     console.error('Failed to load referrals list:', error)
+    referrals.value = [
+      {
+        id: 1,
+        name: 'Loading Error',
+        email: 'error@example.com',
+        avatar: '/src/assets/images/default-avatar.png',
+        joinedDate: new Date(),
+        status: 'error',
+        reward: 0,
+        note: 'Failed to load referral data.'
+      }
+    ]
   }
 }
 
@@ -586,9 +681,35 @@ watch(address, (newAddress, oldAddress) => {
 })
 
 // Lifecycle
-onMounted(() => {
+onMounted(async () => {
   if (isWalletConnected.value) {
-    loadReferralData()
+    await loadReferralData()
+    await loadTopReferrers()
+  }
+})
+
+// Watch for wallet connection changes
+watch(address, async (newAddress, oldAddress) => {
+  if (newAddress !== oldAddress) {
+    await loadReferralData()
+  }
+})
+
+// Watch for user changes
+watch(currentUser, async (newUser) => {
+  if (newUser) {
+    await loadReferralData()
+  } else {
+    // Reset data when user logs out
+    userReferralCode.value = ''
+    referralStats.value = {
+      totalReferrals: 0,
+      totalEarnings: 0,
+      activeReferrals: 0,
+      conversionRate: 0,
+    }
+    referrals.value = []
+    topReferrers.value = []
   }
 })
 </script>
