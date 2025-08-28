@@ -38,7 +38,6 @@ const initializeFirebase = async () => {
   try {
     // Listen for auth state changes
     onAuthStateChanged(auth, (user) => {
-      console.log('users', user)
       currentUser.value = user
       isFirebaseReady.value = true
 
@@ -103,6 +102,7 @@ const createUserDocument = async (userId) => {
       },
       completedTasks: [], // Track one-time completed tasks
       lastCheckIn: null,
+      transactions: [],
     }
 
     await setDoc(doc(db, 'users', userId), userData)
@@ -377,6 +377,28 @@ const isAuthenticated = computed(() => !!currentUser.value)
 // Initialize Firebase on module load
 initializeFirebase()
 
+// Add transaction to users
+const addTransaction = async (transaction) => {
+  try {
+    if (!currentUser.value) {
+      throw new Error('No user logged in')
+    }
+
+    const userRef = doc(db, 'users', currentUser.value.uid)
+    const userDoc = await getDoc(userRef)
+    const data = userDoc.data()
+    await updateDoc(userRef, {
+      transactions: [transaction, ...data.transactions],
+      updatedAt: new Date(),
+    })
+
+    return { success: true }
+  } catch (error) {
+    console.error('❌ Failed to add transaction:', error)
+    return { success: false, error: error.message }
+  }
+}
+
 export function useFirebase() {
   return {
     // State
@@ -400,5 +422,6 @@ export function useFirebase() {
     addReferral,
     generateReferralCode,
     generateReferralLink,
+    addTransaction,
   }
 }
