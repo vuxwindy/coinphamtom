@@ -130,7 +130,7 @@
                 </div>
                 <div class="header-content">
                   <h3>Daily Tasks</h3>
-                  <p>Complete tasks to earn $PPO tokens</p>
+                  <p>Complete Daily Tasks to earn $PPO tokens</p>
                 </div>
                 <div class="progress-indicator">
                   <span class="progress-text">1/6</span>
@@ -145,7 +145,7 @@
                     </div>
                     <div class="task-content">
                       <h5>Daily Check-in</h5>
-                      <p class="task-reward">+1 PPO</p>
+                   <!--    <p class="task-reward">+1 PPO</p> -->
                     </div>
                     <button class="btn btn-task completed" >
                       <i class="fas fa-check-circle"></i>
@@ -159,7 +159,7 @@
                     </div>
                     <div class="task-content">
                       <h5>Join Telegram Group</h5>
-                      <p class="task-reward">+2 PPO</p>
+                   <!--    <p class="task-reward">+2 PPO</p> -->
                     </div>
                     <button class="btn btn-task" data-task="telegramGroup">
                       <i class="fas fa-users"></i>
@@ -173,7 +173,7 @@
                     </div>
                     <div class="task-content">
                       <h5>Subscribe Channel</h5>
-                      <p class="task-reward">+2 PPO</p>
+                   <!--    <p class="task-reward">+2 PPO</p> -->
                     </div>
                     <button class="btn btn-task" data-task="telegramChannel">
                       <i class="fas fa-bell"></i>
@@ -187,7 +187,7 @@
                     </div>
                     <div class="task-content">
                       <h5>Like Facebook Page</h5>
-                      <p class="task-reward">+2 PPO</p>
+                   <!--    <p class="task-reward">+2 PPO</p> -->
                     </div>
                     <button class="btn btn-task" data-task="facebookPage">
                       <i class="fas fa-thumbs-up"></i>
@@ -201,7 +201,7 @@
                     </div>
                     <div class="task-content">
                       <h5>Follow on X</h5>
-                      <p class="task-reward">+2 PPO</p>
+                     <!--  <p class="task-reward">+2 PPO</p> -->
                     </div>
                     <button class="btn btn-task" data-task="twitterFollow">
                       <i class="fas fa-user-plus"></i>
@@ -215,7 +215,7 @@
                     </div>
                     <div class="task-content">
                       <h5>Share & Earn</h5>
-                      <p class="task-reward">+3 PPO</p>
+                    <!--   <p class="task-reward">+3 PPO</p> -->
                       <small class="task-note">Share about PixelPayot</small>
                     </div>
                     <button class="btn btn-task" data-task="socialShare">
@@ -231,7 +231,7 @@
                     </div>
                     <div class="rewards-content">
                       <h4>Available Rewards</h4>
-                      <span class="rewards-amount">0 PPO</span>
+                      <!-- <span class="rewards-amount">0 PPO</span> -->
                     </div>
                     <button class="btn btn-claim-rewards" disabled>
                       <i class="fas fa-download"></i>
