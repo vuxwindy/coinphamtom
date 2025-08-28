@@ -289,12 +289,6 @@ const { currentUser, signOut } = useFirebase()
 
 // Menu items configuration
 const menuItems = ref([
-  {
-    id: 'game',
-    name: 'Game',
-    url: '/game',
-    icon: 'fas fa-gamepad',
-  },
   // {
   //   id: 'marketplace',
   //   name: 'Marketplace',
@@ -307,6 +301,39 @@ const menuItems = ref([
   //   url: '/collection',
   //   icon: 'fas fa-images',
   // },
+  {
+    id: 'swap',
+    name: 'Swap',
+    url: '/swap',
+    icon: 'fas fa-exchange-alt',
+  },
+  {
+    id: 'referral',
+    name: 'Referral',
+    url: '/referral',
+    icon: 'fas fa-users',
+  },
+  {
+    id: 'game',
+    name: 'Game',
+    url: '/game',
+    icon: 'fas fa-gamepad',
+  },
+<<<<<<< HEAD
+  // {
+  //   id: 'marketplace',
+  //   name: 'Marketplace',
+  //   url: '/marketplace',
+  //   icon: 'fas fa-store',
+  // },
+  // {
+  //   id: 'collection',
+  //   name: 'Collection',
+  //   url: '/collection',
+  //   icon: 'fas fa-images',
+  // },
+=======
+>>>>>>> 627ee0a90d9cb1752659f13de5331beebd4a365f
   {
     id: 'investment',
     name: 'Investment',
@@ -337,6 +364,12 @@ const menuItems = ref([
       //   url: '/dashboard',
       //   icon: 'fas fa-chart-line',
       // },
+      {
+        id: 'dashboard',
+        name: 'Dashboard',
+        url: '/dashboard',
+        icon: 'fas fa-chart-line',
+      },
       // {
       //   id: 'tasks',
       //   name: 'Daily Tasks',
@@ -355,6 +388,12 @@ const menuItems = ref([
         url: '/referral',
         icon: 'fas fa-users',
       },
+      {
+        id: 'wallet-test',
+        name: 'Wallet Test',
+        url: '/wallet-test',
+        icon: 'fas fa-wallet',
+      },
     ],
   },
   {
@@ -369,7 +408,11 @@ const menuItems = ref([
       //   url: '/blindbox',
       //   icon: 'fas fa-box-open',
       // },
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 627ee0a90d9cb1752659f13de5331beebd4a365f
       // {
       //   id: 'creators',
       //   name: 'Creators',
