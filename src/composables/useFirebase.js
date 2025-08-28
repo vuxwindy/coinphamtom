@@ -1,25 +1,25 @@
 import { ref, computed } from 'vue'
-import { 
-  getAuth, 
-  signInWithEmailAndPassword, 
+import {
+  getAuth,
+  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut as firebaseSignOut,
   onAuthStateChanged,
   updateProfile,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
 } from 'firebase/auth'
-import { 
-  getFirestore, 
-  doc, 
-  setDoc, 
-  getDoc, 
-  updateDoc, 
-  collection, 
-  addDoc, 
-  query, 
-  where, 
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  collection,
+  addDoc,
+  query,
+  where,
   getDocs,
-  onSnapshot
+  onSnapshot,
 } from 'firebase/firestore'
 import { app } from '../config/firebase.js'
 
@@ -38,16 +38,17 @@ const initializeFirebase = async () => {
   try {
     // Listen for auth state changes
     onAuthStateChanged(auth, (user) => {
+      console.log('users', user)
       currentUser.value = user
       isFirebaseReady.value = true
-      
+
       if (user) {
         loadUserData(user.uid)
       } else {
         currentUser.value = null
       }
     })
-    
+
     // Initialize Firebase
     try {
       // Firebase is already initialized
@@ -81,7 +82,7 @@ const createUserDocument = async (userId) => {
   try {
     const user = auth.currentUser
     if (!user) return
-    
+
     const userData = {
       uid: userId,
       email: user.email,
@@ -98,12 +99,12 @@ const createUserDocument = async (userId) => {
       referralCount: 0,
       level: 'F0',
       dailyTasks: {
-        checkIn: false
+        checkIn: false,
       },
       completedTasks: [], // Track one-time completed tasks
-      lastCheckIn: null
+      lastCheckIn: null,
     }
-    
+
     await setDoc(doc(db, 'users', userId), userData)
   } catch (error) {
     console.error('❌ Failed to create user document:', error)
@@ -130,7 +131,7 @@ const signIn = async (email, password) => {
   try {
     isLoading.value = true
     firebaseError.value = null
-    
+
     const result = await signInWithEmailAndPassword(auth, email, password)
     return { success: true, user: result.user }
   } catch (error) {
@@ -147,14 +148,14 @@ const signUp = async (email, password, displayName = '') => {
   try {
     isLoading.value = true
     firebaseError.value = null
-    
+
     const result = await createUserWithEmailAndPassword(auth, email, password)
-    
+
     // Update profile
     if (displayName) {
       await updateProfile(result.user, { displayName })
     }
-    
+
     return { success: true, user: result.user }
   } catch (error) {
     firebaseError.value = getAuthErrorMessage(error.code)
@@ -182,7 +183,7 @@ const resetPassword = async (email) => {
   try {
     isLoading.value = true
     firebaseError.value = null
-    
+
     await sendPasswordResetEmail(auth, email)
     return { success: true }
   } catch (error) {
@@ -200,13 +201,13 @@ const updateUserData = async (data) => {
     if (!currentUser.value) {
       throw new Error('No user logged in')
     }
-    
+
     const userRef = doc(db, 'users', currentUser.value.uid)
     await updateDoc(userRef, {
       ...data,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     })
-    
+
     return { success: true }
   } catch (error) {
     console.error('❌ Failed to update user data:', error)
@@ -221,7 +222,7 @@ const getUserData = async (userId = null) => {
     if (!targetUserId) {
       throw new Error('No user ID provided')
     }
-    
+
     const userDoc = await getDoc(doc(db, 'users', targetUserId))
     if (userDoc.exists()) {
       return { success: true, data: userDoc.data() }
@@ -240,14 +241,14 @@ const claimTaskReward = async (taskType) => {
     if (!currentUser.value) {
       throw new Error('No user logged in')
     }
-    
+
     const userRef = doc(db, 'users', currentUser.value.uid)
     const userDoc = await getDoc(userRef)
-    
+
     if (!userDoc.exists()) {
       throw new Error('User document not found')
     }
-    
+
     const userData = userDoc.data()
     const taskRewards = {
       checkIn: 1,
@@ -256,19 +257,19 @@ const claimTaskReward = async (taskType) => {
       facebookPage: 2,
       twitterFollow: 2,
       socialShare: 3,
-      connect_wallet: 5
+      connect_wallet: 5,
     }
-    
+
     const reward = taskRewards[taskType] || 0
     const newBalance = userData.tokenBalance + reward
-    
+
     // Update data based on task type
     const updateData = {
       tokenBalance: newBalance,
       totalEarned: userData.totalEarned + reward,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     }
-    
+
     // For daily tasks, update dailyTasks object
     if (taskType === 'checkIn') {
       updateData[`dailyTasks.${taskType}`] = true
@@ -280,9 +281,9 @@ const claimTaskReward = async (taskType) => {
         updateData.completedTasks = [...completedTasks, taskType]
       }
     }
-    
+
     await updateDoc(userRef, updateData)
-    
+
     return { success: true, reward, newBalance }
   } catch (error) {
     console.error('❌ Failed to claim task reward:', error)
@@ -296,32 +297,32 @@ const addReferral = async (referralCode) => {
     if (!currentUser.value) {
       throw new Error('No user logged in')
     }
-    
+
     // Find user with referral code
     const usersRef = collection(db, 'users')
     const q = query(usersRef, where('referralCode', '==', referralCode))
     const querySnapshot = await getDocs(q)
-    
+
     if (querySnapshot.empty) {
       throw new Error('Invalid referral code')
     }
-    
+
     const referrerDoc = querySnapshot.docs[0]
     const referrerData = referrerDoc.data()
-    
+
     // Update referrer data
     await updateDoc(doc(db, 'users', referrerDoc.id), {
       referralCount: referrerData.referralCount + 1,
       referralEarnings: referrerData.referralEarnings + 5, // 5 PPO per referral
-      updatedAt: new Date()
+      updatedAt: new Date(),
     })
-    
+
     // Update current user data
     await updateDoc(doc(db, 'users', currentUser.value.uid), {
       referredBy: referralCode,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     })
-    
+
     return { success: true }
   } catch (error) {
     console.error('❌ Failed to add referral:', error)
@@ -337,12 +338,14 @@ const getAuthErrorMessage = (errorCode) => {
     'auth/email-already-in-use': 'An account with this email already exists.',
     'auth/weak-password': 'Password should be at least 6 characters.',
     'auth/invalid-email': 'Invalid email address.',
-    'auth/too-many-requests': 'Too many failed attempts. Please try again later.',
+    'auth/too-many-requests':
+      'Too many failed attempts. Please try again later.',
     'auth/user-disabled': 'This account has been disabled.',
     'auth/operation-not-allowed': 'This operation is not allowed.',
-    'auth/network-request-failed': 'Network error. Please check your connection.'
+    'auth/network-request-failed':
+      'Network error. Please check your connection.',
   }
-  
+
   return errorMessages[errorCode] || 'An error occurred. Please try again.'
 }
 
@@ -359,10 +362,10 @@ export function useFirebase() {
     firebaseError,
     currentUser,
     isLoading,
-    
+
     // Computed
     isAuthenticated,
-    
+
     // Methods
     initializeFirebase,
     signIn,
@@ -374,6 +377,6 @@ export function useFirebase() {
     claimTaskReward,
     addReferral,
     generateReferralCode,
-    generateReferralLink
+    generateReferralLink,
   }
 }
