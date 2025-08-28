@@ -380,6 +380,7 @@ import {
 import { ppoTokenAbi } from '@/abis/ppoToken.js'
 import { ppoSwapAbi } from '@/abis/ppoSwap.js'
 import { bsc, bscTestnet } from 'viem/chains'
+import { useFirebase } from '../composables/useFirebase'
 
 // PPO Token và PPO Swap contract addresses
 const ppoSwapAddress = computed(() => {
@@ -390,6 +391,7 @@ const ppoSwapAddress = computed(() => {
 })
 
 const router = useRouter()
+const { getUserData, addTransaction, currentUser } = useFirebase()
 
 // Use Web3 composable for wallet connection
 const { address, connectWallet } = useAccount()
@@ -417,6 +419,9 @@ const swapForm = reactive({
 const tokenBalances = ref({})
 const fromTokenBalance = ref(0)
 const toTokenBalance = ref(0)
+
+// Recent Transactions
+const recentTransactions = ref([])
 
 // Default tokens (BNB and PPO)
 const selectedFromToken = ref({
@@ -484,37 +489,37 @@ const popularPairs = ref([
 ])
 
 // Recent transactions - conditional based on wallet connection
-const recentTransactions = computed(() => {
-  if (!isWalletConnected.value) {
-    return []
-  }
-  return [
-    {
-      id: 1,
-      type: 'swap',
-      from: { symbol: 'BNB', amount: '0.1' },
-      to: { symbol: 'PPO', amount: '2222.22' },
-      time: '2 minutes ago',
-      status: 'completed',
-    },
-    {
-      id: 2,
-      type: 'swap',
-      from: { symbol: 'PPO', amount: '100' },
-      to: { symbol: 'USDT', amount: '4.5' },
-      time: '5 minutes ago',
-      status: 'completed',
-    },
-    {
-      id: 3,
-      type: 'swap',
-      from: { symbol: 'USDT', amount: '10' },
-      to: { symbol: 'BNB', amount: '0.031' },
-      time: '10 minutes ago',
-      status: 'completed',
-    },
-  ]
-})
+// const recentTransactions = computed(() => {
+//   if (!isWalletConnected.value) {
+//     return []
+//   }
+//   return [
+//     {
+//       id: 1,
+//       type: 'swap',
+//       from: { symbol: 'BNB', amount: '0.1' },
+//       to: { symbol: 'PPO', amount: '2222.22' },
+//       time: '2 minutes ago',
+//       status: 'completed',
+//     },
+//     {
+//       id: 2,
+//       type: 'swap',
+//       from: { symbol: 'PPO', amount: '100' },
+//       to: { symbol: 'USDT', amount: '4.5' },
+//       time: '5 minutes ago',
+//       status: 'completed',
+//     },
+//     {
+//       id: 3,
+//       type: 'swap',
+//       from: { symbol: 'USDT', amount: '10' },
+//       to: { symbol: 'BNB', amount: '0.031' },
+//       time: '10 minutes ago',
+//       status: 'completed',
+//     },
+//   ]
+// })
 
 // Computed properties
 const filteredTokens = computed(() => {
@@ -759,11 +764,8 @@ const executeSwap = async () => {
       hash: txHash,
     })
 
-    showToastMessage('Swap successfully!', 'success')
-
-    // Add to recent transactions
-    recentTransactions.value.unshift({
-      hash: '0x' + Math.random().toString(36).substr(2, 9),
+    await addTransaction({
+      hash: txHash,
       fromAmount: swapForm.fromAmount,
       fromToken: selectedFromToken.value.symbol,
       toAmount: swapForm.toAmount,
@@ -771,6 +773,19 @@ const executeSwap = async () => {
       timestamp: Date.now(),
       status: 'completed',
     })
+
+    // Add to recent transactions
+    recentTransactions.value.unshift({
+      hash: txHash,
+      fromAmount: swapForm.fromAmount,
+      fromToken: selectedFromToken.value.symbol,
+      toAmount: swapForm.toAmount,
+      toToken: selectedToToken.value.symbol,
+      timestamp: Date.now(),
+      status: 'completed',
+    })
+
+    showToastMessage('Swap successfully!', 'success')
 
     // Update balances
     await loadTokenBalances()
@@ -848,8 +863,25 @@ const formatDate = (date) => {
   return new Date(date).toLocaleDateString()
 }
 
+const loadUserData = async () => {
+  if (currentUser.value) {
+    const result = await getUserData()
+    if (result.success) {
+      console.log('result', result)
+      recentTransactions.value = result.data.transactions || []
+    }
+  }
+}
+
+watch(currentUser, async (newUser, oldUser) => {
+  if (newUser !== oldUser && newUser) {
+    await loadUserData()
+  }
+})
+
 // Lifecycle
 onMounted(async () => {
+  await loadUserData()
   await loadTokenBalances()
 })
 
