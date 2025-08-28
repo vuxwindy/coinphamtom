@@ -221,9 +221,12 @@
             <ReownWalletButton /> -->
           <!-- Mobile Actions -->
           <div class="mobile-actions mt-6">
-            <div class="mobile-wallet-section mb-4">
+            <div
+              class="mobile-wallet-section mb-4"
+              @click="toggleMobileMenu"
+            >
               <WalletStatus />
-              <!-- <ReownWalletButton /> -->
+              <ReownWalletButton />
             </div>
           </div>
         </div>

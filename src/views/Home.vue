@@ -2048,9 +2048,11 @@ const initializeReferral = async () => {
     try {
       const userData = await getUserData()
       console.log('User data loaded:', userData)
-      if (userData && userData.referralCode) {
+      if (userData && userData.data.referralCode) {
         userReferralCode.value = userData.data.referralCode
-        userReferralLink.value = generateReferralLink(userData.referralCode)
+        userReferralLink.value = generateReferralLink(
+          userData.data.referralCode
+        )
         referralCount.value = userData.data.referralCount || 0
         userLevel.value = getLevel(referralCount.value)
         availableRewards.value = userData.data.totalEarned || 0
@@ -2095,8 +2097,14 @@ onMounted(() => {
   initializeReferral()
 })
 
+watch(currentUser, (newAddress) => {
+  if (newAddress) {
+    initializeReferral()
+  }
+})
+
 // Watch for wallet connection changes to update referral
-watch(isConnected, (newValue) => {
+watch(isConnected.value, (newValue) => {
   if (newValue) {
     initializeReferral()
   } else {
@@ -2230,7 +2238,7 @@ watch(isConnected, (newValue) => {
 
 .hero-content {
   position: relative;
-  z-index: 2;
+  /* z-index: 2; */
 }
 
 .hero-badge {
