@@ -282,7 +282,7 @@
                   <p>Complete tasks to earn $PPO tokens</p>
                 </div>
                 <div class="progress-indicator">
-                  <span class="progress-text">1/6</span>
+                  <span class="progress-text">{{ completedTasksCount }}/{{ tasks.length }}</span>
                 </div>
               </div>
               <div class="card-body">
@@ -307,70 +307,30 @@
                     </button>
                   </div>
 
-                  <!-- Telegram Group -->
+                  <!-- Join Telegram -->
                   <div class="modern-task-item">
                     <div class="task-icon">
                       <i class="fab fa-telegram"></i>
                     </div>
                     <div class="task-content">
-                      <h5>Join Telegram Group</h5>
+                      <h5>Join Telegram Channel</h5>
                       <p class="task-reward">+2 PPO</p>
                     </div>
                     <button
                       class="btn btn-task"
-                      :class="{ completed: tasks.find(t => t.id === 'telegramGroup')?.completed }"
-                      @click="claimTaskReward('telegramGroup')"
-                      :disabled="!isUserReady || tasks.find(t => t.id === 'telegramGroup')?.completed"
+                      :class="{ completed: tasks.find(t => t.id === 'joinTelegram')?.completed }"
+                      @click="claimTaskReward('joinTelegram')"
+                      :disabled="!isUserReady || tasks.find(t => t.id === 'joinTelegram')?.completed"
                     >
-                      <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'telegramGroup')?.completed"></i>
-                      <i class="fas fa-users" v-else></i>
+                      <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'joinTelegram')?.completed"></i>
+                      <i class="fab fa-telegram" v-else></i>
                     </button>
                   </div>
 
-                  <!-- Telegram Channel -->
+                  <!-- Join X -->
                   <div class="modern-task-item">
                     <div class="task-icon">
-                      <i class="fab fa-telegram"></i>
-                    </div>
-                    <div class="task-content">
-                      <h5>Subscribe Channel</h5>
-                      <p class="task-reward">+2 PPO</p>
-                    </div>
-                    <button
-                      class="btn btn-task"
-                      :class="{ completed: tasks.find(t => t.id === 'telegramChannel')?.completed }"
-                      @click="claimTaskReward('telegramChannel')"
-                      :disabled="!isUserReady || tasks.find(t => t.id === 'telegramChannel')?.completed"
-                    >
-                      <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'telegramChannel')?.completed"></i>
-                      <i class="fas fa-bell" v-else></i>
-                    </button>
-                  </div>
-
-                  <!-- Facebook Page -->
-                  <div class="modern-task-item">
-                    <div class="task-icon">
-                      <i class="fab fa-facebook"></i>
-                    </div>
-                    <div class="task-content">
-                      <h5>Like Facebook Page</h5>
-                      <p class="task-reward">+2 PPO</p>
-                    </div>
-                    <button
-                      class="btn btn-task"
-                      :class="{ completed: tasks.find(t => t.id === 'facebookPage')?.completed }"
-                      @click="claimTaskReward('facebookPage')"
-                      :disabled="!isUserReady || tasks.find(t => t.id === 'facebookPage')?.completed"
-                    >
-                      <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'facebookPage')?.completed"></i>
-                      <i class="fas fa-thumbs-up" v-else></i>
-                    </button>
-                  </div>
-
-                  <!-- Twitter Follow -->
-                  <div class="modern-task-item">
-                    <div class="task-icon">
-                      <i class="fab fa-x-twitter"></i>
+                      <i class="fab fa-twitter"></i>
                     </div>
                     <div class="task-content">
                       <h5>Follow on X</h5>
@@ -378,33 +338,32 @@
                     </div>
                     <button
                       class="btn btn-task"
-                      :class="{ completed: tasks.find(t => t.id === 'twitterFollow')?.completed }"
-                      @click="claimTaskReward('twitterFollow')"
-                      :disabled="!isUserReady || tasks.find(t => t.id === 'twitterFollow')?.completed"
+                      :class="{ completed: tasks.find(t => t.id === 'joinX')?.completed }"
+                      @click="claimTaskReward('joinX')"
+                      :disabled="!isUserReady || tasks.find(t => t.id === 'joinX')?.completed"
                     >
-                      <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'twitterFollow')?.completed"></i>
-                      <i class="fas fa-user-plus" v-else></i>
+                      <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'joinX')?.completed"></i>
+                      <i class="fab fa-twitter" v-else></i>
                     </button>
                   </div>
 
-                  <!-- Social Share -->
-                  <div class="modern-task-item special">
+                  <!-- Join YouTube -->
+                  <div class="modern-task-item">
                     <div class="task-icon">
-                      <i class="fas fa-share-alt"></i>
+                      <i class="fab fa-youtube"></i>
                     </div>
                     <div class="task-content">
-                      <h5>Share & Earn</h5>
-                      <p class="task-reward">+3 PPO</p>
-                      <small class="task-note">Share about PixelPayot</small>
+                      <h5>Watch YouTube Video</h5>
+                      <p class="task-reward">+2 PPO</p>
                     </div>
                     <button
                       class="btn btn-task"
-                      :class="{ completed: tasks.find(t => t.id === 'socialShare')?.completed }"
-                      @click="claimTaskReward('socialShare')"
-                      :disabled="!isUserReady || tasks.find(t => t.id === 'socialShare')?.completed"
+                      :class="{ completed: tasks.find(t => t.id === 'joinYoutube')?.completed }"
+                      @click="claimTaskReward('joinYoutube')"
+                      :disabled="!isUserReady || tasks.find(t => t.id === 'joinYoutube')?.completed"
                     >
-                      <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'socialShare')?.completed"></i>
-                      <i class="fas fa-share" v-else></i>
+                      <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'joinYoutube')?.completed"></i>
+                      <i class="fab fa-youtube" v-else></i>
                     </button>
                   </div>
                 </div>
@@ -742,7 +701,7 @@
         <img src="../assets/images/pattern-blur-left.png" />
       </div>
       <div class="container">
-        <div class="grid grid-cols-5 gap-6">
+        <div class="grid grid-cols-5 gap-4">
           <div
             v-for="exchange in exchanges"
             :key="exchange.id"

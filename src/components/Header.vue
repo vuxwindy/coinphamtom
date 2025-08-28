@@ -251,7 +251,7 @@
           <div class="mobile-actions mt-6">
             <div class="mobile-wallet-section mb-4">
               <WalletStatus />
-              <ReownWalletButton />
+              <!-- <ReownWalletButton /> -->
             </div>
             
             <!-- Mobile Sign Up Button -->

@@ -263,11 +263,9 @@ const claimTaskReward = async (taskType) => {
 
     const taskRewards = {
       checkIn: 1,
-      telegramGroup: 2,
-      telegramChannel: 2,
-      facebookPage: 2,
-      twitterFollow: 2,
-      socialShare: 3,
+      joinTelegram: 2,
+      joinX: 2,
+      joinYoutube: 2,
       connect_wallet: 5,
     }
 
@@ -284,13 +282,13 @@ const claimTaskReward = async (taskType) => {
       updatedAt: new Date(),
     }
 
-    // For daily tasks, update dailyTasks object
+    // For daily check-in task, update dailyTasks object
     if (taskType === 'checkIn') {
       updateData[`dailyTasks.${taskType}`] = true
       updateData.lastCheckIn = new Date()
       console.log('📅 Updated daily check-in data')
     } else {
-      // For one-time tasks, add to completedTasks array
+      // For one-time tasks (Telegram, X, YouTube), add to completedTasks array
       const completedTasks = userData.completedTasks || []
       if (!completedTasks.includes(taskType)) {
         updateData.completedTasks = [...completedTasks, taskType]

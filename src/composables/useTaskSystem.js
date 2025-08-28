@@ -22,59 +22,40 @@ export function useTaskSystem() {
       icon: 'fas fa-calendar-check'
     },
     {
-      id: 'telegramGroup',
-      name: 'Join Telegram Group',
-      description: 'Join our official Telegram group',
+      id: 'joinTelegram',
+      name: 'Join Telegram Channel',
+      description: 'Join our official Telegram channel',
       reward: 2,
       type: 'one-time',
       completed: false,
       cooldown: 0,
       lastCompleted: null,
-      icon: 'fab fa-telegram'
+      icon: 'fab fa-telegram',
+      href: 'https://t.me/PixelpayotChannels'
     },
     {
-      id: 'telegramChannel',
-      name: 'Subscribe Telegram Channel',
-      description: 'Subscribe to our official channel',
+      id: 'joinX',
+      name: 'Follow on X',
+      description: 'Follow us on X (Twitter)',
       reward: 2,
       type: 'one-time',
       completed: false,
       cooldown: 0,
       lastCompleted: null,
-      icon: 'fab fa-telegram'
+      icon: 'fab fa-twitter',
+      href: 'https://x.com/TetMinh46256'
     },
     {
-      id: 'facebookPage',
-      name: 'Like Facebook Page',
-      description: 'Like and follow our Facebook page',
+      id: 'joinYoutube',
+      name: 'Watch YouTube Video',
+      description: 'Watch our latest video on YouTube',
       reward: 2,
       type: 'one-time',
       completed: false,
       cooldown: 0,
       lastCompleted: null,
-      icon: 'fab fa-facebook'
-    },
-    {
-      id: 'twitterFollow',
-      name: 'Follow on Twitter',
-      description: 'Follow us on Twitter/X',
-      reward: 2,
-      type: 'one-time',
-      completed: false,
-      cooldown: 0,
-      lastCompleted: null,
-      icon: 'fab fa-twitter'
-    },
-    {
-      id: 'socialShare',
-      name: 'Share Post',
-      description: 'Share about the project on social media',
-      reward: 3,
-      type: 'one-time',
-      completed: false,
-      cooldown: 0,
-      lastCompleted: null,
-      icon: 'fas fa-share-alt'
+      icon: 'fab fa-youtube',
+      href: 'https://www.youtube.com/@minhtet-q2r9o'
     }
   ])
 
@@ -150,6 +131,11 @@ export function useTaskSystem() {
         }
       }
 
+      // For tasks with href links, open the link first
+      if (task.href) {
+        window.open(task.href, '_blank')
+      }
+
       // Claim reward from Firebase
       const result = await claimTaskReward(taskId)
       
@@ -164,7 +150,7 @@ export function useTaskSystem() {
       // Update user balance
       userBalance.value = result.newBalance
 
-      // For daily check-in, save the date
+      // For daily check-in only, save the date
       if (taskId === 'checkIn') {
         const currentDate = new Date().toDateString()
         lastCheckInDate.value = currentDate
@@ -192,15 +178,14 @@ export function useTaskSystem() {
   }
 
   const resetDailyTasks = () => {
-    console.log('🔄 Resetting daily tasks...')
-    tasks.value.forEach((task) => {
-      if (task.type === 'daily') {
-        task.completed = false
-        task.lastCompleted = null
-      }
-    })
+    console.log('🔄 Resetting daily check-in task...')
+    const checkInTask = tasks.value.find(task => task.id === 'checkIn')
+    if (checkInTask) {
+      checkInTask.completed = false
+      checkInTask.lastCompleted = null
+      console.log('✅ Reset daily check-in task')
+    }
     saveTasksToLocalStorage()
-    console.log('✅ Daily tasks reset completed')
   }
 
   const checkDailyReset = () => {
@@ -258,14 +243,14 @@ export function useTaskSystem() {
         
         // Update task completion status
         tasks.value.forEach((task) => {
-          if (task.type === 'daily') {
-            // Check daily tasks
+          if (task.id === 'checkIn') {
+            // Check daily check-in task
             if (data.dailyTasks && data.dailyTasks[task.id]) {
               task.completed = true
               task.lastCompleted = data.lastCheckIn ? new Date(data.lastCheckIn).getTime() : null
             }
           } else {
-            // Check one-time tasks
+            // Check one-time tasks (Telegram, X, YouTube)
             if (data.completedTasks && data.completedTasks.includes(task.id)) {
               task.completed = true
             }
