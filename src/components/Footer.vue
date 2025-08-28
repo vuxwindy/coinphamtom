@@ -1,38 +1,62 @@
 <template>
-  <footer id="footer" class="padding-large pattern-blur">
+  <footer
+    id="footer"
+    class="padding-large pattern-blur"
+  >
     <div class="pattern-overlay pattern-blur-footer right-side-pattern">
-      <img src="/src/assets/images/footer-pattern.png">
+      <img src="/src/assets/images/footer-pattern.png" />
     </div>
     <div class="container">
       <div class="row d-flex flex-wrap justify-content-between">
         <div class="col-lg-4 col-md-6">
-          <div class="footer-item item-001">
-            <img src="/src/assets/images/header-icon.png" alt="logo">
-            <p>PixelPayot is a platform that allows you to earn money by playing games.</p>
+          <div class="footer-item md:item-001">
+            <img
+              src="/src/assets/images/header-icon.png"
+              alt="logo"
+            />
+            <p>
+              PixelPayot is a platform that allows you to earn money by playing
+              games.
+            </p>
             <div class="social-media">
               <ul class="d-flex list-unstyled">
                 <li class="bg-blue-trans border-rounded-circle">
-                  <a href="#" @click="openSocialLink('facebook')">
+                  <a
+                    href="#"
+                    @click="openSocialLink('facebook')"
+                  >
                     <i class="icon icon-facebook"></i>
                   </a>
                 </li>
                 <li class="bg-blue-trans border-rounded-circle">
-                  <a href="#" @click="openSocialLink('twitter')">
+                  <a
+                    href="#"
+                    @click="openSocialLink('twitter')"
+                  >
                     <i class="icon icon-twitter"></i>
                   </a>
                 </li>
                 <li class="bg-blue-trans border-rounded-circle">
-                  <a href="#" @click="openSocialLink('instagram')">
+                  <a
+                    href="#"
+                    @click="openSocialLink('instagram')"
+                  >
                     <i class="icon icon-instagram"></i>
                   </a>
                 </li>
                 <li class="bg-blue-trans border-rounded-circle">
-                  <a href="#" @click="openSocialLink('youtube')">
+                  <a
+                    href="#"
+                    @click="openSocialLink('youtube')"
+                  >
                     <i class="icon icon-youtube"></i>
                   </a>
                 </li>
                 <li class="bg-blue-trans border-rounded-circle">
-                  <a href="#" @click="openSocialLink('linkedin')">
+                  <a
+                    href="#"
+                    @click="openSocialLink('linkedin')"
+                  >
                     <i class="icon icon-linkedin"></i>
                   </a>
                 </li>
@@ -86,7 +110,7 @@
       </div>
     </div>
   </footer>
-  <hr>
+  <hr />
   <div id="footer-bottom">
     <div class="container">
       <div class="row text-center">
@@ -107,9 +131,9 @@ const openSocialLink = (platform) => {
     twitter: 'https://twitter.com/coinpayot',
     instagram: 'https://instagram.com/coinpayot',
     youtube: 'https://youtube.com/coinpayot',
-    linkedin: 'https://linkedin.com/company/coinpayot'
+    linkedin: 'https://linkedin.com/company/coinpayot',
   }
-  
+
   if (socialLinks[platform]) {
     window.open(socialLinks[platform], '_blank')
   }
@@ -231,7 +255,7 @@ hr {
   .footer-item {
     text-align: center;
   }
-  
+
   .social-media ul {
     justify-content: center;
   }

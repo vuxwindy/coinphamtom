@@ -1,5 +1,8 @@
 <template>
-  <div class="wallet-status" v-if="isConnected">
+  <div
+    class="wallet-status"
+    v-if="isConnected"
+  >
     <div class="wallet-info">
       <div class="wallet-icon">
         <i :class="getWalletIcon(connectedWallet)"></i>
@@ -9,7 +12,11 @@
         <div class="network">{{ networkName }}</div>
       </div>
     </div>
-    <button @click="disconnect" class="disconnect-btn" title="Disconnect">
+    <button
+      @click="disconnect"
+      class="disconnect-btn"
+      title="Disconnect"
+    >
       <i class="fas fa-times"></i>
     </button>
   </div>
@@ -17,6 +24,7 @@
 
 <script>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useDisconnect } from '@wagmi/vue'
 
 export default {
   name: 'WalletStatus',
@@ -26,23 +34,27 @@ export default {
     const walletAddress = ref(null)
     const networkName = ref('Ethereum')
 
+    const { disconnect: onDisconnect } = useDisconnect()
+
     const shortAddress = computed(() => {
       if (!walletAddress.value) return ''
-      return `${walletAddress.value.slice(0, 6)}...${walletAddress.value.slice(-4)}`
+      return `${walletAddress.value.slice(0, 6)}...${walletAddress.value.slice(
+        -4
+      )}`
     })
 
     const getWalletIcon = (walletId) => {
       const icons = {
-        'metamask': 'fab fa-ethereum',
-        'coinbase': 'fas fa-wallet',
-        'trust': 'fas fa-shield-alt',
-        'binance': 'fas fa-wallet',
-        'okx': 'fas fa-key',
+        metamask: 'fab fa-ethereum',
+        coinbase: 'fas fa-wallet',
+        trust: 'fas fa-shield-alt',
+        binance: 'fas fa-wallet',
+        okx: 'fas fa-key',
         'io.metamask': 'fab fa-ethereum',
         'com.coinbase.wallet': 'fas fa-wallet',
         'com.trustwallet.app': 'fas fa-shield-alt',
         'com.binance.wallet': 'fas fa-wallet',
-        'com.okex.wallet': 'fas fa-key'
+        'com.okex.wallet': 'fas fa-key',
       }
       return icons[walletId] || 'fas fa-wallet'
     }
@@ -51,9 +63,10 @@ export default {
       isConnected.value = false
       connectedWallet.value = null
       walletAddress.value = null
-      
+
+      onDisconnect()
       // Emit disconnect event
-      window.dispatchEvent(new CustomEvent('wallet-disconnected'))
+      // window.dispatchEvent(new CustomEvent('wallet-disconnected'))
     }
 
     const handleWalletConnected = (event) => {
@@ -78,9 +91,9 @@ export default {
       networkName,
       shortAddress,
       getWalletIcon,
-      disconnect
+      disconnect,
     }
-  }
+  },
 }
 </script>
 
@@ -159,11 +172,11 @@ export default {
     padding: 6px 10px;
     font-size: 12px;
   }
-  
+
   .address {
     font-size: 11px;
   }
-  
+
   .wallet-icon {
     width: 28px;
     height: 28px;

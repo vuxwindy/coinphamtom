@@ -1,7 +1,7 @@
 <template>
   <div class="referral-page">
     <Header />
-    
+
     <!-- Referral Hero Section -->
     <section class="referral-hero padding-large">
       <div class="container">
@@ -9,11 +9,16 @@
           <div class="col-12">
             <div class="referral-header text-center">
               <h1 class="referral-title">Referral Program</h1>
-              <p class="referral-subtitle">Invite friends and earn rewards together!</p>
+              <p class="referral-subtitle">
+                Invite friends and earn rewards together!
+              </p>
               <div class="referral-banner">
                 <div class="banner-content">
                   <h2>Earn 5 $PPO for each friend who joins!</h2>
-                  <p>Plus, your friends get 2 $PPO bonus when they sign up with your code</p>
+                  <p>
+                    Plus, your friends get 2 $PPO bonus when they sign up with
+                    your code
+                  </p>
                 </div>
               </div>
             </div>
@@ -23,7 +28,10 @@
     </section>
 
     <!-- Wallet Connection Notice -->
-    <section v-if="!isWalletConnected" class="wallet-notice-section padding-large">
+    <section
+      v-if="!isWalletConnected"
+      class="wallet-notice-section padding-large"
+    >
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-6">
@@ -32,7 +40,10 @@
                 <i class="fas fa-wallet"></i>
               </div>
               <h3>Connect Your Wallet</h3>
-              <p>Please connect your wallet to view your referral data and start earning rewards</p>
+              <p>
+                Please connect your wallet to view your referral data and start
+                earning rewards
+              </p>
               <div class="connect-btn">
                 <ReownWalletButton />
               </div>
@@ -76,7 +87,9 @@
                   <i class="fas fa-trophy"></i>
                 </div>
                 <div class="stat-content">
-                  <h3 class="stat-value">{{ referralStats.activeReferrals }}</h3>
+                  <h3 class="stat-value">
+                    {{ referralStats.activeReferrals }}
+                  </h3>
                   <p class="stat-label">Active Referrals</p>
                 </div>
               </div>
@@ -87,7 +100,9 @@
                   <i class="fas fa-chart-line"></i>
                 </div>
                 <div class="stat-content">
-                  <h3 class="stat-value">{{ referralStats.conversionRate }}%</h3>
+                  <h3 class="stat-value">
+                    {{ referralStats.conversionRate }}%
+                  </h3>
                   <p class="stat-label">Conversion Rate</p>
                 </div>
               </div>
@@ -105,52 +120,73 @@
                 <h2 class="section-title text-center">Your Referral Code</h2>
                 <div class="code-display">
                   <div class="code-input">
-                    <input 
-                      type="text" 
-                      :value="userReferralCode" 
+                    <input
+                      type="text"
+                      :value="userReferralCode"
                       class="form-control"
                       readonly
+                    />
+                    <button
+                      class="btn btn-primary"
+                      @click="copyReferralCode"
                     >
-                    <button class="btn btn-primary" @click="copyReferralCode">
                       <i class="fas fa-copy"></i> Copy Code
                     </button>
                   </div>
-                  
+
                   <!-- Referral Link Display -->
                   <div class="referral-link-section">
                     <h5>Your Referral Link</h5>
                     <div class="link-input">
-                      <input 
-                        type="text" 
-                        :value="generateReferralLink(userReferralCode)" 
+                      <input
+                        type="text"
+                        :value="generateReferralLink(userReferralCode)"
                         class="form-control"
                         readonly
+                      />
+                      <button
+                        class="btn btn-secondary"
+                        @click="copyReferralLink"
                       >
-                      <button class="btn btn-secondary" @click="copyReferralLink">
                         <i class="fas fa-copy"></i> Copy Link
                       </button>
                     </div>
                   </div>
-                  
+
                   <div class="code-info">
-                    <p>Share this code or link with your friends to start earning rewards!</p>
+                    <p>
+                      Share this code or link with your friends to start earning
+                      rewards!
+                    </p>
                   </div>
                 </div>
-                
+
                 <!-- Quick Share Buttons -->
                 <div class="share-section">
                   <h4>Quick Share</h4>
                   <div class="share-buttons">
-                    <button class="btn btn-social btn-twitter" @click="shareOnTwitter">
+                    <button
+                      class="btn btn-social btn-twitter"
+                      @click="shareOnTwitter"
+                    >
                       <i class="fab fa-twitter"></i> Twitter
                     </button>
-                    <button class="btn btn-social btn-telegram" @click="shareOnTelegram">
+                    <button
+                      class="btn btn-social btn-telegram"
+                      @click="shareOnTelegram"
+                    >
                       <i class="fab fa-telegram"></i> Telegram
                     </button>
-                    <button class="btn btn-social btn-facebook" @click="shareOnFacebook">
+                    <button
+                      class="btn btn-social btn-facebook"
+                      @click="shareOnFacebook"
+                    >
                       <i class="fab fa-facebook"></i> Facebook
                     </button>
-                    <button class="btn btn-social btn-whatsapp" @click="shareOnWhatsApp">
+                    <button
+                      class="btn btn-social btn-whatsapp"
+                      @click="shareOnWhatsApp"
+                    >
                       <i class="fab fa-whatsapp"></i> WhatsApp
                     </button>
                   </div>
@@ -208,10 +244,18 @@
                   <div class="header-cell">Status</div>
                   <div class="header-cell">Reward</div>
                 </div>
-                <div v-for="referral in referrals" :key="referral.id" class="table-row">
+                <div
+                  v-for="referral in referrals"
+                  :key="referral.id"
+                  class="table-row"
+                >
                   <div class="table-cell">
                     <div class="user-info">
-                      <img :src="referral.avatar" :alt="referral.name" class="user-avatar">
+                      <img
+                        :src="referral.avatar"
+                        :alt="referral.name"
+                        class="user-avatar"
+                      />
                       <div class="user-details">
                         <h5>{{ referral.name }}</h5>
                         <small>{{ referral.email }}</small>
@@ -222,21 +266,31 @@
                     {{ formatDate(referral.joinedDate) }}
                   </div>
                   <div class="table-cell">
-                    <span :class="['status-badge', referral.status]">{{ referral.status }}</span>
+                    <span :class="['status-badge', referral.status]">{{
+                      referral.status
+                    }}</span>
                   </div>
                   <div class="table-cell">
-                    <span class="reward-amount">+{{ referral.reward }} $PPO</span>
+                    <span class="reward-amount"
+                      >+{{ referral.reward }} $PPO</span
+                    >
                   </div>
                 </div>
-                
+
                 <!-- Empty State -->
-                <div v-if="referrals.length === 0" class="empty-state">
+                <div
+                  v-if="referrals.length === 0"
+                  class="empty-state"
+                >
                   <div class="empty-icon">
                     <i class="fas fa-users"></i>
                   </div>
                   <h3>No Referrals Yet</h3>
                   <p>Start sharing your referral code to earn rewards!</p>
-                  <button class="btn btn-primary" @click="scrollToCode">
+                  <button
+                    class="btn btn-primary"
+                    @click="scrollToCode"
+                  >
                     <i class="fas fa-share"></i> Share Your Code
                   </button>
                 </div>
@@ -253,19 +307,29 @@
             <div class="col-12">
               <h2 class="section-title text-center">Top Referrers</h2>
               <div class="leaderboard">
-                <div v-for="(leader, index) in topReferrers" :key="leader.id" class="leaderboard-item">
+                <div
+                  v-for="(leader, index) in topReferrers"
+                  :key="leader.id"
+                  class="leaderboard-item"
+                >
                   <div class="leader-rank">
                     <span class="rank-number">{{ index + 1 }}</span>
                   </div>
                   <div class="leader-info">
-                    <img :src="leader.avatar" :alt="leader.name" class="leader-avatar">
+                    <img
+                      :src="leader.avatar"
+                      :alt="leader.name"
+                      class="leader-avatar"
+                    />
                     <div class="leader-details">
                       <h5>{{ leader.name }}</h5>
                       <p>{{ leader.referrals }} referrals</p>
                     </div>
                   </div>
                   <div class="leader-rewards">
-                    <span class="reward-total">{{ leader.totalEarnings }} $PPO</span>
+                    <span class="reward-total"
+                      >{{ leader.totalEarnings }} $PPO</span
+                    >
                   </div>
                 </div>
               </div>
@@ -306,7 +370,7 @@ const referralStats = ref({
   totalReferrals: 0,
   totalEarnings: 0,
   activeReferrals: 0,
-  conversionRate: 0
+  conversionRate: 0,
 })
 
 // Referrals list
@@ -319,36 +383,36 @@ const topReferrers = ref([
     name: 'CryptoKing',
     avatar: '/src/assets/images/clients-item1.jpg',
     referrals: 25,
-    totalEarnings: 125
+    totalEarnings: 125,
   },
   {
     id: 2,
     name: 'NFTQueen',
     avatar: '/src/assets/images/clients-item2.jpg',
     referrals: 18,
-    totalEarnings: 90
+    totalEarnings: 90,
   },
   {
     id: 3,
     name: 'BlockchainPro',
     avatar: '/src/assets/images/clients-item3.jpg',
     referrals: 15,
-    totalEarnings: 75
+    totalEarnings: 75,
   },
   {
     id: 4,
     name: 'DeFiMaster',
     avatar: '/src/assets/images/clients-item4.jpg',
     referrals: 12,
-    totalEarnings: 60
+    totalEarnings: 60,
   },
   {
     id: 5,
     name: 'Web3Wizard',
     avatar: '/src/assets/images/clients-item1.jpg',
     referrals: 10,
-    totalEarnings: 50
-  }
+    totalEarnings: 50,
+  },
 ])
 
 // Methods
@@ -366,21 +430,20 @@ const generateReferralLink = (code) => {
 
 const loadReferralData = async () => {
   if (!address.value) return
-  
+
   try {
     isLoading.value = true
-    
+
     // Generate referral code if not exists
     if (!userReferralCode.value) {
       userReferralCode.value = generateReferralCode(address.value)
     }
-    
+
     // Load referral stats from blockchain or API
     await loadReferralStats()
-    
+
     // Load referrals list
     await loadReferralsList()
-    
   } catch (error) {
     console.error('Failed to load referral data:', error)
     toast.error('Failed to load referral data')
@@ -397,9 +460,9 @@ const loadReferralStats = async () => {
       totalReferrals: Math.floor(Math.random() * 20) + 1,
       totalEarnings: Math.floor(Math.random() * 100) + 10,
       activeReferrals: Math.floor(Math.random() * 15) + 1,
-      conversionRate: Math.floor(Math.random() * 30) + 50
+      conversionRate: Math.floor(Math.random() * 30) + 50,
     }
-    
+
     referralStats.value = mockStats
   } catch (error) {
     console.error('Failed to load referral stats:', error)
@@ -418,7 +481,7 @@ const loadReferralsList = async () => {
         avatar: '/src/assets/images/clients-item1.jpg',
         joinedDate: new Date('2024-01-15'),
         status: 'active',
-        reward: 5
+        reward: 5,
       },
       {
         id: 2,
@@ -427,7 +490,7 @@ const loadReferralsList = async () => {
         avatar: '/src/assets/images/clients-item2.jpg',
         joinedDate: new Date('2024-01-12'),
         status: 'active',
-        reward: 5
+        reward: 5,
       },
       {
         id: 3,
@@ -436,10 +499,10 @@ const loadReferralsList = async () => {
         avatar: '/src/assets/images/clients-item3.jpg',
         joinedDate: new Date('2024-01-10'),
         status: 'pending',
-        reward: 0
-      }
+        reward: 0,
+      },
     ]
-    
+
     referrals.value = mockReferrals
   } catch (error) {
     console.error('Failed to load referrals list:', error)
@@ -470,29 +533,45 @@ const copyReferralLink = async () => {
 const shareOnTwitter = () => {
   const referralLink = generateReferralLink(userReferralCode.value)
   const text = `Join me on PixelPayot! Use my referral link and get 2 $PPO bonus!`
-  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(referralLink)}`)
+  window.open(
+    `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      text
+    )}&url=${encodeURIComponent(referralLink)}`
+  )
 }
 
 const shareOnTelegram = () => {
   const referralLink = generateReferralLink(userReferralCode.value)
   const text = `Join me on PixelPayot! Use my referral link and get 2 $PPO bonus!`
-  window.open(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(text)}`)
+  window.open(
+    `https://t.me/share/url?url=${encodeURIComponent(
+      referralLink
+    )}&text=${encodeURIComponent(text)}`
+  )
 }
 
 const shareOnFacebook = () => {
   const referralLink = generateReferralLink(userReferralCode.value)
   const text = `Join me on PixelPayot! Use my referral link and get 2 $PPO bonus!`
-  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}&quote=${encodeURIComponent(text)}`)
+  window.open(
+    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+      referralLink
+    )}&quote=${encodeURIComponent(text)}`
+  )
 }
 
 const shareOnWhatsApp = () => {
   const referralLink = generateReferralLink(userReferralCode.value)
   const text = `Join me on PixelPayot! Use my referral link and get 2 $PPO bonus!`
-  window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + referralLink)}`)
+  window.open(
+    `https://wa.me/?text=${encodeURIComponent(text + ' ' + referralLink)}`
+  )
 }
 
 const scrollToCode = () => {
-  document.querySelector('.referral-code-section').scrollIntoView({ behavior: 'smooth' })
+  document
+    .querySelector('.referral-code-section')
+    .scrollIntoView({ behavior: 'smooth' })
 }
 
 const formatDate = (date) => {
@@ -532,10 +611,21 @@ onMounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: 
-    radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 40% 80%, rgba(119, 198, 255, 0.15) 0%, transparent 50%);
+  background: radial-gradient(
+      circle at 20% 50%,
+      rgba(120, 119, 198, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(255, 119, 198, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 40% 80%,
+      rgba(119, 198, 255, 0.15) 0%,
+      transparent 50%
+    );
   pointer-events: none;
   z-index: 0;
 }
@@ -543,7 +633,7 @@ onMounted(() => {
 /* Referral Hero Section */
 .referral-hero {
   position: relative;
-  z-index: 1;
+  /* z-index: 1; */
   padding: 120px 0 80px;
 }
 
@@ -565,7 +655,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
   border-radius: 20px;
   z-index: -1;
 }
@@ -589,7 +683,11 @@ onMounted(() => {
 }
 
 .referral-banner {
-  background: linear-gradient(135deg, rgba(204, 0, 255, 0.1), rgba(102, 126, 234, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(204, 0, 255, 0.1),
+    rgba(102, 126, 234, 0.1)
+  );
   border: 1px solid rgba(204, 0, 255, 0.2);
   border-radius: 15px;
   padding: 30px;
@@ -611,7 +709,7 @@ onMounted(() => {
 /* Wallet Notice Section */
 .wallet-notice-section {
   position: relative;
-  z-index: 1;
+  /* z-index: 1; */
   padding: 80px 0;
 }
 
@@ -633,7 +731,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
   border-radius: 20px;
   z-index: -1;
 }
@@ -660,7 +762,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.1)
+  );
   border-radius: 50%;
 }
 
@@ -703,7 +809,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
   border-radius: 20px;
   z-index: -1;
 }
@@ -736,7 +846,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.1)
+  );
   border-radius: 50%;
 }
 
@@ -781,7 +895,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
   border-radius: 20px;
   z-index: -1;
 }
@@ -846,7 +964,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.1)
+  );
   border-radius: 12px;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -926,7 +1048,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.1)
+  );
   border-radius: 12px;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -977,10 +1103,18 @@ onMounted(() => {
   box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
 }
 
-.btn-twitter:hover { background: rgba(29, 161, 242, 0.2); }
-.btn-telegram:hover { background: rgba(0, 136, 204, 0.2); }
-.btn-facebook:hover { background: rgba(66, 103, 178, 0.2); }
-.btn-whatsapp:hover { background: rgba(37, 211, 102, 0.2); }
+.btn-twitter:hover {
+  background: rgba(29, 161, 242, 0.2);
+}
+.btn-telegram:hover {
+  background: rgba(0, 136, 204, 0.2);
+}
+.btn-facebook:hover {
+  background: rgba(66, 103, 178, 0.2);
+}
+.btn-whatsapp:hover {
+  background: rgba(37, 211, 102, 0.2);
+}
 
 /* Referral Rewards */
 .referral-rewards {
@@ -1015,7 +1149,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
   border-radius: 20px;
   z-index: -1;
 }
@@ -1048,7 +1186,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.1)
+  );
   border-radius: 50%;
 }
 
@@ -1215,7 +1357,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
   border-radius: 15px;
   z-index: -1;
 }
@@ -1247,7 +1393,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.1)
+  );
   border-radius: 50%;
 }
 
@@ -1291,39 +1441,39 @@ onMounted(() => {
   .referral-title {
     font-size: 2.5rem;
   }
-  
+
   .referral-header {
     padding: 40px 20px;
   }
-  
+
   .table-header,
   .table-row {
     grid-template-columns: 1fr;
     gap: 10px;
   }
-  
+
   .table-header {
     display: none;
   }
-  
+
   .table-row {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     margin-bottom: 10px;
   }
-  
+
   .code-input {
     flex-direction: column;
   }
-  
+
   .share-buttons {
     flex-direction: column;
   }
-  
+
   .btn-social {
     min-width: auto;
   }
-  
+
   .rewards-grid {
     grid-template-columns: 1fr;
   }
@@ -1347,13 +1497,26 @@ onMounted(() => {
   animation: fadeInUp 0.6s ease forwards;
 }
 
-.stat-card:nth-child(1) { animation-delay: 0.1s; }
-.stat-card:nth-child(2) { animation-delay: 0.2s; }
-.stat-card:nth-child(3) { animation-delay: 0.3s; }
-.stat-card:nth-child(4) { animation-delay: 0.4s; }
+.stat-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.stat-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.stat-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.stat-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
 
-.reward-card:nth-child(1) { animation-delay: 0.5s; }
-.reward-card:nth-child(2) { animation-delay: 0.6s; }
-.reward-card:nth-child(3) { animation-delay: 0.7s; }
+.reward-card:nth-child(1) {
+  animation-delay: 0.5s;
+}
+.reward-card:nth-child(2) {
+  animation-delay: 0.6s;
+}
+.reward-card:nth-child(3) {
+  animation-delay: 0.7s;
+}
 </style>
-

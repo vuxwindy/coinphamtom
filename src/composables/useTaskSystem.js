@@ -1,6 +1,5 @@
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useFirebase } from './useFirebase.js'
-import { useWeb3 } from './useWeb3.js'
 
 // Task system state - tương thích với Firebase structure
 const tasks = ref([
@@ -13,7 +12,7 @@ const tasks = ref([
     icon: 'fas fa-calendar-check',
     completed: false,
     cooldown: 24 * 60 * 60 * 1000, // 24 hours in milliseconds
-    lastCompleted: null
+    lastCompleted: null,
   },
   {
     id: 'connect_wallet',
@@ -24,7 +23,7 @@ const tasks = ref([
     icon: 'fas fa-wallet',
     completed: false,
     cooldown: 0,
-    lastCompleted: null
+    lastCompleted: null,
   },
   {
     id: 'telegramGroup',
@@ -35,7 +34,7 @@ const tasks = ref([
     icon: 'fab fa-telegram',
     completed: false,
     cooldown: 0,
-    lastCompleted: null
+    lastCompleted: null,
   },
   {
     id: 'telegramChannel',
@@ -46,7 +45,7 @@ const tasks = ref([
     icon: 'fab fa-telegram',
     completed: false,
     cooldown: 0,
-    lastCompleted: null
+    lastCompleted: null,
   },
   {
     id: 'facebookPage',
@@ -57,7 +56,7 @@ const tasks = ref([
     icon: 'fab fa-facebook',
     completed: false,
     cooldown: 0,
-    lastCompleted: null
+    lastCompleted: null,
   },
   {
     id: 'twitterFollow',
@@ -68,7 +67,7 @@ const tasks = ref([
     icon: 'fab fa-twitter',
     completed: false,
     cooldown: 0,
-    lastCompleted: null
+    lastCompleted: null,
   },
   {
     id: 'socialShare',
@@ -79,8 +78,8 @@ const tasks = ref([
     icon: 'fas fa-share-alt',
     completed: false,
     cooldown: 0,
-    lastCompleted: null
-  }
+    lastCompleted: null,
+  },
 ])
 
 const userBalance = ref(0)
@@ -93,16 +92,17 @@ const isWalletConnected = ref(false)
 const walletAddress = ref(null)
 
 // Use existing composables
-const { currentUser, updateUserData, getUserData, claimTaskReward } = useFirebase()
+const { currentUser, updateUserData, getUserData, claimTaskReward } =
+  useFirebase()
 
 // Handle wallet connection events
 const handleWalletConnected = (event) => {
   const { address, wallet } = event.detail
   isWalletConnected.value = true
   walletAddress.value = address
-  
+
   // Auto-complete connect wallet task when wallet is connected
-  const connectTask = tasks.value.find(task => task.id === 'connect_wallet')
+  const connectTask = tasks.value.find((task) => task.id === 'connect_wallet')
   if (connectTask && !connectTask.completed) {
     completeTask('connect_wallet')
   }
@@ -122,7 +122,7 @@ const totalRewards = computed(() => {
 })
 
 const completedTasksCount = computed(() => {
-  return tasks.value.filter(task => task.completed).length
+  return tasks.value.filter((task) => task.completed).length
 })
 
 const totalTasksCount = computed(() => {
@@ -136,8 +136,9 @@ const progressPercentage = computed(() => {
 
 // Methods
 const completeTask = async (taskId) => {
+  console.log('taskId', taskId)
   try {
-    const task = tasks.value.find(t => t.id === taskId)
+    const task = tasks.value.find((t) => t.id === taskId)
     if (!task) {
       throw new Error('Task not found')
     }
@@ -153,7 +154,9 @@ const completeTask = async (taskId) => {
       if (timeSinceLastCompletion < task.cooldown) {
         const remainingTime = task.cooldown - timeSinceLastCompletion
         const hours = Math.floor(remainingTime / (1000 * 60 * 60))
-        const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60))
+        const minutes = Math.floor(
+          (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
+        )
         throw new Error(`Task available in ${hours}h ${minutes}m`)
       }
     }
@@ -166,8 +169,10 @@ const completeTask = async (taskId) => {
     if (currentUser.value) {
       try {
         await updateUserData({
-          completedTasks: tasks.value.filter(t => t.completed).map(t => t.id),
-          lastTaskCompletion: Date.now()
+          completedTasks: tasks.value
+            .filter((t) => t.completed)
+            .map((t) => t.id),
+          lastTaskCompletion: Date.now(),
         })
       } catch (err) {
         // Continue even if Firebase update fails
@@ -186,11 +191,11 @@ const completeTask = async (taskId) => {
     // Update user balance
     userBalance.value += task.reward
 
-    return { 
-      success: true, 
-      reward: task.reward, 
+    return {
+      success: true,
+      reward: task.reward,
       task: task,
-      newBalance: userBalance.value
+      newBalance: userBalance.value,
     }
   } catch (err) {
     error.value = err.message
@@ -199,7 +204,7 @@ const completeTask = async (taskId) => {
 }
 
 const resetDailyTasks = () => {
-  tasks.value.forEach(task => {
+  tasks.value.forEach((task) => {
     if (task.type === 'daily') {
       task.completed = false
       task.lastCompleted = null
@@ -213,13 +218,13 @@ const loadUserTasks = async () => {
   try {
     isLoading.value = true
     const userData = await getUserData()
-    
+
     if (userData) {
       userBalance.value = userData.balance || 0
-      
+
       // Mark completed tasks
       const completedTaskIds = userData.completedTasks || []
-      tasks.value.forEach(task => {
+      tasks.value.forEach((task) => {
         if (completedTaskIds.includes(task.id)) {
           task.completed = true
         }
@@ -236,7 +241,7 @@ const loadUserTasks = async () => {
 onMounted(() => {
   window.addEventListener('wallet-connected', handleWalletConnected)
   window.addEventListener('wallet-disconnected', handleWalletDisconnected)
-  
+
   // Load user tasks
   loadUserTasks()
 })
@@ -253,7 +258,7 @@ watch(currentUser, (newUser) => {
   } else {
     // Reset state when user logs out
     userBalance.value = 0
-    tasks.value.forEach(task => {
+    tasks.value.forEach((task) => {
       task.completed = false
       task.lastCompleted = null
     })
@@ -270,16 +275,16 @@ export function useTaskSystem() {
     error,
     isWalletConnected,
     walletAddress,
-    
+
     // Computed
     totalRewards,
     completedTasksCount,
     totalTasksCount,
     progressPercentage,
-    
+
     // Methods
     completeTask,
     resetDailyTasks,
-    loadUserTasks
+    loadUserTasks,
   }
 }

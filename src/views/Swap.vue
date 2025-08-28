@@ -25,7 +25,10 @@
           <div class="col-lg-6 col-md-8">
             <div class="swap-card">
               <!-- Wallet Connection Status -->
-              <div v-if="!isWalletConnected" class="wallet-notice">
+              <div
+                v-if="!isWalletConnected"
+                class="wallet-notice"
+              >
                 <div class="notice-content">
                   <div class="notice-icon">
                     <i class="fas fa-wallet"></i>
@@ -39,14 +42,25 @@
               </div>
 
               <!-- Swap Form -->
-              <div v-else class="swap-form">
+              <div
+                v-else
+                class="swap-form"
+              >
                 <!-- From Token -->
                 <div class="token-input">
                   <div class="input-header">
                     <label>From</label>
                     <div class="balance-info">
-                      <span>Balance: {{ floorFragment(fromTokenBalance, 5) }} {{ selectedFromToken.symbol }}</span>
-                      <button class="btn-link" @click="setMaxAmount">Max</button>
+                      <span
+                        >Balance: {{ floorFragment(fromTokenBalance, 5) }}
+                        {{ selectedFromToken.symbol }}</span
+                      >
+                      <button
+                        class="btn-link"
+                        @click="setMaxAmount"
+                      >
+                        Max
+                      </button>
                     </div>
                   </div>
                   <div class="input-group">
@@ -57,13 +71,18 @@
                       placeholder="0.0"
                       @input="calculateSwap"
                     />
-                    <div class="token-selector" @click="showFromTokenModal = true">
+                    <div
+                      class="token-selector"
+                      @click="showFromTokenModal = true"
+                    >
                       <img
                         :src="selectedFromToken.icon"
                         :alt="selectedFromToken.symbol"
                         class="token-icon"
                       />
-                      <span class="token-symbol">{{ selectedFromToken.symbol }}</span>
+                      <span class="token-symbol">{{
+                        selectedFromToken.symbol
+                      }}</span>
                       <i class="fas fa-chevron-down"></i>
                     </div>
                   </div>
@@ -71,7 +90,10 @@
 
                 <!-- Swap Direction Button -->
                 <div class="swap-direction">
-                  <button class="direction-btn" @click="swapTokens">
+                  <button
+                    class="direction-btn"
+                    @click="swapTokens"
+                  >
                     <i class="fas fa-exchange-alt"></i>
                   </button>
                 </div>
@@ -81,7 +103,10 @@
                   <div class="input-header">
                     <label>To</label>
                     <div class="balance-info">
-                      <span>Balance: {{ floorFragment(toTokenBalance, 5) }} {{ selectedToToken.symbol }}</span>
+                      <span
+                        >Balance: {{ floorFragment(toTokenBalance, 5) }}
+                        {{ selectedToToken.symbol }}</span
+                      >
                     </div>
                   </div>
                   <div class="input-group">
@@ -92,13 +117,18 @@
                       placeholder="0.0"
                       readonly
                     />
-                    <div class="token-selector" @click="showToTokenModal = true">
+                    <div
+                      class="token-selector"
+                      @click="showToTokenModal = true"
+                    >
                       <img
                         :src="selectedToToken.icon"
                         :alt="selectedToToken.symbol"
                         class="token-icon"
                       />
-                      <span class="token-symbol">{{ selectedToToken.symbol }}</span>
+                      <span class="token-symbol">{{
+                        selectedToToken.symbol
+                      }}</span>
                       <i class="fas fa-chevron-down"></i>
                     </div>
                   </div>
@@ -108,11 +138,18 @@
                 <div class="swap-details">
                   <div class="detail-row">
                     <span class="detail-label">Exchange Rate</span>
-                    <span class="detail-value">1 {{ selectedFromToken.symbol }} = {{ exchangeRate }} {{ selectedToToken.symbol }}</span>
+                    <span class="detail-value"
+                      >1 {{ selectedFromToken.symbol }} = {{ exchangeRate }}
+                      {{ selectedToToken.symbol }}</span
+                    >
                   </div>
                   <div class="detail-row">
                     <span class="detail-label">Price Impact</span>
-                    <span class="detail-value" :class="priceImpactClass">{{ priceImpact }}%</span>
+                    <span
+                      class="detail-value"
+                      :class="priceImpactClass"
+                      >{{ priceImpact }}%</span
+                    >
                   </div>
                   <div class="detail-row">
                     <span class="detail-label">Slippage Tolerance</span>
@@ -136,8 +173,14 @@
                   @click="executeSwap"
                   :disabled="!canSwap || isLoading"
                 >
-                  <i v-if="isLoading" class="fas fa-spinner fa-spin me-2"></i>
-                  <i v-else class="fas fa-exchange-alt me-2"></i>
+                  <i
+                    v-if="isLoading"
+                    class="fas fa-spinner fa-spin me-2"
+                  ></i>
+                  <i
+                    v-else
+                    class="fas fa-exchange-alt me-2"
+                  ></i>
                   {{ getSwapButtonText() }}
                 </button>
 
@@ -150,13 +193,17 @@
                     <i class="fas fa-exchange-alt me-2"></i>
                     {{ swapButtonText }}
                   </button>
-                </div>
+                </div> -->
 
                 <!-- Recent Transactions -->
                 <div class="recent-transactions">
                   <h5>Recent Transactions</h5>
                   <div class="transaction-list">
-                    <div v-for="tx in recentTransactions" :key="tx.id" class="transaction-item">
+                    <div
+                      v-for="tx in recentTransactions"
+                      :key="tx.id"
+                      class="transaction-item"
+                    >
                       <div class="tx-info">
                         <div class="tx-tokens">
                           <span>{{ tx.fromAmount }} {{ tx.fromToken }}</span>
@@ -165,7 +212,10 @@
                         </div>
                         <div class="tx-time">{{ tx.time }}</div>
                       </div>
-                      <div class="tx-status" :class="tx.status">
+                      <div
+                        class="tx-status"
+                        :class="tx.status"
+                      >
                         {{ tx.status }}
                       </div>
                     </div>
@@ -205,11 +255,26 @@
               <div class="popular-pairs">
                 <h5>Popular Pairs</h5>
                 <div class="pair-list">
-                  <div v-for="pair in popularPairs" :key="pair.id" class="pair-item" @click="selectPair(pair)">
+                  <div
+                    v-for="pair in popularPairs"
+                    :key="pair.id"
+                    class="pair-item"
+                    @click="selectPair(pair)"
+                  >
                     <div class="pair-tokens">
-                      <img :src="pair.token1.icon" :alt="pair.token1.symbol" class="token-icon-small">
-                      <img :src="pair.token2.icon" :alt="pair.token2.symbol" class="token-icon-small">
-                      <span>{{ pair.token1.symbol }}/{{ pair.token2.symbol }}</span>
+                      <img
+                        :src="pair.token1.icon"
+                        :alt="pair.token1.symbol"
+                        class="token-icon-small"
+                      />
+                      <img
+                        :src="pair.token2.icon"
+                        :alt="pair.token2.symbol"
+                        class="token-icon-small"
+                      />
+                      <span
+                        >{{ pair.token1.symbol }}/{{ pair.token2.symbol }}</span
+                      >
                     </div>
                     <div class="pair-price">{{ pair.price }}</div>
                   </div>
@@ -222,31 +287,45 @@
     </section>
 
     <!-- Token Selection Modal -->
-    <div v-if="showFromTokenModal || showToTokenModal" class="modal-overlay" @click="closeTokenModal">
-      <div class="token-modal" @click.stop>
+    <div
+      v-if="showFromTokenModal || showToTokenModal"
+      class="modal-overlay"
+      @click="closeTokenModal"
+    >
+      <div
+        class="token-modal"
+        @click.stop
+      >
         <div class="modal-header">
           <h4>Select Token</h4>
-          <button class="close-btn" @click="closeTokenModal">
+          <button
+            class="close-btn"
+            @click="closeTokenModal"
+          >
             <i class="fas fa-times"></i>
           </button>
         </div>
         <div class="modal-body">
           <div class="search-box">
-            <input 
-              v-model="tokenSearch" 
-              type="text" 
+            <input
+              v-model="tokenSearch"
+              type="text"
               placeholder="Search tokens..."
               class="search-input"
-            >
+            />
           </div>
           <div class="token-list">
-            <div 
-              v-for="token in filteredTokens" 
+            <div
+              v-for="token in filteredTokens"
               :key="token.address"
               class="token-item"
               @click="selectToken(token)"
             >
-              <img :src="token.icon" :alt="token.symbol" class="token-icon">
+              <img
+                :src="token.icon"
+                :alt="token.symbol"
+                class="token-icon"
+              />
               <div class="token-info">
                 <span class="token-symbol">{{ token.symbol }}</span>
                 <span class="token-name">{{ token.name }}</span>
@@ -261,11 +340,21 @@
     </div>
 
     <!-- Toast Notification -->
-    <div v-if="showToast" class="toast-notification" :class="toastType">
+    <div
+      v-if="showToast"
+      class="toast-notification"
+      :class="toastType"
+    >
       <div class="toast-content">
-        <i :class="getToastIcon()" class="toast-icon"></i>
+        <i
+          :class="getToastIcon()"
+          class="toast-icon"
+        ></i>
         <span class="toast-message">{{ toastMessage }}</span>
-        <button class="toast-close" @click="closeToast">
+        <button
+          class="toast-close"
+          @click="closeToast"
+        >
           <i class="fas fa-times"></i>
         </button>
       </div>
@@ -274,22 +363,41 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { useWeb3 } from '../composables/useWeb3.js'
 import Header from '../components/Header.vue'
 import ReownWalletButton from '../components/ReownWalletButton.vue'
+import { useAccount, useChainId } from '@wagmi/vue'
+import { wagmiConfig } from '../config/wagmi'
+import { ethers } from 'ethers'
+import {
+  readContract,
+  getBalance,
+  getConnectorClient,
+  writeContract,
+  waitForTransactionReceipt,
+} from '@wagmi/core'
+import { ppoTokenAbi } from '@/abis/ppoToken.js'
+import { ppoSwapAbi } from '@/abis/ppoSwap.js'
+import { bsc, bscTestnet } from 'viem/chains'
+
+// PPO Token và PPO Swap contract addresses
+const ppoSwapAddress = computed(() => {
+  if (bsc.id === chainId.value) {
+    return '0x8dCa51f217969A7f9ea1FA5e99d5a66152063188'
+  }
+  return '0x80B5AcE6283fAf55E8fE4FE9B15d1b2f41aFb95D'
+})
 
 const router = useRouter()
 
 // Use Web3 composable for wallet connection
-const {
-  isWalletConnected,
-  walletAddress,
-  connectWallet
-} = useWeb3()
+const { address, connectWallet } = useAccount()
+const isWalletConnected = computed(() => !!address?.value)
+const chainId = useChainId()
 
 // State
+const isLoading = ref(false)
 const showFromTokenModal = ref(false)
 const showToTokenModal = ref(false)
 const tokenSearch = ref('')
@@ -300,33 +408,29 @@ const toastMessage = ref('')
 const toastType = ref('info')
 
 // Swap form
-const swapForm = ref({
+const swapForm = reactive({
   fromAmount: '',
-  toAmount: ''
+  toAmount: '',
 })
 
-// Token balances - conditional based on wallet connection
-const fromTokenBalance = computed(() => {
-  return isWalletConnected.value ? 10.5 : 0
-})
-
-const toTokenBalance = computed(() => {
-  return isWalletConnected.value ? 2500.75 : 0
-})
+// Balances
+const tokenBalances = ref({})
+const fromTokenBalance = ref(0)
+const toTokenBalance = ref(0)
 
 // Default tokens (BNB and PPO)
 const selectedFromToken = ref({
   symbol: 'BNB',
   name: 'Binance Coin',
   icon: '/src/assets/images/bnb-icon.png',
-  address: '0xbb4CdB9CBd36B01bD1cBaEF2aFd4e8d3b5c6b5d4'
+  address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
 })
 
 const selectedToToken = ref({
   symbol: 'PPO',
   name: 'PixelPayot Token',
   icon: '/src/assets/images/ppo-icon.png',
-  address: '0x1234567890123456789012345678901234567890'
+  address: '0xCdA7eBb5005aaC33B6F4f32c17647698b020eFC9',
 })
 
 // Available tokens
@@ -335,26 +439,26 @@ const availableTokens = ref([
     symbol: 'BNB',
     name: 'Binance Coin',
     icon: '/src/assets/images/bnb-icon.png',
-    address: '0xbb4CdB9CBd36B01bD1cBaEF2aFd4e8d3b5c6b5d4'
+    address: '0xbb4CdB9CBd36B01bD1cBaEF2aFd4e8d3b5c6b5d4',
   },
   {
     symbol: 'PPO',
     name: 'PixelPayot Token',
     icon: '/src/assets/images/ppo-icon.png',
-    address: '0x1234567890123456789012345678901234567890'
+    address: '0x1234567890123456789012345678901234567890',
   },
   {
     symbol: 'USDT',
     name: 'Tether USD',
     icon: '/src/assets/images/usdt-icon.png',
-    address: '0x55d398326f99059fF775485246999027B3197955'
+    address: '0x55d398326f99059fF775485246999027B3197955',
   },
   {
     symbol: 'USDC',
     name: 'USD Coin',
     icon: '/src/assets/images/usdc-icon.png',
-    address: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d'
-  }
+    address: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
+  },
 ])
 
 // Popular pairs
@@ -363,20 +467,20 @@ const popularPairs = ref([
     id: 1,
     token1: { symbol: 'PPO', icon: '/src/assets/images/ppo-icon.png' },
     token2: { symbol: 'BNB', icon: '/src/assets/images/bnb-icon.png' },
-    price: '0.000045 BNB'
+    price: '0.000045 BNB',
   },
   {
     id: 2,
     token1: { symbol: 'PPO', icon: '/src/assets/images/ppo-icon.png' },
     token2: { symbol: 'USDT', icon: '/src/assets/images/usdt-icon.png' },
-    price: '0.045 USDT'
+    price: '0.045 USDT',
   },
   {
     id: 3,
     token1: { symbol: 'BNB', icon: '/src/assets/images/bnb-icon.png' },
     token2: { symbol: 'USDT', icon: '/src/assets/images/usdt-icon.png' },
-    price: '320.50 USDT'
-  }
+    price: '320.50 USDT',
+  },
 ])
 
 // Recent transactions - conditional based on wallet connection
@@ -391,7 +495,7 @@ const recentTransactions = computed(() => {
       from: { symbol: 'BNB', amount: '0.1' },
       to: { symbol: 'PPO', amount: '2222.22' },
       time: '2 minutes ago',
-      status: 'completed'
+      status: 'completed',
     },
     {
       id: 2,
@@ -399,7 +503,7 @@ const recentTransactions = computed(() => {
       from: { symbol: 'PPO', amount: '100' },
       to: { symbol: 'USDT', amount: '4.5' },
       time: '5 minutes ago',
-      status: 'completed'
+      status: 'completed',
     },
     {
       id: 3,
@@ -407,32 +511,39 @@ const recentTransactions = computed(() => {
       from: { symbol: 'USDT', amount: '10' },
       to: { symbol: 'BNB', amount: '0.031' },
       time: '10 minutes ago',
-      status: 'completed'
-    }
+      status: 'completed',
+    },
   ]
 })
 
 // Computed properties
 const filteredTokens = computed(() => {
   if (!tokenSearch.value) return availableTokens.value
-  return availableTokens.value.filter(token =>
-    token.symbol.toLowerCase().includes(tokenSearch.value.toLowerCase()) ||
-    token.name.toLowerCase().includes(tokenSearch.value.toLowerCase())
+  return availableTokens.value.filter(
+    (token) =>
+      token.symbol.toLowerCase().includes(tokenSearch.value.toLowerCase()) ||
+      token.name.toLowerCase().includes(tokenSearch.value.toLowerCase())
   )
 })
 
 const exchangeRate = computed(() => {
   // Dynamic exchange rate based on selected tokens
-  if (selectedFromToken.value.symbol === 'BNB' && selectedToToken.value.symbol === 'PPO') {
+  if (
+    selectedFromToken.value.symbol === 'BNB' &&
+    selectedToToken.value.symbol === 'PPO'
+  ) {
     return (1 / 2222.22).toFixed(6) // 1 BNB = 2222.22 PPO
-  } else if (selectedFromToken.value.symbol === 'PPO' && selectedToToken.value.symbol === 'BNB') {
+  } else if (
+    selectedFromToken.value.symbol === 'PPO' &&
+    selectedToToken.value.symbol === 'BNB'
+  ) {
     return (2222.22).toFixed(6) // 1 PPO = 0.00045 BNB
   }
   return '0.0000'
 })
 
 const priceImpact = computed(() => {
-  const amount = parseFloat(swapForm.value.fromAmount) || 0
+  const amount = parseFloat(swapForm.fromAmount) || 0
   if (amount < 0.1) return '< 0.01'
   if (amount < 1) return '0.01'
   if (amount < 5) return '0.05'
@@ -449,40 +560,88 @@ const priceImpactClass = computed(() => {
 const slippage = ref(0.5)
 const networkFee = ref(0.001)
 
+const getSwapButtonText = () => {
+  if (isLoading.value) return 'Swapping...'
+  if (!isWalletConnected.value) return 'Connect Wallet'
+  if (!swapForm.fromAmount) return 'Swap'
+  if (parseFloat(swapForm.fromAmount) > fromTokenBalance.value)
+    return 'Insufficient Balance'
+  if (selectedFromToken.value.address === selectedToToken.value.address)
+    return 'Select different tokens'
+  return 'Swap'
+}
+
 const canSwap = computed(() => {
-  return swapForm.value.fromAmount && 
-         parseFloat(swapForm.value.fromAmount) > 0 &&
-         parseFloat(swapForm.value.fromAmount) <= fromTokenBalance.value
+  return (
+    swapForm.fromAmount &&
+    parseFloat(swapForm.fromAmount) > 0 &&
+    parseFloat(swapForm.fromAmount) <= fromTokenBalance.value
+  )
 })
 
 const swapButtonText = computed(() => {
   if (!swapForm.value.fromAmount) return 'Enter an amount'
-  if (parseFloat(swapForm.value.fromAmount) > fromTokenBalance.value) return 'Insufficient balance'
+  if (parseFloat(swapForm.value.fromAmount) > fromTokenBalance.value)
+    return 'Insufficient balance'
   return 'Swap'
+})
+
+const swapRate = computed(() => {
+  // Mock exchange rate - in real app, this would come from DEX API
+  if (
+    selectedFromToken.value.symbol === 'ETH' &&
+    selectedToToken.value.symbol === 'PPO'
+  ) {
+    return 1666.67
+  }
+  if (
+    selectedFromToken.value.symbol === 'PPO' &&
+    selectedToToken.value.symbol === 'ETH'
+  ) {
+    return 0.0006
+  }
+  return 1
 })
 
 // Methods
 const calculateSwap = () => {
-  // Simple swap calculation (1 BNB = 2222.22 PPO)
-  if (swapForm.value.fromAmount && selectedFromToken.value.symbol === 'BNB' && selectedToToken.value.symbol === 'PPO') {
-    swapForm.value.toAmount = (parseFloat(swapForm.value.fromAmount) * 2222.22).toFixed(2)
-  } else if (swapForm.value.fromAmount && selectedFromToken.value.symbol === 'PPO' && selectedToToken.value.symbol === 'BNB') {
-    swapForm.value.toAmount = (parseFloat(swapForm.value.fromAmount) / 2222.22).toFixed(6)
+  if (swapForm.fromAmount > 0) {
+    const rate = swapRate.value
+
+    const parsedAmount = ethers.parseUnits(
+      swapForm.fromAmount?.toString(),
+      selectedFromToken.value.decimals
+    )
+    console.log('Parsed Amount:', parsedAmount)
+    console.log('ppoSwapAddress.value:', ppoSwapAddress.value)
+    readContract(wagmiConfig, {
+      chainId: chainId.value,
+      abi: ppoSwapAbi,
+      address: ppoSwapAddress.value,
+      functionName: 'getEstimateAmountsOut',
+      args: [parsedAmount],
+    }).then((data) => {
+      console.log('getEstimateAmountsOut:', data)
+      const formattedAmount = ethers.formatUnits(
+        data,
+        selectedToToken.value.decimals
+      )
+      swapForm.toAmount = (+formattedAmount).toFixed(5)
+    })
   } else {
-    swapForm.value.toAmount = ''
+    swapForm.toAmount = ''
   }
 }
-
 const swapTokens = () => {
   const temp = { ...selectedFromToken.value }
   selectedFromToken.value = { ...selectedToToken.value }
   selectedToToken.value = temp
-  
+
   // Swap amounts
   const tempAmount = swapForm.value.fromAmount
   swapForm.value.fromAmount = swapForm.value.toAmount
   swapForm.value.toAmount = tempAmount
-  
+
   calculateSwap()
 }
 
@@ -503,36 +662,124 @@ const selectToToken = (token) => {
   calculateSwap()
 }
 
-const executeSwap = () => {
-  if (!isWalletConnected.value) {
-    showToastMessage('Please connect your wallet first', 'warning')
-    return
+const loadTokenBalances = async () => {
+  if (!address.value) return
+
+  try {
+    console.log('chainId.value:', chainId.value)
+
+    // Lấy số dư của native token
+    const nativeBalance = await getBalance(wagmiConfig, {
+      chainId: chainId.value,
+      address: address.value,
+      units: 'ether',
+    })
+
+    // const client = await getConnectorClient(wagmiConfig, { chainId });
+
+    console.log('nativeBalance:', nativeBalance)
+    console.log('params', {
+      chainId: chainId.value,
+      address: address.value,
+      token: selectedToToken.value.address,
+    })
+    // const ppoBalance = await readContract(wagmiConfig, {
+    //   chainId: chainId.value,
+    //   abi: ppoTokenAbi,
+    //   address: selectedToToken.value.address,
+    //   functionName: 'balanceOf',
+    //   args: [address.value],
+    // })
+
+    const ppoBalance = await getBalance(wagmiConfig, {
+      chainId: chainId.value,
+      address: address.value,
+      token: selectedToToken.value.address,
+    })
+
+    console.log('Balance:', ppoBalance)
+
+    const formattedPpoBalance = ethers.formatUnits(ppoBalance.value, 18)
+    console.log('selectFromToken', selectedFromToken.value.address)
+
+    // Mock balances - in real app, this would fetch from blockchain
+    tokenBalances.value = {
+      [selectedFromToken.value.address]: nativeBalance?.formatted, // BNB
+      [selectedToToken.value.address]: formattedPpoBalance, // PPO
+      // "0xdAC17F958D2ee523a2206206994597C13D831ec7": 100, // USDT
+      // "0xA0b86a33E6441b8C4C8C8C8C8C8C8C8C8C8C8C8": 50, // USDC
+    }
+
+    fromTokenBalance.value = getTokenBalance(selectedFromToken.value.address)
+    toTokenBalance.value = getTokenBalance(selectedToToken.value.address)
+  } catch (error) {
+    console.error('Failed to load balances:', error)
   }
-  
-  if (!swapForm.value.fromAmount || parseFloat(swapForm.value.fromAmount) <= 0) {
-    showToastMessage('Please enter a valid amount', 'warning')
-    return
+}
+
+const executeSwap = async () => {
+  if (!canSwap.value) return
+
+  try {
+    isLoading.value = true
+
+    const balance = +tokenBalances.value[selectedFromToken.value.address] || 0
+    if (balance < +swapForm.fromAmount) {
+      showToastMessage('Insufficient balance', 'error')
+      return
+    }
+
+    console.log(
+      'params',
+      swapForm.fromAmount?.toString(),
+      selectedFromToken.value.decimals
+    )
+
+    const parsedAmount = ethers.parseUnits(
+      swapForm.fromAmount?.toString(),
+      selectedFromToken.value.decimals
+    )
+    console.log('Parsed Amount:', parsedAmount)
+    const txHash = await writeContract(wagmiConfig, {
+      chainId: chainId.value,
+      abi: ppoSwapAbi,
+      address: ppoSwapAddress.value,
+      functionName: 'swap',
+      args: [],
+      value: parsedAmount,
+    })
+    showToastMessage('Transaction sent. Waiting for confirmation...')
+
+    // Reset form
+    swapForm.fromAmount = ''
+    swapForm.toAmount = ''
+
+    await waitForTransactionReceipt(wagmiConfig, {
+      chainId: chainId.value,
+      hash: txHash,
+    })
+
+    showToastMessage('Swap successfully!', 'success')
+
+    // Add to recent transactions
+    recentTransactions.value.unshift({
+      hash: '0x' + Math.random().toString(36).substr(2, 9),
+      fromAmount: swapForm.fromAmount,
+      fromToken: selectedFromToken.value.symbol,
+      toAmount: swapForm.toAmount,
+      toToken: selectedToToken.value.symbol,
+      timestamp: Date.now(),
+      status: 'completed',
+    })
+
+    // Update balances
+    await loadTokenBalances()
+  } catch (error) {
+    console.error('Swap failed:', error)
+    showToastMessage('Swap failed!', 'error')
+  } finally {
+    isLoading.value = false
   }
-  
-  if (parseFloat(swapForm.value.fromAmount) > fromTokenBalance.value) {
-    showToastMessage('Insufficient balance', 'error')
-    return
-  }
-  
-  // Simulate swap execution
-  console.log('Executing swap:', {
-    from: selectedFromToken.value.symbol,
-    to: selectedToToken.value.symbol,
-    amount: swapForm.value.fromAmount,
-    wallet: walletAddress.value
-  })
-  
-  // Reset form
-  swapForm.value.fromAmount = ''
-  swapForm.value.toAmount = ''
-  
-  // Show success message
-  showToastMessage('Swap executed successfully!', 'success')
 }
 
 const selectToken = (token) => {
@@ -545,8 +792,12 @@ const selectToken = (token) => {
 }
 
 const selectPair = (pair) => {
-  selectedFromToken.value = availableTokens.value.find(t => t.symbol === pair.token1.symbol)
-  selectedToToken.value = availableTokens.value.find(t => t.symbol === pair.token2.symbol)
+  selectedFromToken.value = availableTokens.value.find(
+    (t) => t.symbol === pair.token1.symbol
+  )
+  selectedToToken.value = availableTokens.value.find(
+    (t) => t.symbol === pair.token2.symbol
+  )
   calculateSwap()
 }
 
@@ -554,7 +805,7 @@ const showToastMessage = (message, type = 'info') => {
   toastMessage.value = message
   toastType.value = type
   showToast.value = true
-  
+
   // Auto-hide after 5 seconds
   setTimeout(() => {
     showToast.value = false
@@ -584,18 +835,31 @@ const closeTokenModal = () => {
   tokenSearch.value = ''
 }
 
-const getTokenBalance = (tokenAddress) => {
-  // Mock token balance
-  return Math.random() * 1000
+const getTokenBalance = (address) => {
+  return tokenBalances.value[address] || 0
 }
 
 const floorFragment = (value, decimals) => {
+  console.log('value', value)
   return parseFloat(value).toFixed(decimals)
 }
 
 const formatDate = (date) => {
   return new Date(date).toLocaleDateString()
 }
+
+// Lifecycle
+onMounted(async () => {
+  await loadTokenBalances()
+})
+
+// Watch for wallet address changes
+watch(address, async (newAddress, oldAddress) => {
+  console.log(`Address changed from ${oldAddress} to ${newAddress}`)
+  if (newAddress !== oldAddress) {
+    await loadTokenBalances()
+  }
+})
 
 onMounted(() => {
   console.log('Swap component mounted')
@@ -620,10 +884,21 @@ onMounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: 
-    radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 40% 80%, rgba(119, 198, 255, 0.15) 0%, transparent 50%);
+  background: radial-gradient(
+      circle at 20% 50%,
+      rgba(120, 119, 198, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(255, 119, 198, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 40% 80%,
+      rgba(119, 198, 255, 0.15) 0%,
+      transparent 50%
+    );
   pointer-events: none;
   z-index: 0;
 }
@@ -631,7 +906,7 @@ onMounted(() => {
 /* Swap Hero Section */
 .swap-hero {
   position: relative;
-  z-index: 1;
+  /* z-index: 1; */
   padding: 120px 0 80px;
 }
 
@@ -653,7 +928,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
   border-radius: 20px;
   z-index: -1;
 }
@@ -679,7 +958,7 @@ onMounted(() => {
 /* Swap Interface */
 .swap-interface {
   position: relative;
-  z-index: 1;
+  /* z-index: 1; */
   padding: 60px 0;
 }
 
@@ -700,7 +979,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
   border-radius: 20px;
   z-index: -1;
 }
@@ -738,7 +1021,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.1)
+  );
   border-radius: 50%;
 }
 
@@ -882,7 +1169,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.1)
+  );
   border-radius: 50%;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -928,9 +1219,15 @@ onMounted(() => {
   font-size: 0.9rem;
 }
 
-.detail-value.low { color: #34d399; }
-.detail-value.medium { color: #fbbf24; }
-.detail-value.high { color: #ef4444; }
+.detail-value.low {
+  color: #34d399;
+}
+.detail-value.medium {
+  color: #fbbf24;
+}
+.detail-value.high {
+  color: #ef4444;
+}
 
 /* Swap Actions */
 .swap-actions {
@@ -959,7 +1256,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.1)
+  );
   border-radius: 15px;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -1074,7 +1375,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
   border-radius: 20px;
   z-index: -1;
 }
@@ -1322,60 +1627,60 @@ onMounted(() => {
   .swap-title {
     font-size: 2.5rem;
   }
-  
+
   .swap-header {
     padding: 40px 20px;
   }
-  
+
   .swap-card {
     padding: 20px;
   }
-  
+
   .market-panel {
     margin-top: 30px;
     padding: 20px;
   }
-  
+
   .form-control {
     font-size: 1rem;
     padding: 15px;
   }
-  
+
   .token-selector {
     padding: 15px;
     min-width: 100px;
   }
-  
+
   /* Mobile wallet connection fixes */
   .wallet-notice {
     padding: 20px;
   }
-  
+
   .notice-content {
     text-align: center;
   }
-  
+
   .notice-content h4 {
     font-size: 1.2rem;
     margin-bottom: 10px;
   }
-  
+
   .notice-content p {
     font-size: 0.9rem;
     margin-bottom: 20px;
   }
-  
+
   .connect-btn {
     display: flex;
     justify-content: center;
   }
-  
+
   /* Ensure wallet button is properly sized on mobile */
   .connect-btn :deep(.wallet-container) {
     width: 100%;
     max-width: 200px;
   }
-  
+
   .connect-btn :deep(.wallet-info) {
     justify-content: center;
     width: 100%;
@@ -1492,11 +1797,11 @@ onMounted(() => {
     left: 10px;
     max-width: none;
   }
-  
+
   .toast-content {
     padding: 14px 16px;
   }
-  
+
   .toast-message {
     font-size: 0.9rem;
   }

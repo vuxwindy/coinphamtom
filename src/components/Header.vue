@@ -4,8 +4,15 @@
       <div class="nav-container">
         <!-- Logo -->
         <div class="nav-logo">
-          <div class="logo" @click="navigateTo('/')">
-            <img src="../assets/images/header-icon.png" alt="PixelPayot" class="logo-img">
+          <div
+            class="logo"
+            @click="navigateTo('/')"
+          >
+            <img
+              src="../assets/images/header-icon.png"
+              alt="PixelPayot"
+              class="logo-img"
+            />
             <span class="logo-text">PixelPayot</span>
           </div>
         </div>
@@ -13,22 +20,36 @@
         <!-- Desktop Menu -->
         <div class="nav-menu desktop-menu">
           <ul class="nav-list">
-            <li class="nav-item" v-for="item in menuItems" :key="item.id">
+            <li
+              class="nav-item"
+              v-for="item in menuItems"
+              :key="item.id"
+            >
               <template v-if="item.submenu">
                 <!-- Dropdown Menu -->
-                <div class="nav-dropdown" @mouseenter="openDropdown(item.id)" @mouseleave="closeDropdown(item.id)">
-                  <div 
-                    class="nav-link dropdown-toggle" 
+                <div
+                  class="nav-dropdown"
+                  @mouseenter="openDropdown(item.id)"
+                  @mouseleave="closeDropdown(item.id)"
+                >
+                  <div
+                    class="nav-link dropdown-toggle"
                     @click="handleDropdownClick(item.id)"
-                    :class="{ 'active': activeDropdown === item.id }"
+                    :class="{ active: activeDropdown === item.id }"
                   >
                     <i :class="item.icon"></i>
                     <span>{{ item.name }}</span>
                     <i class="fas fa-chevron-down"></i>
                   </div>
-                  <ul class="dropdown-menu" :class="{ 'show': activeDropdown === item.id }">
-                    <li v-for="subItem in item.submenu" :key="subItem.id">
-                      <div 
+                  <ul
+                    class="dropdown-menu"
+                    :class="{ show: activeDropdown === item.id }"
+                  >
+                    <li
+                      v-for="subItem in item.submenu"
+                      :key="subItem.id"
+                    >
+                      <div
                         class="dropdown-item"
                         @click="handleMenuClick(subItem)"
                       >
@@ -41,10 +62,10 @@
               </template>
               <template v-else>
                 <!-- Regular Menu Item -->
-                <div 
+                <div
                   class="nav-link"
                   @click="handleMenuClick(item)"
-                  :class="{ 'active': $route.path === item.url }"
+                  :class="{ active: $route.path === item.url }"
                 >
                   <i :class="item.icon"></i>
                   <span>{{ item.name }}</span>
@@ -59,24 +80,46 @@
           <!-- Wallet Section -->
           <div class="wallet-section">
             <WalletStatus />
-            <ReownWalletButton />
+            <!-- <ReownWalletButton /> -->
           </div>
 
           <!-- User Menu -->
-          <div class="user-menu" v-if="currentUser">
-            <div class="user-avatar" @click="toggleUserMenu">
-              <img :src="currentUser.photoURL || '../assets/images/default-avatar.png'" alt="User">
+          <div
+            class="user-menu"
+            v-if="currentUser"
+          >
+            <div
+              class="user-avatar"
+              @click="toggleUserMenu"
+            >
+              <img
+                :src="
+                  currentUser.photoURL || '../assets/images/default-avatar.png'
+                "
+                alt="User"
+              />
               <i class="fas fa-chevron-down"></i>
             </div>
-            <ul class="user-dropdown" :class="{ 'show': isUserMenuOpen }">
+            <ul
+              class="user-dropdown"
+              :class="{ show: isUserMenuOpen }"
+            >
               <li>
-                <div @click="handleMenuClick({ url: '/profile', action: 'navigate' })">
+                <div
+                  @click="
+                    handleMenuClick({ url: '/profile', action: 'navigate' })
+                  "
+                >
                   <i class="fas fa-user"></i>
                   <span>Profile</span>
                 </div>
               </li>
               <li>
-                <div @click="handleMenuClick({ url: '/dashboard', action: 'navigate' })">
+                <div
+                  @click="
+                    handleMenuClick({ url: '/dashboard', action: 'navigate' })
+                  "
+                >
                   <i class="fas fa-chart-line"></i>
                   <span>Dashboard</span>
                 </div>
@@ -92,7 +135,11 @@
         </div>
 
         <!-- Mobile Menu Toggle -->
-        <div class="mobile-menu-toggle" :class="{ 'active': isMobileMenuOpen }" @click="toggleMobileMenu">
+        <div
+          class="mobile-menu-toggle"
+          :class="{ active: isMobileMenuOpen }"
+          @click="toggleMobileMenu"
+        >
           <span></span>
           <span></span>
           <span></span>
@@ -100,7 +147,10 @@
       </div>
 
       <!-- Mobile Menu -->
-      <div class="mobile-menu" :class="{ 'show': isMobileMenuOpen }">
+      <div
+        class="mobile-menu"
+        :class="{ show: isMobileMenuOpen }"
+      >
         <!-- <ul class="mobile-nav-list">
           <li class="mobile-nav-item" v-for="item in menuItems" :key="item.id">
             <template v-if="item.submenu">
@@ -109,25 +159,37 @@
                   class="mobile-nav-link" 
                   @click="handleDropdownClick(item.id)"
                   :class="{ 'active': activeDropdown === item.id }" -->
-        <div class="flex flex-col p-5 h-[calc(100vh-70px)] overflow-y-auto pb-[80px]">
+        <div
+          class="flex flex-col p-5 h-[calc(100vh-70px)] overflow-y-auto pb-[80px]"
+        >
           <ul class="mobile-nav-list list-none m-0 p-0 flex-1">
-            <li class="mobile-nav-item mb-2" v-for="item in menuItems" :key="item.id">
+            <li
+              class="mobile-nav-item mb-2"
+              v-for="item in menuItems"
+              :key="item.id"
+            >
               <template v-if="item.submenu">
                 <div class="mobile-dropdown">
-                  <a 
+                  <a
                     class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-white font-medium bg-white/5 border border-white/10 transition-all text-base hover:bg-pink-100/20 hover:text-pink-600"
-                    href="#" 
+                    href="#"
                     @click.prevent="handleDropdownClick(item.id)"
-                    :class="{ 'active': activeDropdown === item.id }"
+                    :class="{ active: activeDropdown === item.id }"
                   >
                     <i :class="item.icon"></i>
                     <span>{{ item.name }}</span>
                     <i class="fas fa-chevron-down"></i>
                   </a>
-                  <ul class="mobile-dropdown-menu" :class="{ 'show': activeDropdown === item.id }">
-                    <li v-for="subItem in item.submenu" :key="subItem.id">
-                      <router-link 
-                        :to="subItem.url" 
+                  <ul
+                    class="mobile-dropdown-menu"
+                    :class="{ show: activeDropdown === item.id }"
+                  >
+                    <li
+                      v-for="subItem in item.submenu"
+                      :key="subItem.id"
+                    >
+                      <router-link
+                        :to="subItem.url"
                         class="mobile-dropdown-item flex items-center gap-2 px-4 py-2 rounded-lg text-white hover:bg-pink-100/20 hover:text-pink-600"
                         @click="handleMenuClick(subItem)"
                       >
@@ -139,44 +201,21 @@
                 </div>
               </template>
               <template v-else>
-                <router-link 
-                  :to="item.url" 
+                <router-link
+                  :to="item.url"
                   class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-white font-medium bg-white/5 border border-white/10 transition-all text-base hover:bg-pink-100/20 hover:text-pink-600"
                   @click="handleMenuClick(item)"
-                  :class="{ 'active': $route.path === item.url }"
+                  :class="{ active: $route.path === item.url }"
                 >
                   <i :class="item.icon"></i>
                   <span>{{ item.name }}</span>
-                  <i class="fas fa-chevron-down"></i>
-                </div>
-                <ul class="mobile-dropdown-menu" :class="{ 'show': activeDropdown === item.id }">
-                  <li v-for="subItem in item.submenu" :key="subItem.id">
-                    <div 
-                      class="mobile-dropdown-item"
-                      @click="handleMenuClick(subItem)"
-                    >
-                      <i :class="subItem.icon"></i>
-                      <span>{{ subItem.name }}</span>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </template>
-            <template v-else>
-              <div 
-                class="mobile-nav-link"
-                @click="handleMenuClick(item)"
-                :class="{ 'active': $route.path === item.url }"
-              >
-                <i :class="item.icon"></i>
-                <span>{{ item.name }}</span>
-              </div>
-            </template>
-          </li>
-        </ul>
+                </router-link>
+              </template>
+            </li>
+          </ul>
 
-        <!-- Mobile Actions -->
-        <!-- <div class="mobile-actions">
+          <!-- Mobile Actions -->
+          <!-- <div class="mobile-actions">
           <div class="mobile-wallet-section">
             <WalletStatus />
             <ReownWalletButton /> -->
@@ -184,7 +223,7 @@
           <div class="mobile-actions mt-6">
             <div class="mobile-wallet-section mb-4">
               <WalletStatus />
-              <ReownWalletButton />
+              <!-- <ReownWalletButton /> -->
             </div>
           </div>
         </div>
@@ -215,13 +254,10 @@ const {
   isWalletConnected,
   walletAddress,
   connectWallet,
-  disconnectWallet
+  disconnectWallet,
 } = useWeb3()
 
-const {
-  currentUser,
-  signOut
-} = useFirebase()
+const { currentUser, signOut } = useFirebase()
 
 // Menu items configuration
 const menuItems = ref([
@@ -229,25 +265,25 @@ const menuItems = ref([
     id: 'game',
     name: 'Game',
     url: '/game',
-    icon: 'fas fa-gamepad'
+    icon: 'fas fa-gamepad',
   },
   {
     id: 'marketplace',
     name: 'Marketplace',
     url: '/marketplace',
-    icon: 'fas fa-store'
+    icon: 'fas fa-store',
   },
   {
     id: 'collection',
     name: 'Collection',
     url: '/collection',
-    icon: 'fas fa-images'
+    icon: 'fas fa-images',
   },
   {
     id: 'investment',
     name: 'Investment',
     url: '/investment',
-    icon: 'fas fa-chart-pie'
+    icon: 'fas fa-chart-pie',
   },
   {
     id: 'profile',
@@ -259,33 +295,33 @@ const menuItems = ref([
         id: 'my-profile',
         name: 'My Profile',
         url: '/profile',
-        icon: 'fas fa-user-circle'
+        icon: 'fas fa-user-circle',
       },
       {
         id: 'dashboard',
         name: 'Dashboard',
         url: '/dashboard',
-        icon: 'fas fa-chart-line'
+        icon: 'fas fa-chart-line',
       },
       {
         id: 'tasks',
         name: 'Daily Tasks',
         url: '/tasks',
-        icon: 'fas fa-tasks'
+        icon: 'fas fa-tasks',
       },
       {
         id: 'wallet-test',
         name: 'Wallet Test',
         url: '/wallet-test',
-        icon: 'fas fa-wallet'
+        icon: 'fas fa-wallet',
       },
       {
         id: 'referral',
         name: 'Referral',
         url: '/referral',
-        icon: 'fas fa-users'
-      }
-    ]
+        icon: 'fas fa-users',
+      },
+    ],
   },
   {
     id: 'more',
@@ -297,28 +333,28 @@ const menuItems = ref([
         id: 'blindbox',
         name: 'Blindbox',
         url: '/blindbox',
-        icon: 'fas fa-box-open'
+        icon: 'fas fa-box-open',
       },
       {
         id: 'swap',
         name: 'Swap',
         url: '/swap',
-        icon: 'fas fa-exchange-alt'
+        icon: 'fas fa-exchange-alt',
       },
       {
         id: 'creators',
         name: 'Creators',
         url: '/creators',
-        icon: 'fas fa-palette'
+        icon: 'fas fa-palette',
       },
       {
         id: 'whitepaper',
         name: 'Whitepaper',
         url: '/whitepaper',
-        icon: 'fas fa-file-alt'
-      }
-    ]
-  }
+        icon: 'fas fa-file-alt',
+      },
+    ],
+  },
 ])
 
 // Computed properties
@@ -355,7 +391,8 @@ const closeDropdown = (dropdownId) => {
 
 const handleDropdownClick = (dropdownId) => {
   if (window.innerWidth <= 991) {
-    activeDropdown.value = activeDropdown.value === dropdownId ? null : dropdownId
+    activeDropdown.value =
+      activeDropdown.value === dropdownId ? null : dropdownId
   }
 }
 
@@ -373,11 +410,11 @@ const handleMenuClick = (item) => {
     isMobileMenuOpen.value = false
     document.body.style.overflow = ''
   }
-  
+
   // Close dropdowns
   activeDropdown.value = null
   closeUserMenu()
-  
+
   // Handle special actions
   if (item.action === 'logout') {
     handleLogout()
@@ -540,7 +577,7 @@ onUnmounted(() => {
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  padding: 10px 0;
+  padding: 10px 8px;
   min-width: 200px;
   opacity: 0;
   visibility: hidden;
@@ -567,7 +604,6 @@ onUnmounted(() => {
   gap: 10px;
   transition: all 0.3s ease;
   border-radius: 8px;
-  margin: 0 10px;
   font-size: 0.9rem;
 }
 
@@ -869,7 +905,7 @@ onUnmounted(() => {
   .wallet-section {
     display: none;
   }
-  
+
   /* Ensure mobile menu is properly positioned */
   .mobile-menu {
     position: fixed !important;

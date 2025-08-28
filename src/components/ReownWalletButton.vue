@@ -1,5 +1,9 @@
 <template>
-  <appkit-button v-if="!isWalletConnected" :features="{ chain: false }" />
+  <!-- Hiển thị nút Connect Wallet nếu chưa kết nối -->
+  <appkit-button
+    v-if="!isWalletConnected"
+    :features="{ chain: false }"
+  />
   <div
     class="wallet-container"
     ref="walletContainer"
@@ -7,16 +11,25 @@
     @mouseenter="showDropdown = true"
     @mouseleave="showDropdown = false"
   >
-    <!-- Hiển thị nút Connect Wallet nếu chưa kết nối -->
-
     <!-- Hiển thị địa chỉ ví nếu đã kết nối -->
-    <div class="wallet-info" @click="toggleDropdown">
+    <div
+      class="wallet-info"
+      @click="toggleDropdown"
+    >
       <span class="wallet-address">{{ walletAddressFormatted }}</span>
-      <div class="wallet-dropdown" v-if="showDropdown">
+      <div
+        class="wallet-dropdown"
+        v-if="showDropdown"
+      >
         <div class="dropdown-content">
           <p class="wallet-detail">Connected Wallet</p>
           <!-- <p class="wallet-address-full">{{ address }}</p> -->
-          <button class="wallet-disconnect" @click="disconnect">Disconnect</button>
+          <button
+            class="wallet-disconnect"
+            @click="disconnect"
+          >
+            Disconnect
+          </button>
         </div>
       </div>
     </div>
@@ -24,44 +37,44 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { useAppKit } from '@reown/appkit/vue';
-import { useAccount, useDisconnect } from '@wagmi/vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useAppKit } from '@reown/appkit/vue'
+import { useAccount, useDisconnect } from '@wagmi/vue'
 
-const { open } = useAppKit();
-const { address } = useAccount();
-const { disconnect } = useDisconnect();
+const { open } = useAppKit()
+const { address } = useAccount()
+const { disconnect } = useDisconnect()
 
-const showDropdown = ref(false);
-const walletContainer = ref(null);
+const showDropdown = ref(false)
+const walletContainer = ref(null)
 
-const isWalletConnected = computed(() => !!address?.value);
+const isWalletConnected = computed(() => !!address?.value)
 
 const walletAddressFormatted = computed(() => {
-  if (!address.value) return '';
-  return `${address.value.slice(0, 6)}...${address.value.slice(-4)}`;
-});
+  if (!address.value) return ''
+  return `${address.value.slice(0, 6)}...${address.value.slice(-4)}`
+})
 
 // Toggle dropdown visibility
 const toggleDropdown = () => {
-  showDropdown.value = !showDropdown.value;
-};
+  showDropdown.value = !showDropdown.value
+}
 
 // Close dropdown when clicking outside
 const handleClickOutside = (event) => {
   if (walletContainer.value && !walletContainer.value.contains(event.target)) {
-    showDropdown.value = false;
+    showDropdown.value = false
   }
-};
+}
 
 // Add and remove event listeners
 onMounted(() => {
-  document.addEventListener('click', handleClickOutside);
-});
+  document.addEventListener('click', handleClickOutside)
+})
 
 onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside);
-});
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>
 
 <style scoped>

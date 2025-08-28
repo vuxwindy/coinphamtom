@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full max-w-[600px] shadow-2xl rounded-2xl border border-purple-500 bg-purple-800 mx-auto"
+    class="w-full max-w-[600px] shadow-2xl rounded-2xl border border-purple-500! bg-purple-800 mx-auto"
   >
     <div class="flex flex-col items-center p-6 sm:p-8 space-y-4">
       <div
@@ -69,10 +69,13 @@
       />
       <button
         @click="handleOpenBox"
-        class="w-full py-3 sm:py-4 rounded-2xl bg-gradient-to-r from-purple-400 to-purple-700 text-white text-base sm:text-lg font-bold shadow hover:from-purple-700 hover:to-purple-400 hover:shadow-xl transition duration-200 flex items-center justify-center"
+        class="w-full py-3 sm:py-4 rounded-2xl! bg-gradient-to-r from-purple-400 to-purple-700 text-white text-base sm:text-lg font-bold shadow hover:from-purple-700 hover:to-purple-400 hover:shadow-xl transition duration-200 flex items-center justify-center"
         :disabled="isLoading"
       >
-        <span v-if="isLoading" class="mr-2">
+        <span
+          v-if="isLoading"
+          class="mr-2"
+        >
           <svg
             class="w-6 h-6 animate-spin"
             fill="none"
@@ -94,14 +97,20 @@
             ></path>
           </svg>
         </span>
-        {{ isLoading ? "Opening..." : "Open Box" }}
+        {{ isLoading ? 'Opening...' : 'Open Box' }}
       </button>
       <transition name="fade">
-        <div v-if="result" class="mt-4 text-center">
+        <div
+          v-if="result"
+          class="mt-4 text-center"
+        >
           <p class="text-lg text-white font-bold">You received: {{ result }}</p>
-          <div v-if="mintResult" class="mt-2 text-purple-200 text-sm">
+          <div
+            v-if="mintResult"
+            class="mt-2 text-purple-200 text-sm"
+          >
             <div>NFT ID: {{ mintResult.tokenId }}</div>
-            <div>Tier: {{ ["Bronze", "Silver", "Gold"][mintResult.tier] }}</div>
+            <div>Tier: {{ ['Bronze', 'Silver', 'Gold'][mintResult.tier] }}</div>
             <div>BNB: {{ mintResult.amountBNB }}</div>
             <div>PPO/day: {{ floorFragment(mintResult.ppoPerDay) }}</div>
           </div>
@@ -112,108 +121,108 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { ethers } from "ethers";
-import { useAccount, useChainId } from "@wagmi/vue";
-import { writeContract, waitForTransactionReceipt } from "@wagmi/core";
-import { useToast } from "vue-toastification";
-import { ppoPackageAbi } from "@/abis/ppoPackage.js";
-import { wagmiConfig } from "../../config/wagmi";
-import { floorFragment } from "@/utils/number";
-import { useContractAddress } from "../../composables/useContractAddress";
+import { ref } from 'vue'
+import { ethers } from 'ethers'
+import { useAccount, useChainId } from '@wagmi/vue'
+import { writeContract, waitForTransactionReceipt } from '@wagmi/core'
+import { useToast } from 'vue-toastification'
+import { ppoPackageAbi } from '@/abis/ppoPackage.js'
+import { wagmiConfig } from '../../config/wagmi'
+import { floorFragment } from '@/utils/number'
+import { useContractAddress } from '../../composables/useContractAddress'
 
-const emit = defineEmits(["mint"]);
+const emit = defineEmits(['mint'])
 
-const bnb = ref("");
-const result = ref(null);
-const ppo = ref(0);
-const mintResult = ref(null);
-const isLoading = ref(false);
-const toast = useToast();
-const { address } = useAccount();
-const chainId = useChainId();
+const bnb = ref('')
+const result = ref(null)
+const ppo = ref(0)
+const mintResult = ref(null)
+const isLoading = ref(false)
+const toast = useToast()
+const { address } = useAccount()
+const chainId = useChainId()
 
-const exchangeRate = 870; // 1 BNB = 870 USD (example)
-const ppoPrice = 0.05; // 1 PPO = 0.05 USD
-const { ppoPackageAddress } = useContractAddress();
+const exchangeRate = 870 // 1 BNB = 870 USD (example)
+const ppoPrice = 0.05 // 1 PPO = 0.05 USD
+const { ppoPackageAddress } = useContractAddress()
 
 function getTier(amount) {
-  if (amount >= 0.01 && amount < 0.025) return 0; // bronze
-  if (amount >= 0.025 && amount < 0.1) return 1; // silver
-  if (amount >= 0.1) return 2; // gold
-  return -1;
+  if (amount >= 0.01 && amount < 0.025) return 0 // bronze
+  if (amount >= 0.025 && amount < 0.1) return 1 // silver
+  if (amount >= 0.1) return 2 // gold
+  return -1
 }
 
 async function handleOpenBox() {
   if (!address.value) {
-    toast.error("Please connect your wallet first!");
-    return;
+    toast.error('Please connect your wallet first!')
+    return
   }
   if (bnb.value < 0.01) {
-    toast.error("Minimum BNB is 0.01");
-    return;
+    toast.error('Minimum BNB is 0.01')
+    return
   }
-  isLoading.value = true;
+  isLoading.value = true
   try {
-    const value = ethers.parseUnits(bnb.value.toString(), 18);
+    const value = ethers.parseUnits(bnb.value.toString(), 18)
     const txHash = await writeContract(wagmiConfig, {
       chainId: chainId.value,
       abi: ppoPackageAbi,
       address: ppoPackageAddress.value,
-      functionName: "mint",
+      functionName: 'mint',
       args: [],
       value,
       gas: BigInt(300000),
-    });
+    })
 
     const receipt = await waitForTransactionReceipt(wagmiConfig, {
       chainId: chainId.value,
       hash: txHash,
-    });
+    })
     // Find Minted event
 
-    const iface = new ethers.Interface(ppoPackageAbi);
+    const iface = new ethers.Interface(ppoPackageAbi)
 
     const mintedEvent = receipt.logs
       .map((log) => {
         try {
-          const parsed = iface.parseLog(log);
-          return parsed;
+          const parsed = iface.parseLog(log)
+          return parsed
         } catch (err) {
-          return null;
+          return null
         }
       })
-      .find((e) => e && e.name === "Minted");
+      .find((e) => e && e.name === 'Minted')
     if (mintedEvent) {
-      const { tokenId, to, tier, amountBNB, ppoPerDay } = mintedEvent.args;
+      const { tokenId, to, tier, amountBNB, ppoPerDay } = mintedEvent.args
       mintResult.value = {
         tokenId,
         to,
         tier: +tier?.toString(),
         amountBNB: ethers.formatUnits(amountBNB, 18),
         ppoPerDay: ethers.formatUnits(ppoPerDay, 18),
-      };
+      }
 
-      console.log("mintResult", mintResult?.value);
+      console.log('mintResult', mintResult?.value)
       toast.success(
         `Mint successful! NFT #${tokenId} (${
-          ["Bronze", "Silver", "Gold"][tier]
+          ['Bronze', 'Silver', 'Gold'][tier]
         })\nBNB: ${mintResult.value.amountBNB}\nPPO/day: ${
           mintResult.value.ppoPerDay
         }`
-      );
-      result.value = ["Bronze NFT", "Silver NFT", "Gold NFT"][tier];
-      ppo.value = Math.floor((bnb.value * exchangeRate) / ppoPrice);
-      bnb.value = "";
-      emit("minted", mintResult.value);
+      )
+      result.value = ['Bronze NFT', 'Silver NFT', 'Gold NFT'][tier]
+      ppo.value = Math.floor((bnb.value * exchangeRate) / ppoPrice)
+      bnb.value = ''
+      emit('minted', mintResult.value)
     } else {
-      toast.error("Minted event not found!");
+      toast.error('Minted event not found!')
     }
   } catch (err) {
-    toast.error("Mint failed!");
-    console.error(err);
+    toast.error('Mint failed!')
+    console.error(err)
   } finally {
-    isLoading.value = false;
+    isLoading.value = false
   }
 }
 </script>

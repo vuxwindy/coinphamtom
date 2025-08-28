@@ -12,7 +12,10 @@
     />
 
     <!-- Error Display -->
-    <div v-if="error" class="alert alert-danger">
+    <div
+      v-if="error"
+      class="alert alert-danger"
+    >
       <i class="fas fa-exclamation-triangle"></i>
       {{ error }}
     </div>
@@ -29,7 +32,7 @@
           <span class="currency">PPO</span>
         </div>
         <div class="balance-actions">
-          <button 
+          <button
             @click="syncWalletBalance"
             class="btn btn-outline-primary btn-sm"
             :disabled="!isConnected"
@@ -46,11 +49,14 @@
       <h4>Daily Progress</h4>
       <div class="progress-card">
         <div class="progress-info">
-          <span>{{ completedTasksCount }}/{{ totalTasksCount }} tasks completed</span>
+          <span
+            >{{ completedTasksCount }}/{{ totalTasksCount }} tasks
+            completed</span
+          >
           <span class="percentage">{{ progressPercentage }}%</span>
         </div>
         <div class="progress-bar">
-          <div 
+          <div
             class="progress-fill"
             :style="{ width: `${progressPercentage}%` }"
           ></div>
@@ -59,7 +65,10 @@
     </div>
 
     <!-- Available Rewards -->
-    <div class="rewards-section" v-if="totalRewards > 0">
+    <div
+      class="rewards-section"
+      v-if="totalRewards > 0"
+    >
       <div class="rewards-card">
         <div class="rewards-header">
           <i class="fas fa-gift"></i>
@@ -69,13 +78,19 @@
           <span class="amount">{{ totalRewards }}</span>
           <span class="currency">PPO</span>
         </div>
-        <button 
+        <button
           @click="claimAllRewards"
           class="btn btn-success"
           :disabled="!isConnected || isLoading"
         >
-          <i v-if="isLoading" class="fas fa-spinner fa-spin"></i>
-          <i v-else class="fas fa-gift"></i>
+          <i
+            v-if="isLoading"
+            class="fas fa-spinner fa-spin"
+          ></i>
+          <i
+            v-else
+            class="fas fa-gift"
+          ></i>
           {{ isLoading ? 'Claiming...' : 'Claim All Rewards' }}
         </button>
       </div>
@@ -85,13 +100,13 @@
     <div class="tasks-section">
       <h4>Available Tasks</h4>
       <div class="tasks-grid">
-        <div 
-          v-for="task in tasks" 
+        <div
+          v-for="task in tasks"
           :key="task.id"
           class="task-card"
-          :class="{ 
-            'completed': task.completed,
-            'unavailable': !isTaskAvailable(task) && !task.completed
+          :class="{
+            completed: task.completed,
+            unavailable: !isTaskAvailable(task) && !task.completed,
           }"
         >
           <div class="task-header">
@@ -107,34 +122,49 @@
               <span class="reward-currency">PPO</span>
             </div>
           </div>
-          
+
           <div class="task-status">
-            <div v-if="task.completed" class="status-completed">
+            <div
+              v-if="task.completed"
+              class="status-completed"
+            >
               <i class="fas fa-check-circle"></i>
               <span>Completed</span>
             </div>
-            <div v-else-if="!isTaskAvailable(task)" class="status-cooldown">
+            <div
+              v-else-if="!isTaskAvailable(task)"
+              class="status-cooldown"
+            >
               <i class="fas fa-clock"></i>
               <span>On Cooldown</span>
             </div>
-            <div v-else class="status-available">
+            <div
+              v-else
+              class="status-available"
+            >
               <i class="fas fa-play-circle"></i>
               <span>Available</span>
             </div>
           </div>
-          
+
           <div class="task-actions">
-            <button 
+            <button
               v-if="!task.completed && isTaskAvailable(task)"
               @click="completeTask(task.id)"
               class="btn btn-primary btn-sm"
               :disabled="!isConnected || isLoading"
             >
-              <i v-if="isLoading" class="fas fa-spinner fa-spin"></i>
-              <i v-else class="fas fa-check"></i>
+              <i
+                v-if="isLoading"
+                class="fas fa-spinner fa-spin"
+              ></i>
+              <i
+                v-else
+                class="fas fa-check"
+              ></i>
               {{ isLoading ? 'Completing...' : 'Complete Task' }}
             </button>
-            <button 
+            <button
               v-else-if="task.completed"
               class="btn btn-success btn-sm"
               disabled
@@ -142,7 +172,7 @@
               <i class="fas fa-check-circle"></i>
               Completed
             </button>
-            <button 
+            <button
               v-else
               class="btn btn-secondary btn-sm"
               disabled
@@ -151,12 +181,13 @@
               On Cooldown
             </button>
           </div>
-          
+
           <!-- Cooldown timer -->
-          <div v-if="task.lastCompleted && !isTaskAvailable(task)" class="cooldown-timer">
-            <small>
-              Available in: {{ getCooldownTime(task) }}
-            </small>
+          <div
+            v-if="task.lastCompleted && !isTaskAvailable(task)"
+            class="cooldown-timer"
+          >
+            <small> Available in: {{ getCooldownTime(task) }} </small>
           </div>
         </div>
       </div>
@@ -164,34 +195,56 @@
 
     <!-- Wallet Connection Status -->
     <div class="wallet-status">
-      <div class="status-card" :class="{ 'connected': isConnected, 'disconnected': !isConnected }">
+      <div
+        class="status-card"
+        :class="{ connected: isConnected, disconnected: !isConnected }"
+      >
         <div class="status-icon">
-          <i v-if="isConnected" class="fas fa-wallet"></i>
-          <i v-else class="fas fa-wallet-slash"></i>
+          <i
+            v-if="isConnected"
+            class="fas fa-wallet"
+          ></i>
+          <i
+            v-else
+            class="fas fa-wallet-slash"
+          ></i>
         </div>
         <div class="status-info">
-          <h5>{{ isConnected ? 'Wallet Connected' : 'Wallet Disconnected' }}</h5>
+          <h5>
+            {{ isConnected ? 'Wallet Connected' : 'Wallet Disconnected' }}
+          </h5>
           <p v-if="isConnected">{{ shortAddress }}</p>
           <p v-else>Connect your wallet to complete tasks</p>
         </div>
       </div>
-      
+
       <!-- Connect Wallet Task Reminder -->
-      <div v-if="isConnected && !isConnectWalletCompleted" class="task-reminder">
+      <div
+        v-if="isConnected && !isConnectWalletCompleted"
+        class="task-reminder"
+      >
         <div class="reminder-card">
           <div class="reminder-icon">
             <i class="fas fa-lightbulb"></i>
           </div>
           <div class="reminder-content">
             <h6>Complete Connect Wallet Task</h6>
-            <p>Don't forget to complete the "Connect Wallet" task to earn 50 PPO!</p>
-            <button 
+            <p>
+              Don't forget to complete the "Connect Wallet" task to earn 50 PPO!
+            </p>
+            <button
               @click="completeTask('connect_wallet')"
               class="btn btn-primary btn-sm"
               :disabled="isLoading"
             >
-              <i v-if="isLoading" class="fas fa-spinner fa-spin"></i>
-              <i v-else class="fas fa-check"></i>
+              <i
+                v-if="isLoading"
+                class="fas fa-spinner fa-spin"
+              ></i>
+              <i
+                v-else
+                class="fas fa-check"
+              ></i>
               {{ isLoading ? 'Completing...' : 'Complete Task' }}
             </button>
           </div>
@@ -206,36 +259,40 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useTaskSystem } from '@/composables/useTaskSystem.js'
 import { useFirebase } from '@/composables/useFirebase.js'
 import TaskNotification from './TaskNotification.vue'
+import { useAccount } from '@wagmi/vue'
 
 export default {
   name: 'TaskSystem',
   components: {
-    TaskNotification
+    TaskNotification,
   },
   setup() {
-    const { 
-      tasks, 
-      userBalance, 
-      isLoading, 
+    const {
+      tasks,
+      userBalance,
+      isLoading,
       error,
       isWalletConnected,
       walletAddress,
-      completeTask, 
+      completeTask,
       totalRewards,
       completedTasksCount,
       totalTasksCount,
-      progressPercentage
+      progressPercentage,
     } = useTaskSystem()
 
     const { currentUser } = useFirebase()
+    const { isConnected: walletConnect } = useAccount()
 
     // Computed properties for wallet info
     const shortAddress = computed(() => {
       if (!walletAddress.value) return ''
-      return `${walletAddress.value.slice(0, 6)}...${walletAddress.value.slice(-4)}`
+      return `${walletAddress.value.slice(0, 6)}...${walletAddress.value.slice(
+        -4
+      )}`
     })
 
-    const isConnected = computed(() => isWalletConnected.value)
+    const isConnected = computed(() => walletConnect.value)
 
     // Check if task is available
     const isTaskAvailable = (task) => {
@@ -249,7 +306,9 @@ export default {
 
     // Check if connect wallet task is completed
     const isConnectWalletCompleted = computed(() => {
-      const connectTask = tasks.value.find(task => task.id === 'connect_wallet')
+      const connectTask = tasks.value.find(
+        (task) => task.id === 'connect_wallet'
+      )
       return connectTask ? connectTask.completed : false
     })
 
@@ -262,14 +321,20 @@ export default {
     const notificationNewBalance = ref(0)
 
     // Show notification
-    const showTaskNotification = (type, title, message, reward = 0, newBalance = 0) => {
+    const showTaskNotification = (
+      type,
+      title,
+      message,
+      reward = 0,
+      newBalance = 0
+    ) => {
       notificationType.value = type
       notificationTitle.value = title
       notificationMessage.value = message
       notificationReward.value = reward
       notificationNewBalance.value = newBalance
       showNotification.value = true
-      
+
       // Auto-hide after 5 seconds
       setTimeout(() => {
         showNotification.value = false
@@ -284,7 +349,7 @@ export default {
     // Enhanced complete task with notification
     const completeTaskWithNotification = async (taskId) => {
       const result = await completeTask(taskId)
-      
+
       if (result.success) {
         showTaskNotification(
           'success',
@@ -315,13 +380,15 @@ export default {
     // Get cooldown time remaining
     const getCooldownTime = (task) => {
       if (!task.lastCompleted) return ''
-      
+
       const timeRemaining = task.cooldown - (Date.now() - task.lastCompleted)
       if (timeRemaining <= 0) return ''
-      
+
       const hours = Math.floor(timeRemaining / (1000 * 60 * 60))
-      const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60))
-      
+      const minutes = Math.floor(
+        (timeRemaining % (1000 * 60 * 60)) / (1000 * 60)
+      )
+
       if (hours > 0) {
         return `${hours}h ${minutes}m`
       } else {
@@ -361,9 +428,9 @@ export default {
       isConnectWalletCompleted,
       completedTasksCount,
       totalTasksCount,
-      progressPercentage
+      progressPercentage,
     }
-  }
+  },
 }
 </script>
 
@@ -734,15 +801,15 @@ export default {
   .task-system {
     padding: 15px;
   }
-  
+
   .tasks-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .balance-amount .amount {
     font-size: 36px;
   }
-  
+
   .rewards-amount .amount {
     font-size: 28px;
   }
