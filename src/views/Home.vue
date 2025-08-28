@@ -294,16 +294,28 @@
                     </div>
                     <div class="task-content">
                       <h5>Daily Check-in</h5>
-                      <p class="task-reward">+1 PPO</p>
+                      <!-- <p class="task-reward">+1 PPO</p> -->
                     </div>
                     <button
                       class="btn btn-task"
-                      :class="{ completed: tasks.find(t => t.id === 'checkIn')?.completed }"
+                      :class="{
+                        completed: tasks.find((t) => t.id === 'checkIn')
+                          ?.completed,
+                      }"
                       @click="claimTaskReward('checkIn')"
-                      :disabled="!isUserReady || tasks.find(t => t.id === 'checkIn')?.completed"
+                      :disabled="
+                        !isConnected ||
+                        tasks.find((t) => t.id === 'checkIn')?.completed
+                      "
                     >
-                      <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'checkIn')?.completed"></i>
-                      <i class="fas fa-calendar-check" v-else></i>
+                      <i
+                        class="fas fa-check-circle"
+                        v-if="tasks.find((t) => t.id === 'checkIn')?.completed"
+                      ></i>
+                      <i
+                        class="fas fa-calendar-check"
+                        v-else
+                      ></i>
                     </button>
                   </div>
 
@@ -314,16 +326,30 @@
                     </div>
                     <div class="task-content">
                       <h5>Join Telegram Group</h5>
-                      <p class="task-reward">+2 PPO</p>
+                      <!-- <p class="task-reward">+2 PPO</p> -->
                     </div>
                     <button
                       class="btn btn-task"
-                      :class="{ completed: tasks.find(t => t.id === 'telegramGroup')?.completed }"
+                      :class="{
+                        completed: tasks.find((t) => t.id === 'telegramGroup')
+                          ?.completed,
+                      }"
                       @click="claimTaskReward('telegramGroup')"
-                      :disabled="!isUserReady || tasks.find(t => t.id === 'telegramGroup')?.completed"
+                      :disabled="
+                        !isConnected ||
+                        tasks.find((t) => t.id === 'telegramGroup')?.completed
+                      "
                     >
-                      <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'telegramGroup')?.completed"></i>
-                      <i class="fas fa-users" v-else></i>
+                      <i
+                        class="fas fa-check-circle"
+                        v-if="
+                          tasks.find((t) => t.id === 'telegramGroup')?.completed
+                        "
+                      ></i>
+                      <i
+                        class="fas fa-users"
+                        v-else
+                      ></i>
                     </button>
                   </div>
 
@@ -340,7 +366,7 @@
                       class="btn btn-task"
                       :class="{ completed: tasks.find(t => t.id === 'telegramChannel')?.completed }"
                       @click="claimTaskReward('telegramChannel')"
-                      :disabled="!isUserReady || tasks.find(t => t.id === 'telegramChannel')?.completed"
+                      :disabled="!isConnected || tasks.find(t => t.id === 'telegramChannel')?.completed"
                     >
                       <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'telegramChannel')?.completed"></i>
                       <i class="fas fa-bell" v-else></i>
@@ -360,7 +386,7 @@
                       class="btn btn-task"
                       :class="{ completed: tasks.find(t => t.id === 'facebookPage')?.completed }"
                       @click="claimTaskReward('facebookPage')"
-                      :disabled="!isUserReady || tasks.find(t => t.id === 'facebookPage')?.completed"
+                      :disabled="!isConnected || tasks.find(t => t.id === 'facebookPage')?.completed"
                     >
                       <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'facebookPage')?.completed"></i>
                       <i class="fas fa-thumbs-up" v-else></i>
@@ -374,16 +400,30 @@
                     </div>
                     <div class="task-content">
                       <h5>Follow on X</h5>
-                      <p class="task-reward">+2 PPO</p>
+                      <!-- <p class="task-reward">+2 PPO</p> -->
                     </div>
                     <button
                       class="btn btn-task"
-                      :class="{ completed: tasks.find(t => t.id === 'twitterFollow')?.completed }"
+                      :class="{
+                        completed: tasks.find((t) => t.id === 'twitterFollow')
+                          ?.completed,
+                      }"
                       @click="claimTaskReward('twitterFollow')"
-                      :disabled="!isUserReady || tasks.find(t => t.id === 'twitterFollow')?.completed"
+                      :disabled="
+                        !isConnected ||
+                        tasks.find((t) => t.id === 'twitterFollow')?.completed
+                      "
                     >
-                      <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'twitterFollow')?.completed"></i>
-                      <i class="fas fa-user-plus" v-else></i>
+                      <i
+                        class="fas fa-check-circle"
+                        v-if="
+                          tasks.find((t) => t.id === 'twitterFollow')?.completed
+                        "
+                      ></i>
+                      <i
+                        class="fas fa-user-plus"
+                        v-else
+                      ></i>
                     </button>
                   </div>
 
@@ -394,17 +434,31 @@
                     </div>
                     <div class="task-content">
                       <h5>Share & Earn</h5>
-                      <p class="task-reward">+3 PPO</p>
+                      <!-- <p class="task-reward">+3 PPO</p> -->
                       <small class="task-note">Share about PixelPayot</small>
                     </div>
                     <button
                       class="btn btn-task"
-                      :class="{ completed: tasks.find(t => t.id === 'socialShare')?.completed }"
+                      :class="{
+                        completed: tasks.find((t) => t.id === 'socialShare')
+                          ?.completed,
+                      }"
                       @click="claimTaskReward('socialShare')"
-                      :disabled="!isUserReady || tasks.find(t => t.id === 'socialShare')?.completed"
+                      :disabled="
+                        !isConnected ||
+                        tasks.find((t) => t.id === 'socialShare')?.completed
+                      "
                     >
-                      <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'socialShare')?.completed"></i>
-                      <i class="fas fa-share" v-else></i>
+                      <i
+                        class="fas fa-check-circle"
+                        v-if="
+                          tasks.find((t) => t.id === 'socialShare')?.completed
+                        "
+                      ></i>
+                      <i
+                        class="fas fa-share"
+                        v-else
+                      ></i>
                     </button>
                   </div>
                 </div>
@@ -1583,12 +1637,8 @@ const { exchanges } = useExchangePlatform()
 // const { isWalletConnected, walletAddress, connectWallet } = useWeb3()
 
 // Use Firebase composable for referral functionality
-const {
-  currentUser,
-  getUserData,
-  generateReferralCode,
-  generateReferralLink,
-} = useFirebase()
+const { currentUser, getUserData, generateReferralCode, generateReferralLink } =
+  useFirebase()
 
 // Use Task System composable
 const {
@@ -1601,7 +1651,7 @@ const {
   completedTasksCount,
   totalTasksCount,
   progressPercentage,
-  isUserReady,
+
   completeTask,
   resetDailyTasks,
 } = useTaskSystem()
@@ -2082,11 +2132,11 @@ const initializeReferral = async () => {
   if (isConnected.value && currentUser.value) {
     try {
       const result = await getUserData()
-      
+
       if (result.success) {
         const userData = result.data
         console.log('User data loaded:', userData)
-        
+
         if (userData && userData.referralCode) {
           // Use existing referral code from Firebase
           userReferralCode.value = userData.referralCode
@@ -2154,7 +2204,7 @@ onMounted(() => {
 // Task reward claiming function
 const claimTaskReward = async (taskType) => {
   try {
-    if (!isUserReady.value) {
+    if (!isConnected.value) {
       showError('Please connect your wallet and sign in first!')
       return
     }
@@ -2163,7 +2213,7 @@ const claimTaskReward = async (taskType) => {
     if (result.success) {
       availableRewards.value = earnedRewards.value
       success(`Task completed! You earned ${result.reward} PPO`)
-      
+
       // Update user balance display
       if (result.newBalance !== undefined) {
         userBalance.value = result.newBalance
@@ -2312,7 +2362,7 @@ watch(isConnected, (newValue) => {
 
 .hero-content {
   position: relative;
-  z-index: 2;
+  /* z-index: 2; */
 }
 
 .hero-badge {
@@ -2479,7 +2529,7 @@ watch(isConnected, (newValue) => {
 
 .hero-visual {
   position: relative;
-  z-index: 2;
+  /* z-index: 2; */
 }
 
 .hero-image-container {
@@ -3132,12 +3182,12 @@ watch(isConnected, (newValue) => {
   color: white;
   margin-bottom: 24px;
   position: relative;
-  z-index: 2;
+  /* z-index: 2; */
 }
 
 .game-content {
   position: relative;
-  z-index: 2;
+  /* z-index: 2; */
 }
 
 .game-content h3 {
