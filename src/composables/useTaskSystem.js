@@ -1,84 +1,54 @@
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useFirebase } from './useFirebase.js'
 
-// Task system state - tương thích với Firebase structure
+// Task system state - đồng bộ với Home.vue
 const tasks = ref([
   {
     id: 'checkIn',
     name: 'Daily Check-in',
-    description: 'Check in daily to earn rewards',
+    description: 'Complete daily check-in to earn rewards',
     reward: 1,
     type: 'daily',
-    icon: 'fas fa-calendar-check',
     completed: false,
     cooldown: 24 * 60 * 60 * 1000, // 24 hours in milliseconds
     lastCompleted: null,
+    icon: 'fas fa-calendar-check'
   },
   {
-    id: 'connect_wallet',
-    name: 'Connect Wallet',
-    description: 'Connect your wallet to earn rewards',
-    reward: 5,
-    type: 'one_time',
-    icon: 'fas fa-wallet',
-    completed: false,
-    cooldown: 0,
-    lastCompleted: null,
-  },
-  {
-    id: 'telegramGroup',
-    name: 'Join Telegram Group',
-    description: 'Join our Telegram group',
-    reward: 2,
-    type: 'one_time',
-    icon: 'fab fa-telegram',
-    completed: false,
-    cooldown: 0,
-    lastCompleted: null,
-  },
-  {
-    id: 'telegramChannel',
+    id: 'joinTelegram',
     name: 'Join Telegram Channel',
-    description: 'Subscribe to our Telegram channel',
+    description: 'Join our official Telegram channel',
     reward: 2,
-    type: 'one_time',
+    type: 'one-time',
+    completed: false,
+    cooldown: 0,
+    lastCompleted: null,
     icon: 'fab fa-telegram',
+    href: 'https://t.me/PixelpayotChannels'
+  },
+  {
+    id: 'joinX',
+    name: 'Follow on X',
+    description: 'Follow us on X (Twitter)',
+    reward: 2,
+    type: 'one-time',
     completed: false,
     cooldown: 0,
     lastCompleted: null,
-  },
-  {
-    id: 'facebookPage',
-    name: 'Like Facebook Page',
-    description: 'Like our Facebook page',
-    reward: 2,
-    type: 'one_time',
-    icon: 'fab fa-facebook',
-    completed: false,
-    cooldown: 0,
-    lastCompleted: null,
-  },
-  {
-    id: 'twitterFollow',
-    name: 'Follow Twitter',
-    description: 'Follow us on Twitter',
-    reward: 2,
-    type: 'one_time',
     icon: 'fab fa-twitter',
-    completed: false,
-    cooldown: 0,
-    lastCompleted: null,
+    href: 'https://x.com/TetMinh46256'
   },
   {
-    id: 'socialShare',
-    name: 'Social Share',
-    description: 'Share on social media',
-    reward: 3,
-    type: 'one_time',
-    icon: 'fas fa-share-alt',
+    id: 'joinYoutube',
+    name: 'Watch YouTube Video',
+    description: 'Watch our YouTube video',
+    reward: 2,
+    type: 'one-time',
     completed: false,
     cooldown: 0,
     lastCompleted: null,
+    icon: 'fab fa-youtube',
+    href: 'https://www.youtube.com/@minhtet-q2r9o'
   },
 ])
 
@@ -116,7 +86,20 @@ const handleWalletDisconnected = () => {
 // Computed properties
 const totalRewards = computed(() => {
   return tasks.value.reduce((total, task) => {
-    if (!task.completed) return total + task.reward
+    // Chỉ tính điểm cho các task chưa hoàn thành
+    if (!task.completed) {
+      return total + task.reward
+    }
+    return total
+  }, 0)
+})
+
+// Tổng điểm đã kiếm được từ các task đã hoàn thành
+const earnedRewards = computed(() => {
+  return tasks.value.reduce((total, task) => {
+    if (task.completed) {
+      return total + task.reward
+    }
     return total
   }, 0)
 })
@@ -136,7 +119,7 @@ const progressPercentage = computed(() => {
 
 // Methods
 const completeTask = async (taskId) => {
-  console.log('taskId', taskId)
+  console.log('🎯 Completing task:', taskId)
   try {
     const task = tasks.value.find((t) => t.id === taskId)
     if (!task) {
@@ -161,9 +144,21 @@ const completeTask = async (taskId) => {
       }
     }
 
+    // For tasks with href links, open the link first
+    if (task.href) {
+      window.open(task.href, '_blank')
+    }
+
     // Mark task as completed
     task.completed = true
     task.lastCompleted = Date.now()
+
+    // For daily check-in only, save the date
+    if (taskId === 'checkIn') {
+      const currentDate = new Date().toDateString()
+      localStorage.setItem('lastCheckInDate', currentDate)
+      console.log(`📅 Daily check-in completed on: ${currentDate}`)
+    }
 
     // Update user data in Firebase
     if (currentUser.value) {
@@ -204,12 +199,47 @@ const completeTask = async (taskId) => {
 }
 
 const resetDailyTasks = () => {
-  tasks.value.forEach((task) => {
-    if (task.type === 'daily') {
-      task.completed = false
-      task.lastCompleted = null
+  console.log('🔄 Resetting daily check-in task...')
+  const checkInTask = tasks.value.find(task => task.id === 'checkIn')
+  if (checkInTask) {
+    checkInTask.completed = false
+    checkInTask.lastCompleted = null
+    console.log('✅ Reset daily check-in task')
+  }
+  saveTasksToLocalStorage()
+}
+
+const saveTasksToLocalStorage = () => {
+  try {
+    const tasksData = tasks.value.map(task => ({
+      id: task.id,
+      completed: task.completed,
+      lastCompleted: task.lastCompleted
+    }))
+    localStorage.setItem('userTasks', JSON.stringify(tasksData))
+    console.log('💾 Tasks saved to localStorage')
+  } catch (err) {
+    console.warn('Failed to save tasks to localStorage:', err)
+  }
+}
+
+const loadTasksFromLocalStorage = () => {
+  try {
+    const savedTasks = localStorage.getItem('userTasks')
+    if (savedTasks) {
+      const tasksData = JSON.parse(savedTasks)
+      tasksData.forEach(savedTask => {
+        const task = tasks.value.find(t => t.id === savedTask.id)
+        if (task) {
+          task.completed = savedTask.completed
+          task.lastCompleted = savedTask.lastCompleted
+        }
+      })
+      console.log('📂 Tasks loaded from localStorage')
     }
-  })
+  } catch (err) {
+    console.warn('Failed to load tasks from localStorage:', err)
+  }
 }
 
 const loadUserTasks = async () => {
@@ -217,19 +247,34 @@ const loadUserTasks = async () => {
 
   try {
     isLoading.value = true
+    
+    // Load from localStorage first
+    loadTasksFromLocalStorage()
+    
     const userData = await getUserData()
 
     if (userData) {
       userBalance.value = userData.balance || 0
 
-      // Mark completed tasks
+      // Load daily tasks from Firebase
+      if (userData.dailyTasks) {
+        const checkInTask = tasks.value.find(task => task.id === 'checkIn')
+        if (checkInTask && userData.dailyTasks.checkIn) {
+          checkInTask.completed = true
+        }
+      }
+
+      // Load completed one-time tasks from Firebase
       const completedTaskIds = userData.completedTasks || []
       tasks.value.forEach((task) => {
-        if (completedTaskIds.includes(task.id)) {
+        if (task.type === 'one-time' && completedTaskIds.includes(task.id)) {
           task.completed = true
         }
       })
     }
+    
+    // Save to localStorage after loading from Firebase
+    saveTasksToLocalStorage()
   } catch (err) {
     error.value = err.message
   } finally {
@@ -278,6 +323,7 @@ export function useTaskSystem() {
 
     // Computed
     totalRewards,
+    earnedRewards,
     completedTasksCount,
     totalTasksCount,
     progressPercentage,
@@ -286,5 +332,7 @@ export function useTaskSystem() {
     completeTask,
     resetDailyTasks,
     loadUserTasks,
+    saveTasksToLocalStorage,
+    loadTasksFromLocalStorage,
   }
 }

@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <Header />
+    <Toast />
 
     <!-- Hero Section -->
     <section class="hero-section">
@@ -293,13 +294,16 @@
                     </div>
                     <div class="task-content">
                       <h5>Daily Check-in</h5>
-                      <!-- <p class="task-reward">+1 PPO</p> -->
+                      <p class="task-reward">+1 PPO</p>
                     </div>
                     <button
-                      class="btn btn-task completed"
+                      class="btn btn-task"
+                      :class="{ completed: tasks.find(t => t.id === 'checkIn')?.completed }"
                       @click="claimTaskReward('checkIn')"
+                      :disabled="!isUserReady || tasks.find(t => t.id === 'checkIn')?.completed"
                     >
-                      <i class="fas fa-check-circle"></i>
+                      <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'checkIn')?.completed"></i>
+                      <i class="fas fa-calendar-check" v-else></i>
                     </button>
                   </div>
 
@@ -310,68 +314,76 @@
                     </div>
                     <div class="task-content">
                       <h5>Join Telegram Group</h5>
-                      <!-- <p class="task-reward">+2 PPO</p> -->
+                      <p class="task-reward">+2 PPO</p>
                     </div>
                     <button
                       class="btn btn-task"
-                      data-task="telegramGroup"
+                      :class="{ completed: tasks.find(t => t.id === 'telegramGroup')?.completed }"
                       @click="claimTaskReward('telegramGroup')"
+                      :disabled="!isUserReady || tasks.find(t => t.id === 'telegramGroup')?.completed"
                     >
-                      <i class="fas fa-users"></i>
+                      <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'telegramGroup')?.completed"></i>
+                      <i class="fas fa-users" v-else></i>
                     </button>
                   </div>
 
                   <!-- Telegram Channel -->
-                  <div class="modern-task-item">
+                  <!-- <div class="modern-task-item">
                     <div class="task-icon">
                       <i class="fab fa-telegram"></i>
                     </div>
                     <div class="task-content">
                       <h5>Subscribe Channel</h5>
-                      <!-- <p class="task-reward">+2 PPO</p> -->
+                      <p class="task-reward">+2 PPO</p>
                     </div>
                     <button
                       class="btn btn-task"
-                      data-task="telegramChannel"
+                      :class="{ completed: tasks.find(t => t.id === 'telegramChannel')?.completed }"
                       @click="claimTaskReward('telegramChannel')"
+                      :disabled="!isUserReady || tasks.find(t => t.id === 'telegramChannel')?.completed"
                     >
-                      <i class="fas fa-bell"></i>
+                      <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'telegramChannel')?.completed"></i>
+                      <i class="fas fa-bell" v-else></i>
                     </button>
-                  </div>
+                  </div> -->
 
                   <!-- Facebook Page -->
-                  <div class="modern-task-item">
+                  <!-- <div class="modern-task-item">
                     <div class="task-icon">
                       <i class="fab fa-facebook"></i>
                     </div>
                     <div class="task-content">
                       <h5>Like Facebook Page</h5>
-                      <!-- <p class="task-reward">+2 PPO</p> -->
+                      <p class="task-reward">+2 PPO</p>
                     </div>
                     <button
                       class="btn btn-task"
-                      data-task="facebookPage"
+                      :class="{ completed: tasks.find(t => t.id === 'facebookPage')?.completed }"
                       @click="claimTaskReward('facebookPage')"
+                      :disabled="!isUserReady || tasks.find(t => t.id === 'facebookPage')?.completed"
                     >
-                      <i class="fas fa-thumbs-up"></i>
+                      <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'facebookPage')?.completed"></i>
+                      <i class="fas fa-thumbs-up" v-else></i>
                     </button>
-                  </div>
+                  </div> -->
 
                   <!-- Twitter Follow -->
                   <div class="modern-task-item">
                     <div class="task-icon">
-                      <i class="fab fa-x-twitter"></i>
+                      <i class="fab fa-twitter"></i>
                     </div>
                     <div class="task-content">
                       <h5>Follow on X</h5>
-                      <!-- <p class="task-reward">+2 PPO</p> -->
+                      <p class="task-reward">+2 PPO</p>
                     </div>
                     <button
                       class="btn btn-task"
-                      data-task="twitterFollow"
+                      :class="{ completed: tasks.find(t => t.id === 'twitterFollow')?.completed }"
                       @click="claimTaskReward('twitterFollow')"
+                      :disabled="!isUserReady || tasks.find(t => t.id === 'twitterFollow')?.completed"
                     >
-                      <i class="fas fa-user-plus"></i>
+                      <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'twitterFollow')?.completed"></i>
+                      <i class="fas fa-user-plus" v-else></i>
                     </button>
                   </div>
 
@@ -382,15 +394,17 @@
                     </div>
                     <div class="task-content">
                       <h5>Share & Earn</h5>
-                      <!-- <p class="task-reward">+3 PPO</p> -->
+                      <p class="task-reward">+3 PPO</p>
                       <small class="task-note">Share about PixelPayot</small>
                     </div>
                     <button
                       class="btn btn-task"
-                      data-task="socialShare"
+                      :class="{ completed: tasks.find(t => t.id === 'socialShare')?.completed }"
                       @click="claimTaskReward('socialShare')"
+                      :disabled="!isUserReady || tasks.find(t => t.id === 'socialShare')?.completed"
                     >
-                      <i class="fas fa-share"></i>
+                      <i class="fas fa-check-circle" v-if="tasks.find(t => t.id === 'socialShare')?.completed"></i>
+                      <i class="fas fa-share" v-else></i>
                     </button>
                   </div>
                 </div>
@@ -403,12 +417,12 @@
                     <div class="rewards-content">
                       <h4>Available Rewards</h4>
                       <span class="rewards-amount"
-                        >{{ availableRewards }} PPO</span
+                        >{{ earnedRewards }} PPO</span
                       >
                     </div>
                     <button
                       class="btn btn-claim-rewards"
-                      :disabled="availableRewards <= 200"
+                      :disabled="earnedRewards <= 0"
                     >
                       <i class="fas fa-download"></i>
                       Claim
@@ -728,7 +742,7 @@
         <img src="../assets/images/pattern-blur-left.png" />
       </div>
       <div class="container">
-        <div class="grid grid-cols-5 gap-6">
+        <div class="grid grid-cols-5 gap-4">
           <div
             v-for="exchange in exchanges"
             :key="exchange.id"
@@ -1547,8 +1561,11 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useWeb3 } from '../composables/useWeb3.js'
 import { useFirebase } from '../composables/useFirebase.js'
+import { useTaskSystem } from '../composables/useTaskSystem.js'
+// import { useToast } from '../composables/useToast.js'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
+// import Toast from '../components/Toast.vue'
 import Swiper from 'swiper'
 import { Navigation, Pagination } from 'swiper/modules'
 import { wagmiConfig } from '../config/wagmi.js'
@@ -1571,8 +1588,26 @@ const {
   getUserData,
   generateReferralCode,
   generateReferralLink,
-  claimTaskReward,
 } = useFirebase()
+
+// Use Task System composable
+const {
+  tasks,
+  userBalance,
+  isLoading: taskLoading,
+  error: taskError,
+  totalRewards,
+  earnedRewards,
+  completedTasksCount,
+  totalTasksCount,
+  progressPercentage,
+  isUserReady,
+  completeTask,
+  resetDailyTasks,
+} = useTaskSystem()
+
+// Use Toast composable
+// const { success, error: showError, warning, info } = useToast()
 const { ppoTokenAddress } = useContractAddress()
 
 // State for modals
@@ -2094,6 +2129,32 @@ onMounted(() => {
   // Initialize referral when component mounts
   initializeReferral()
 })
+
+// Task reward claiming function
+const claimTaskReward = async (taskType) => {
+  try {
+    if (!isUserReady.value) {
+      showError('Please connect your wallet and sign in first!')
+      return
+    }
+
+    const result = await completeTask(taskType)
+    if (result.success) {
+      availableRewards.value = earnedRewards.value
+      success(`Task completed! You earned ${result.reward} PPO`)
+      
+      // Update user balance display
+      if (result.newBalance !== undefined) {
+        userBalance.value = result.newBalance
+      }
+    } else {
+      showError(`Failed to complete task: ${result.error}`)
+    }
+  } catch (error) {
+    console.error('Error claiming task reward:', error)
+    showError('Failed to claim task reward')
+  }
+}
 
 // Watch for wallet connection changes to update referral
 watch(isConnected, (newValue) => {

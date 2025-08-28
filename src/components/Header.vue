@@ -83,6 +83,20 @@
             <ReownWalletButton />
           </div>
 
+          <!-- Sign Up Button -->
+          <div
+            class="signup-section"
+            v-if="!currentUser"
+          >
+            <router-link
+              to="/signup"
+              class="btn-signup"
+            >
+              <i class="fas fa-user-plus me-2"></i>
+              Sign Up
+            </router-link>
+          </div>
+
           <!-- User Menu -->
           <div
             class="user-menu"
@@ -93,11 +107,25 @@
               @click="toggleUserMenu"
             >
               <img
-                :src="
-                  currentUser.photoURL || '../assets/images/default-avatar.png'
-                "
+                :src="currentUser.photoURL || undefined"
                 alt="User"
+                v-if="currentUser.photoURL"
               />
+              <span
+                v-else
+                class="user-avatar-placeholder"
+                style="display: inline-block; width: 32px; height: 32px;"
+                aria-label="User"
+              >
+                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path d="M8 7C9.65685 7 11 5.65685 11 4C11 2.34315 9.65685 1 8 1C6.34315 1 5 2.34315 5 4C5 5.65685 6.34315 7 8 7Z" fill="#fb00ff"></path>
+                    <path d="M14 12C14 10.3431 12.6569 9 11 9H5C3.34315 9 2 10.3431 2 12V15H14V12Z" fill="#fb00ff"></path>
+                  </g>
+                </svg>
+              </span>
               <i class="fas fa-chevron-down"></i>
             </div>
             <ul
@@ -225,6 +253,20 @@
               <WalletStatus />
               <!-- <ReownWalletButton /> -->
             </div>
+            
+            <!-- Mobile Sign Up Button -->
+            <div
+              class="mobile-signup-section"
+              v-if="!currentUser"
+            >
+              <router-link
+                to="/signup"
+                class="mobile-btn-signup"
+              >
+                <i class="fas fa-user-plus me-2"></i>
+                Sign Up
+              </router-link>
+            </div>
           </div>
         </div>
       </div>
@@ -273,12 +315,12 @@ const menuItems = ref([
   //   url: '/collection',
   //   icon: 'fas fa-images',
   // },
-  {
-    id: 'swap',
-    name: 'Swap',
-    url: '/swap',
-    icon: 'fas fa-exchange-alt',
-  },
+  // {
+  //   id: 'swap',
+  //   name: 'Swap',
+  //   url: '/swap',
+  //   icon: 'fas fa-exchange-alt',
+  // },
   {
     id: 'referral',
     name: 'Referral',
@@ -291,6 +333,18 @@ const menuItems = ref([
     url: '/game',
     icon: 'fas fa-gamepad',
   },
+  // {
+  //   id: 'marketplace',
+  //   name: 'Marketplace',
+  //   url: '/marketplace',
+  //   icon: 'fas fa-store',
+  // },
+  // {
+  //   id: 'collection',
+  //   name: 'Collection',
+  //   url: '/collection',
+  //   icon: 'fas fa-images',
+  // },
   {
     id: 'investment',
     name: 'Investment',
@@ -298,37 +352,61 @@ const menuItems = ref([
     icon: 'fas fa-chart-pie',
   },
   {
-    id: 'profile',
-    name: 'Profile',
-    url: '/profile',
-    icon: 'fas fa-user',
-    submenu: [
-      {
-        id: 'my-profile',
-        name: 'My Profile',
-        url: '/profile',
-        icon: 'fas fa-user-circle',
+        id: 'swap',
+        name: 'Swap',
+        url: '/swap',
+        icon: 'fas fa-exchange-alt',
       },
-      {
-        id: 'dashboard',
-        name: 'Dashboard',
-        url: '/dashboard',
-        icon: 'fas fa-chart-line',
-      },
-      // {
-      //   id: 'tasks',
-      //   name: 'Daily Tasks',
-      //   url: '/tasks',
-      //   icon: 'fas fa-tasks',
-      // },
-      {
-        id: 'wallet-test',
-        name: 'Wallet Test',
-        url: '/wallet-test',
-        icon: 'fas fa-wallet',
-      },
-    ],
-  },
+  // {
+  //   id: 'profile',
+  //   name: 'Profile',
+  //   url: '/profile',
+  //   icon: 'fas fa-user',
+  //   submenu: [
+  //     // {
+  //     //   id: 'my-profile',
+  //     //   name: 'My Profile',
+  //     //   url: '/profile',
+  //     //   icon: 'fas fa-user-circle',
+  //     // },
+  //     {
+  //       id: 'dashboard',
+  //       name: 'Dashboard',
+  //       url: '/dashboard',
+  //       icon: 'fas fa-chart-line',
+  //     },
+  //     // {
+  //     //   id: 'dashboard',
+  //     //   name: 'Dashboard',
+  //     //   url: '/dashboard',
+  //     //   icon: 'fas fa-chart-line',
+  //     // },
+  //     // {
+  //     //   id: 'tasks',
+  //     //   name: 'Daily Tasks',
+  //     //   url: '/tasks',
+  //     //   icon: 'fas fa-tasks',
+  //     // },
+  //     // {
+  //     //   id: 'wallet-test',
+  //     //   name: 'Wallet Test',
+  //     //   url: '/wallet-test',
+  //     //   icon: 'fas fa-wallet',
+  //     // },
+  //     // {
+  //     //   id: 'referral',
+  //     //   name: 'Referral',
+  //     //   url: '/referral',
+  //     //   icon: 'fas fa-users',
+  //     // },
+  //     // {
+  //     //   id: 'wallet-test',
+  //     //   name: 'Wallet Test',
+  //     //   url: '/wallet-test',
+  //     //   icon: 'fas fa-wallet',
+  //     // },
+  //   ],
+  // },
   {
     id: 'more',
     name: 'More',
@@ -341,7 +419,6 @@ const menuItems = ref([
       //   url: '/blindbox',
       //   icon: 'fas fa-box-open',
       // },
-
       // {
       //   id: 'creators',
       //   name: 'Creators',
@@ -725,6 +802,36 @@ onUnmounted(() => {
   color: white;
 }
 
+/* Sign Up Button */
+.btn-signup {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-signup:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Signup Section */
+.signup-section {
+  display: flex;
+  align-items: center;
+}
+
 /* Mobile Toggle */
 .mobile-menu-toggle {
   display: none;
@@ -889,6 +996,36 @@ onUnmounted(() => {
   color: white;
 }
 
+/* Mobile Sign Up Button */
+.mobile-btn-signup {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  color: white;
+  padding: 15px;
+  border-radius: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  width: 100%;
+}
+
+.mobile-btn-signup:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.mobile-signup-section {
+  margin-top: 20px;
+}
+
 /* Responsive Design */
 @media (max-width: 991px) {
   .desktop-menu {
@@ -904,6 +1041,10 @@ onUnmounted(() => {
   }
 
   .wallet-section {
+    display: none;
+  }
+
+  .signup-section {
     display: none;
   }
 

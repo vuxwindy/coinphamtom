@@ -381,6 +381,10 @@ import { ppoTokenAbi } from '@/abis/ppoToken.js'
 import { ppoSwapAbi } from '@/abis/ppoSwap.js'
 import { bsc, bscTestnet } from 'viem/chains'
 import { useFirebase } from '../composables/useFirebase'
+import bnbIcon from '@/assets/images/bnb-icon.png'
+import ppoIcon from '@/assets/images/ppo-icon.png'
+import usdtIcon from '@/assets/images/usdt-icon.png'
+import usdcIcon from '@/assets/images/usdc-icon.png'
 
 // PPO Token và PPO Swap contract addresses
 const ppoSwapAddress = computed(() => {
@@ -427,14 +431,14 @@ const recentTransactions = ref([])
 const selectedFromToken = ref({
   symbol: 'BNB',
   name: 'Binance Coin',
-  icon: '/src/assets/images/bnb-icon.png',
-  address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    icon: bnbIcon,
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
 })
 
 const selectedToToken = ref({
   symbol: 'PPO',
   name: 'PixelPayot Token',
-  icon: '/src/assets/images/ppo-icon.png',
+  icon: ppoIcon,
   address: '0xCdA7eBb5005aaC33B6F4f32c17647698b020eFC9',
 })
 
@@ -443,25 +447,25 @@ const availableTokens = ref([
   {
     symbol: 'BNB',
     name: 'Binance Coin',
-    icon: '/src/assets/images/bnb-icon.png',
+    icon: bnbIcon,
     address: '0xbb4CdB9CBd36B01bD1cBaEF2aFd4e8d3b5c6b5d4',
   },
   {
     symbol: 'PPO',
     name: 'PixelPayot Token',
-    icon: '/src/assets/images/ppo-icon.png',
+    icon: ppoIcon,
     address: '0x1234567890123456789012345678901234567890',
   },
   {
     symbol: 'USDT',
     name: 'Tether USD',
-    icon: '/src/assets/images/usdt-icon.png',
+    icon: usdtIcon,
     address: '0x55d398326f99059fF775485246999027B3197955',
   },
   {
     symbol: 'USDC',
     name: 'USD Coin',
-    icon: '/src/assets/images/usdc-icon.png',
+    icon: usdcIcon,
     address: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
   },
 ])
@@ -470,20 +474,20 @@ const availableTokens = ref([
 const popularPairs = ref([
   {
     id: 1,
-    token1: { symbol: 'PPO', icon: '/src/assets/images/ppo-icon.png' },
-    token2: { symbol: 'BNB', icon: '/src/assets/images/bnb-icon.png' },
+    token1: { symbol: 'PPO', icon: ppoIcon },
+    token2: { symbol: 'BNB', icon: bnbIcon },
     price: '0.000045 BNB',
   },
   {
     id: 2,
-    token1: { symbol: 'PPO', icon: '/src/assets/images/ppo-icon.png' },
-    token2: { symbol: 'USDT', icon: '/src/assets/images/usdt-icon.png' },
+    token1: { symbol: 'PPO', icon: ppoIcon },
+    token2: { symbol: 'USDT', icon: usdtIcon },
     price: '0.045 USDT',
   },
   {
     id: 3,
-    token1: { symbol: 'BNB', icon: '/src/assets/images/bnb-icon.png' },
-    token2: { symbol: 'USDT', icon: '/src/assets/images/usdt-icon.png' },
+    token1: { symbol: 'BNB', icon: bnbIcon },
+    token2: { symbol: 'USDT', icon: usdtIcon },
     price: '320.50 USDT',
   },
 ])

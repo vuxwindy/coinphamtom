@@ -7,7 +7,8 @@
     "dev": "vite",
     "devh": "vite --host",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "fix-assets": "node fix-asset-paths.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.0.0",
