@@ -728,7 +728,7 @@
         <img src="../assets/images/pattern-blur-left.png" />
       </div>
       <div class="container">
-        <div class="grid grid-cols-5 gap-4">
+        <div class="grid grid-cols-5 gap-6">
           <div
             v-for="exchange in exchanges"
             :key="exchange.id"
