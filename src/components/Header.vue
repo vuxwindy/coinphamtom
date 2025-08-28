@@ -80,7 +80,7 @@
           <!-- Wallet Section -->
           <div class="wallet-section">
             <WalletStatus />
-            <!-- <ReownWalletButton /> -->
+            <ReownWalletButton />
           </div>
 
           <!-- User Menu -->
@@ -261,23 +261,35 @@ const { currentUser, signOut } = useFirebase()
 
 // Menu items configuration
 const menuItems = ref([
+  // {
+  //   id: 'marketplace',
+  //   name: 'Marketplace',
+  //   url: '/marketplace',
+  //   icon: 'fas fa-store',
+  // },
+  // {
+  //   id: 'collection',
+  //   name: 'Collection',
+  //   url: '/collection',
+  //   icon: 'fas fa-images',
+  // },
+  {
+    id: 'swap',
+    name: 'Swap',
+    url: '/swap',
+    icon: 'fas fa-exchange-alt',
+  },
+  {
+    id: 'referral',
+    name: 'Referral',
+    url: '/referral',
+    icon: 'fas fa-users',
+  },
   {
     id: 'game',
     name: 'Game',
     url: '/game',
     icon: 'fas fa-gamepad',
-  },
-  {
-    id: 'marketplace',
-    name: 'Marketplace',
-    url: '/marketplace',
-    icon: 'fas fa-store',
-  },
-  {
-    id: 'collection',
-    name: 'Collection',
-    url: '/collection',
-    icon: 'fas fa-images',
   },
   {
     id: 'investment',
@@ -303,23 +315,17 @@ const menuItems = ref([
         url: '/dashboard',
         icon: 'fas fa-chart-line',
       },
-      {
-        id: 'tasks',
-        name: 'Daily Tasks',
-        url: '/tasks',
-        icon: 'fas fa-tasks',
-      },
+      // {
+      //   id: 'tasks',
+      //   name: 'Daily Tasks',
+      //   url: '/tasks',
+      //   icon: 'fas fa-tasks',
+      // },
       {
         id: 'wallet-test',
         name: 'Wallet Test',
         url: '/wallet-test',
         icon: 'fas fa-wallet',
-      },
-      {
-        id: 'referral',
-        name: 'Referral',
-        url: '/referral',
-        icon: 'fas fa-users',
       },
     ],
   },
@@ -329,24 +335,19 @@ const menuItems = ref([
     url: '#',
     icon: 'fas fa-ellipsis-h',
     submenu: [
-      {
-        id: 'blindbox',
-        name: 'Blindbox',
-        url: '/blindbox',
-        icon: 'fas fa-box-open',
-      },
-      {
-        id: 'swap',
-        name: 'Swap',
-        url: '/swap',
-        icon: 'fas fa-exchange-alt',
-      },
-      {
-        id: 'creators',
-        name: 'Creators',
-        url: '/creators',
-        icon: 'fas fa-palette',
-      },
+      // {
+      //   id: 'blindbox',
+      //   name: 'Blindbox',
+      //   url: '/blindbox',
+      //   icon: 'fas fa-box-open',
+      // },
+
+      // {
+      //   id: 'creators',
+      //   name: 'Creators',
+      //   url: '/creators',
+      //   icon: 'fas fa-palette',
+      // },
       {
         id: 'whitepaper',
         name: 'Whitepaper',
