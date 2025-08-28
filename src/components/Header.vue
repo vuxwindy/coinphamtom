@@ -80,7 +80,7 @@
           <!-- Wallet Section -->
           <div class="wallet-section">
             <WalletStatus />
-            <!-- <ReownWalletButton /> -->
+            <ReownWalletButton />
           </div>
 
           <!-- User Menu -->
