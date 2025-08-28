@@ -83,6 +83,20 @@
             <ReownWalletButton />
           </div>
 
+          <!-- Sign Up Button -->
+          <div
+            class="signup-section"
+            v-if="!currentUser"
+          >
+            <router-link
+              to="/signup"
+              class="btn-signup"
+            >
+              <i class="fas fa-user-plus me-2"></i>
+              Sign Up
+            </router-link>
+          </div>
+
           <!-- User Menu -->
           <div
             class="user-menu"
@@ -224,6 +238,20 @@
             <div class="mobile-wallet-section mb-4">
               <WalletStatus />
               <!-- <ReownWalletButton /> -->
+            </div>
+            
+            <!-- Mobile Sign Up Button -->
+            <div
+              class="mobile-signup-section"
+              v-if="!currentUser"
+            >
+              <router-link
+                to="/signup"
+                class="mobile-btn-signup"
+              >
+                <i class="fas fa-user-plus me-2"></i>
+                Sign Up
+              </router-link>
             </div>
           </div>
         </div>
@@ -724,6 +752,36 @@ onUnmounted(() => {
   color: white;
 }
 
+/* Sign Up Button */
+.btn-signup {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-signup:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Signup Section */
+.signup-section {
+  display: flex;
+  align-items: center;
+}
+
 /* Mobile Toggle */
 .mobile-menu-toggle {
   display: none;
@@ -888,6 +946,36 @@ onUnmounted(() => {
   color: white;
 }
 
+/* Mobile Sign Up Button */
+.mobile-btn-signup {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  color: white;
+  padding: 15px;
+  border-radius: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  width: 100%;
+}
+
+.mobile-btn-signup:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.mobile-signup-section {
+  margin-top: 20px;
+}
+
 /* Responsive Design */
 @media (max-width: 991px) {
   .desktop-menu {
@@ -903,6 +991,10 @@ onUnmounted(() => {
   }
 
   .wallet-section {
+    display: none;
+  }
+
+  .signup-section {
     display: none;
   }
 
