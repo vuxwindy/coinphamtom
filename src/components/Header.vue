@@ -107,11 +107,25 @@
               @click="toggleUserMenu"
             >
               <img
-                :src="
-                  currentUser.photoURL || '../assets/images/default-avatar.png'
-                "
+                :src="currentUser.photoURL || undefined"
                 alt="User"
+                v-if="currentUser.photoURL"
               />
+              <span
+                v-else
+                class="user-avatar-placeholder"
+                style="display: inline-block; width: 32px; height: 32px;"
+                aria-label="User"
+              >
+                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path d="M8 7C9.65685 7 11 5.65685 11 4C11 2.34315 9.65685 1 8 1C6.34315 1 5 2.34315 5 4C5 5.65685 6.34315 7 8 7Z" fill="#fb00ff"></path>
+                    <path d="M14 12C14 10.3431 12.6569 9 11 9H5C3.34315 9 2 10.3431 2 12V15H14V12Z" fill="#fb00ff"></path>
+                  </g>
+                </svg>
+              </span>
               <i class="fas fa-chevron-down"></i>
             </div>
             <ul
@@ -301,12 +315,12 @@ const menuItems = ref([
   //   url: '/collection',
   //   icon: 'fas fa-images',
   // },
-  {
-    id: 'swap',
-    name: 'Swap',
-    url: '/swap',
-    icon: 'fas fa-exchange-alt',
-  },
+  // {
+  //   id: 'swap',
+  //   name: 'Swap',
+  //   url: '/swap',
+  //   icon: 'fas fa-exchange-alt',
+  // },
   {
     id: 'referral',
     name: 'Referral',
@@ -343,56 +357,56 @@ const menuItems = ref([
         url: '/swap',
         icon: 'fas fa-exchange-alt',
       },
-  {
-    id: 'profile',
-    name: 'Profile',
-    url: '/profile',
-    icon: 'fas fa-user',
-    submenu: [
-      {
-        id: 'my-profile',
-        name: 'My Profile',
-        url: '/profile',
-        icon: 'fas fa-user-circle',
-      },
-      // {
-      //   id: 'dashboard',
-      //   name: 'Dashboard',
-      //   url: '/dashboard',
-      //   icon: 'fas fa-chart-line',
-      // },
-      {
-        id: 'dashboard',
-        name: 'Dashboard',
-        url: '/dashboard',
-        icon: 'fas fa-chart-line',
-      },
-      // {
-      //   id: 'tasks',
-      //   name: 'Daily Tasks',
-      //   url: '/tasks',
-      //   icon: 'fas fa-tasks',
-      // },
-      // {
-      //   id: 'wallet-test',
-      //   name: 'Wallet Test',
-      //   url: '/wallet-test',
-      //   icon: 'fas fa-wallet',
-      // },
-      {
-        id: 'referral',
-        name: 'Referral',
-        url: '/referral',
-        icon: 'fas fa-users',
-      },
-      {
-        id: 'wallet-test',
-        name: 'Wallet Test',
-        url: '/wallet-test',
-        icon: 'fas fa-wallet',
-      },
-    ],
-  },
+  // {
+  //   id: 'profile',
+  //   name: 'Profile',
+  //   url: '/profile',
+  //   icon: 'fas fa-user',
+  //   submenu: [
+  //     // {
+  //     //   id: 'my-profile',
+  //     //   name: 'My Profile',
+  //     //   url: '/profile',
+  //     //   icon: 'fas fa-user-circle',
+  //     // },
+  //     {
+  //       id: 'dashboard',
+  //       name: 'Dashboard',
+  //       url: '/dashboard',
+  //       icon: 'fas fa-chart-line',
+  //     },
+  //     // {
+  //     //   id: 'dashboard',
+  //     //   name: 'Dashboard',
+  //     //   url: '/dashboard',
+  //     //   icon: 'fas fa-chart-line',
+  //     // },
+  //     // {
+  //     //   id: 'tasks',
+  //     //   name: 'Daily Tasks',
+  //     //   url: '/tasks',
+  //     //   icon: 'fas fa-tasks',
+  //     // },
+  //     // {
+  //     //   id: 'wallet-test',
+  //     //   name: 'Wallet Test',
+  //     //   url: '/wallet-test',
+  //     //   icon: 'fas fa-wallet',
+  //     // },
+  //     // {
+  //     //   id: 'referral',
+  //     //   name: 'Referral',
+  //     //   url: '/referral',
+  //     //   icon: 'fas fa-users',
+  //     // },
+  //     // {
+  //     //   id: 'wallet-test',
+  //     //   name: 'Wallet Test',
+  //     //   url: '/wallet-test',
+  //     //   icon: 'fas fa-wallet',
+  //     // },
+  //   ],
+  // },
   {
     id: 'more',
     name: 'More',

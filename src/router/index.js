@@ -92,6 +92,11 @@ const routes = [
     name: "WalletTest",
     component: () => import("../views/WalletTest.vue"),
   },
+  {
+    path: "/task-test",
+    name: "TaskTest",
+    component: () => import("../views/TaskTest.vue"),
+  },
 ];
 
 const router = createRouter({

@@ -9,7 +9,7 @@
           <div class="col-12">
             <div class="profile-header text-center">
               <div class="profile-avatar">
-                <img :src="userProfile.avatar || '/src/assets/images/default-avatar.png'" alt="Profile Avatar">
+                <img :src="userProfile.avatar || '../assets/images/default-avatar.png'" alt="Profile Avatar">
                 <button class="avatar-edit-btn" @click="editAvatar">
                   <i class="fas fa-camera"></i>
                 </button>

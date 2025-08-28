@@ -238,18 +238,29 @@ const getUserData = async (userId = null) => {
 // Claim daily task reward
 const claimTaskReward = async (taskType) => {
   try {
+    console.log('🔥 Starting task reward claim for:', taskType)
+    
     if (!currentUser.value) {
       throw new Error('No user logged in')
     }
+
+    console.log('👤 Current user:', currentUser.value.uid)
 
     const userRef = doc(db, 'users', currentUser.value.uid)
     const userDoc = await getDoc(userRef)
 
     if (!userDoc.exists()) {
-      throw new Error('User document not found')
+      console.log('❌ User document not found, creating new one...')
+      await createUserDocument(currentUser.value.uid)
+      const newUserDoc = await getDoc(userRef)
+      if (!newUserDoc.exists()) {
+        throw new Error('Failed to create user document')
+      }
     }
 
-    const userData = userDoc.data()
+    const userData = userDoc.exists() ? userDoc.data() : (await getDoc(userRef)).data()
+    console.log('📊 Current user data:', userData)
+
     const taskRewards = {
       checkIn: 1,
       telegramGroup: 2,
@@ -261,12 +272,15 @@ const claimTaskReward = async (taskType) => {
     }
 
     const reward = taskRewards[taskType] || 0
-    const newBalance = userData.tokenBalance + reward
+    const currentBalance = userData.tokenBalance || 0
+    const newBalance = currentBalance + reward
+
+    console.log(`💰 Reward calculation: ${currentBalance} + ${reward} = ${newBalance}`)
 
     // Update data based on task type
     const updateData = {
       tokenBalance: newBalance,
-      totalEarned: userData.totalEarned + reward,
+      totalEarned: (userData.totalEarned || 0) + reward,
       updatedAt: new Date(),
     }
 
@@ -274,15 +288,23 @@ const claimTaskReward = async (taskType) => {
     if (taskType === 'checkIn') {
       updateData[`dailyTasks.${taskType}`] = true
       updateData.lastCheckIn = new Date()
+      console.log('📅 Updated daily check-in data')
     } else {
       // For one-time tasks, add to completedTasks array
       const completedTasks = userData.completedTasks || []
       if (!completedTasks.includes(taskType)) {
         updateData.completedTasks = [...completedTasks, taskType]
+        console.log('✅ Added to completed tasks:', taskType)
+      } else {
+        console.log('⚠️ Task already completed:', taskType)
       }
     }
 
+    console.log('📝 Updating Firebase with data:', updateData)
+
     await updateDoc(userRef, updateData)
+
+    console.log('✅ Firebase update successful')
 
     return { success: true, reward, newBalance }
   } catch (error) {
