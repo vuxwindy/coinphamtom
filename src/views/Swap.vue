@@ -26,7 +26,7 @@
             <div class="swap-card">
               <!-- Wallet Connection Status -->
               <div
-                v-if="!isWalletConnected"
+                v-if="!isConnected"
                 class="wallet-notice"
               >
                 <div class="notice-content">
@@ -425,8 +425,8 @@ const router = useRouter()
 const { getUserData, addTransaction, currentUser } = useFirebase()
 
 // Use Web3 composable for wallet connection
-const { address, connectWallet } = useAccount()
-const isWalletConnected = computed(() => !!address?.value)
+const { address, connectWallet, isConnected } = useAccount()
+// const isWalletConnected = computed(() => !!address?.value)
 const chainId = useChainId()
 
 // State
@@ -659,7 +659,7 @@ const swapUsdValue = computed(() => {
 
 const getSwapButtonText = () => {
   if (isLoading.value) return 'Swapping...'
-  if (!isWalletConnected.value) return 'Connect Wallet'
+  if (!isConnected.value) return 'Connect Wallet'
   if (!swapForm.fromAmount) return 'Swap'
   if (parseFloat(swapForm.fromAmount) > fromTokenBalance.value)
     return 'Insufficient Balance'
