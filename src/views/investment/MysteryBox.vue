@@ -147,7 +147,7 @@ const ppoPrice = 0.05 // 1 PPO = 0.05 USD
 const { ppoPackageAddress } = useContractAddress()
 
 function getTier(amount) {
-  if (amount >= 0.01 && amount < 0.025) return 0 // bronze
+  if (amount >= 0.000000000001 && amount < 0.025) return 0 // bronze
   if (amount >= 0.025 && amount < 0.1) return 1 // silver
   if (amount >= 0.1) return 2 // gold
   return -1
